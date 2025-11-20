@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>🕉 कर्मयोग</title>
+
   <style>
     * {
       margin: 0;
@@ -21,47 +22,55 @@
       overflow-x: hidden;
     }
 
-    .container {
-      max-width: 100%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
+    /* ---------------- HEADER LOGO ---------------- */
+    .header-logo {
+      width: 120px;
+      display: block;
+      margin: 18px auto 18px;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      animation: fadeIn 0.7s ease-in-out;
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-
-    /* Grid Layout */
+    /* ----------- GRID ----------- */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 0;
+      gap: 8px;
       width: 100%;
+      padding: 0 10px;
     }
 
-    /* Card Style */
+    /* ----------- CARDS ----------- */
     .card {
-      background: #fff9e6;
-      border-radius: 0;
+      background: #fff;
+      border-radius: 16px;
       padding: 28px 10px;
       text-align: center;
       text-decoration: none;
       color: #1a1a1a;
-      box-shadow: none;
-      border: 1px solid #e0e0e0;
-      transition: transform 0.15s ease, background 0.15s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: transform 0.15s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 10px;
       min-height: 160px;
-      position: relative;
-      width: 100%;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
     .card:active {
-      transform: scale(0.98);
-      background: #f9f9f9;
+      transform: scale(0.95);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     }
 
     .icon {
@@ -72,34 +81,37 @@
     .card-title {
       font-size: 18px;
       font-weight: 600;
-      line-height: 1.3;
       color: #d32f2f;
+      line-height: 1.3;
     }
 
-    /* Responsive for smaller screens */
+    /* ----------- Smaller screens ----------- */
     @media (max-width: 360px) {
-      .card {
-        min-height: 150px;
+      .grid {
+        gap: 6px;
+        padding: 0 6px;
       }
     }
 
-    /* Larger phones */
+    /* ----------- Larger phones ----------- */
     @media (min-width: 400px) {
-      .card {
-        min-height: 170px;
+      .grid {
+        gap: 10px;
+        padding: 0 12px;
       }
-    }
-
-    /* Prevent text selection on tap */
-    .card, .card-title, .icon {
-      -webkit-user-select: none;
-      user-select: none;
     }
   </style>
+
 </head>
 <body>
+
+  <!-- ⭐ HEADER LOGO ADDED HERE -->
+  <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjR7N5Gt6E..."
+       alt="Omkarmyog Logo" class="header-logo">
+
   <div class="container">
     <div class="grid">
+
       <a href="https://www.omkarmyog.in/p/sampurn-stotra-sangrah.html?m=1" class="card">
         <div class="icon">📿</div>
         <div class="card-title">स्तोत्र संग्रह</div>
@@ -144,6 +156,7 @@
         <div class="icon">🎊</div>
         <div class="card-title">आपले सण</div>
       </a>
+
     </div>
   </div>
 </body>

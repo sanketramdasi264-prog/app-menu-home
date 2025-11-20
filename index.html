@@ -1,858 +1,150 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>आजचं पंचांग - दैनिक पंचांग</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Noto Sans Devanagari', sans-serif;
-            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .container {
-            max-width: 1500px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1080px 400px;
-            gap: 30px;
-            justify-content: center;
-        }
-
-        /* पंचांग कार्ड - Fixed dimensions */
-        #panchangCard {
-            width: 1080px;
-            height: 1729px;
-            background: white;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-        }
-
-        /* टॉप व्हाईट सेक्शन */
-        .top-white-section {
-            background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
-            height: 180px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            border-bottom: 6px solid #ffd700;
-        }
-
-        .logo-left {
-            width: 140px;
-            height: 140px;
-        }
-
-        .logo-left img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 3px 10px rgba(0,0,0,0.2));
-        }
-
-        .date-panel {
-            text-align: center;
-            flex: 1;
-            padding: 0 20px;
-        }
-
-        .date-panel .date-label {
-            font-size: 2.2em;
-            font-weight: 900;
-            margin-bottom: 10px;
-            color: #000;
-        }
-
-        .date-panel .date-value {
-            font-size: 2em;
-            font-weight: 900;
-            color: #d32f2f;
-        }
-
-        .date-panel .day-value {
-            font-size: 1.5em;
-            font-weight: 700;
-            margin-top: 5px;
-            color: #d32f2f;
-        }
-
-        .ganesh-top {
-            position: relative;
-            text-align: center;
-        }
-
-        .ganesh-circle {
-            width: 140px;
-            height: 140px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: visible;
-        }
-
-        .ganesh-circle img {
-            width: 160px;
-            height: 160px;
-            object-fit: contain;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-        }
-
-        /* रेड सेक्शन */
-        .red-section {
-            background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
-            height: 950px;
-            position: relative;
-            padding: 30px 40px;
-        }
-
-        .red-border-frame {
-            border: 8px solid #ffd700;
-            height: calc(100% - 60px);
-            position: relative;
-            border-radius: 10px;
-            padding: 20px;
-        }
-
-        .trishul-left {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 3em;
-            color: #ffd700;
-        }
-
-        .trishul-right {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 3em;
-            color: #ffd700;
-        }
-
-        .photo-frame {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 450px;
-            background: white;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .photo-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* शालिवाहन शके सेक्शन */
-        .shake-bottom-section {
-            background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
-            padding: 20px 40px;
-            text-align: center;
-            color: white;
-            border-bottom: 6px solid #ffd700;
-        }
-
-        .shake-bottom-section h3 {
-            font-size: 2em;
-            font-weight: 900;
-            margin-bottom: 8px;
-        }
-
-        .shake-bottom-section p {
-            font-size: 1.2em;
-            font-weight: 600;
-        }
-
-        /* ब्लू सोशल सेक्शन */
-        .blue-social-section {
-            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
-            padding: 20px 40px;
-            position: relative;
-            border-bottom: 6px solid #ffd700;
-        }
-
-        .social-wave {
-            background: linear-gradient(90deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
-            height: 8px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-
-        .social-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-        }
-
-        .sunrise-box, .sunset-box {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px 30px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-        }
-
-        .sun-icon-wrapper {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2em;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
-
-        .sun-info h4 {
-            color: white;
-            font-size: 1em;
-            margin-bottom: 3px;
-        }
-
-        .sun-info .time {
-            color: #ffd700;
-            font-size: 1.6em;
-            font-weight: 900;
-        }
-
-        /* पंचांग टेबल */
-        .panchang-table-section {
-            background: linear-gradient(180deg, #fff8e1 0%, #ffffff 100%);
-            padding: 30px 40px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            border: 4px solid #ff9800;
-        }
-
-        th, td {
-            padding: 15px 10px;
-            text-align: center;
-            border: 2px solid #ff9800;
-        }
-
-        th {
-            background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
-            color: #c62828;
-            font-size: 1.3em;
-            font-weight: 900;
-        }
-
-        td {
-            font-size: 1.15em;
-            font-weight: 600;
-        }
-
-        td:first-child {
-            font-size: 2.2em;
-            width: 80px;
-        }
-
-        td:nth-child(2) {
-            background: #fff8e1;
-            color: #000;
-            font-weight: 700;
-        }
-
-        td:nth-child(3) {
-            background: white;
-            color: #c62828;
-            font-weight: 700;
-            font-size: 1.3em;
-        }
-
-        td:nth-child(4) {
-            background: white;
-            color: #1565c0;
-            font-weight: 700;
-        }
-
-        td:nth-child(5) {
-            background: #fff8e1;
-            color: #c62828;
-            font-weight: 700;
-        }
-
-        /* राशी बॉक्सेस */
-        .rashi-section {
-            background: white;
-            padding: 30px 40px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .rashi-box {
-            background: white;
-            border: 3px solid #ff9800;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .rashi-box .icon {
-            font-size: 2.5em;
-            margin-bottom: 8px;
-        }
-
-        .rashi-box .label {
-            color: #666;
-            font-size: 1em;
-            margin-bottom: 5px;
-        }
-
-        .rashi-box .value {
-            color: #c62828;
-            font-size: 1.5em;
-            font-weight: 900;
-        }
-
-        /* बॉटम व्हाईट फुटर */
-        .bottom-white-footer {
-            background: linear-gradient(180deg, #f5f5f5 0%, #ffffff 100%);
-            padding: 30px 40px;
-            border-top: 6px solid #ffd700;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .footer-content {
-            display: none;
-            text-align: left;
-            flex: 1;
-        }
-
-        .footer-content.show {
-            display: block;
-        }
-
-        .footer-title {
-            font-size: 2.2em;
-            font-weight: 900;
-            margin-bottom: 10px;
-            color: #000;
-        }
-
-        .footer-subtitle {
-            font-size: 1.4em;
-            color: #d32f2f;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .footer-details {
-            font-size: 1.1em;
-            font-weight: 600;
-            margin: 5px 0;
-            color: #333;
-        }
-
-        .footer-photo {
-            display: none;
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid #ffd700;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-
-        .footer-photo.show {
-            display: block;
-        }
-
-        /* युजर फॉर्म */
-        .user-form-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-
-        .form-header {
-            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
-            color: white;
-            padding: 20px;
-            margin: -30px -30px 25px -30px;
-            border-radius: 20px 20px 0 0;
-            text-align: center;
-        }
-
-        .form-header h3 {
-            font-size: 1.8em;
-            font-weight: 900;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 700;
-            font-size: 1.1em;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 14px;
-            border: 3px solid #e0e0e0;
-            border-radius: 10px;
-            font-family: 'Noto Sans Devanagari', sans-serif;
-            font-size: 1.1em;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #2e7d32;
-            box-shadow: 0 0 10px rgba(46, 125, 50, 0.3);
-        }
-
-        .photo-upload-box {
-            border: 3px dashed #2e7d32;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: #f5f5f5;
-        }
-
-        .photo-upload-box:hover {
-            background: #e8f5e9;
-            border-color: #1b5e20;
-        }
-
-        .photo-preview {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 15px auto;
-            display: none;
-            border: 5px solid #2e7d32;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-
-        .upload-icon {
-            font-size: 3em;
-            color: #2e7d32;
-            margin-bottom: 10px;
-        }
-
-        .btn-download {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.4em;
-            font-weight: 900;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Noto Sans Devanagari', sans-serif;
-            box-shadow: 0 8px 20px rgba(211, 47, 47, 0.4);
-            margin-top: 10px;
-        }
-
-        .btn-download:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(211, 47, 47, 0.5);
-        }
-
-        @media (max-width: 1500px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                justify-items: center;
-            }
-
-            #panchangCard {
-                transform: scale(0.9);
-                transform-origin: top center;
-            }
-        }
-
-        @media (max-width: 1100px) {
-            #panchangCard {
-                transform: scale(0.7);
-            }
-        }
-
-        @media (max-width: 800px) {
-            #panchangCard {
-                transform: scale(0.5);
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🕉 कर्मयोग</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      padding: 0 0 80px 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      width: 100%;
+    }
+
+    /* Card Style */
+    .card {
+      background: #fff9e6;
+      border-radius: 0;
+      padding: 28px 10px;
+      text-align: center;
+      text-decoration: none;
+      color: #1a1a1a;
+      box-shadow: none;
+      border: 1px solid #e0e0e0;
+      transition: transform 0.15s ease, background 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 160px;
+      position: relative;
+      width: 100%;
+    }
+
+    .card:active {
+      transform: scale(0.98);
+      background: #f9f9f9;
+    }
+
+    .icon {
+      font-size: 62px;
+      line-height: 1;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: #d32f2f;
+    }
+
+    /* Responsive for smaller screens */
+    @media (max-width: 360px) {
+      .card {
+        min-height: 150px;
+      }
+    }
+
+    /* Larger phones */
+    @media (min-width: 400px) {
+      .card {
+        min-height: 170px;
+      }
+    }
+
+    /* Prevent text selection on tap */
+    .card, .card-title, .icon {
+      -webkit-user-select: none;
+      user-select: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="main-content">
-            <!-- पंचांग कार्ड -->
-            <div id="panchangCard">
-                <!-- टॉप व्हाईट सेक्शन -->
-                <div class="top-white-section">
-                    <div class="logo-left">
-                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEghUXDnRLeFXsuapWEpRem_Mtzst5Ae9zlttWprP9nI7dQ_Rh41nkHP3PqCiHrZo1YKUiMvbHaPZC6VZEBCSvuAvzQOVF7MxUon4i3Hdko0qGWwyl4BQ44KeAe-6qQACSUB8k-3wdI6N2Bt-8xsQSQnHW-a2AMw9SwT0hK4b5Ej5zmN_anbnY1pX2TC9pwR=s500" alt="Logo">
-                    </div>
-                    
-                    <div class="date-panel">
-                        <div class="date-label">आजचे पंचांग</div>
-                        <div class="date-value" id="topDate">18-11-2025</div>
-                        <div class="day-value" id="topDay">मंगळवार</div>
-                    </div>
-                    
-                    <div class="ganesh-top">
-                        <div class="ganesh-circle">
-                            <img src="https://github.com/sanketramdasi264-prog/panchang/blob/main/pngtree-artistic-vinayaka-chavithi-celebrations-for-ganesh-chaturthi-bal-free-transparent-png-image_14089909.png?raw=true" alt="गणेश">
-                        </div>
-                    </div>
-                </div>
+  <div class="container">
+    <div class="grid">
+      <a href="https://www.omkarmyog.in/p/sampurn-stotra-sangrah.html?m=1" class="card">
+        <div class="icon">📿</div>
+        <div class="card-title">स्तोत्र संग्रह</div>
+      </a>
 
-                <!-- रेड सेक्शन -->
-                <div class="red-section">
-                    <div class="red-border-frame">
-                        <div class="trishul-left">🔱</div>
-                        <div class="trishul-right">🔱</div>
-                        
-                        <div class="photo-frame" id="photoFrame"></div>
-                    </div>
-                </div>
+      <a href="https://www.omkarmyog.in/p/sampurn-arati-sangrah.html" class="card">
+        <div class="icon">🪔</div>
+        <div class="card-title">आरती संग्रह</div>
+      </a>
 
-                <!-- शालिवाहन शके -->
-                <div class="shake-bottom-section">
-                    <h3>शालिवाहन शके १९४७</h3>
-                    <p>विश्वावसुनामसंवत्सर, दक्षिणायन, शरद्ऋतू, कार्तिक मास, कृष्ण पक्ष</p>
-                </div>
+      <a href="https://www.omkarmyog.in/p/blog-page_17.html" class="card">
+        <div class="icon">📚</div>
+        <div class="card-title">धार्मिक ग्रंथालय</div>
+      </a>
 
-                <!-- ब्लू सोशल सेक्शन -->
-                <div class="blue-social-section">
-                    <div class="social-wave"></div>
-                    <div class="social-content">
-                        <div class="sunrise-box">
-                            <div class="sun-icon-wrapper">🌅</div>
-                            <div class="sun-info">
-                                <h4>सूर्योदय</h4>
-                                <div class="time" id="sunrise">06:48</div>
-                            </div>
-                        </div>
-                        
-                        <div class="sunset-box">
-                            <div class="sun-icon-wrapper">🌄</div>
-                            <div class="sun-info">
-                                <h4>सूर्यास्त</h4>
-                                <div class="time" id="sunset">17:59</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <a href="https://www.omkarmyog.in/p/blog-page_25.html" class="card">
+        <div class="icon">🧘</div>
+        <div class="card-title">मनाचे श्लोक व चिंतन</div>
+      </a>
 
-                <!-- पंचांग टेबल -->
-                <div class="panchang-table-section">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>🕉️</th>
-                                <th>तिथी</th>
-                                <th id="tithiName">द्वादशी</th>
-                                <th id="tithiTime">28:48 प</th>
-                                <th id="tithiNext">नंतर - त्रयोदशी</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>🕉️</td>
-                                <td>वार</td>
-                                <td id="vaar">मंगळवार</td>
-                                <td>संस्कृत नांव</td>
-                                <td id="vaarSanskrit">भौमवासरे</td>
-                            </tr>
-                            <tr>
-                                <td>🕉️</td>
-                                <td>नक्षत्र</td>
-                                <td id="nakshatra">हस्त</td>
-                                <td id="nakshatraTime">26:11 प</td>
-                                <td id="nakshatraNext">नंतर - चित्रा</td>
-                            </tr>
-                            <tr>
-                                <td>🕉️</td>
-                                <td>योग</td>
-                                <td id="yoga">प्रीति</td>
-                                <td id="yogaTime">अहोरात्र</td>
-                                <td>----------</td>
-                            </tr>
-                            <tr>
-                                <td>🕉️</td>
-                                <td>करण</td>
-                                <td id="karana">कौलव</td>
-                                <td id="karanaTime">15:41 प</td>
-                                <td id="karanaNext">नंतर - तैतिल</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+      <a href="https://www.omkarmyog.in/p/blog-page_65.html" class="card">
+        <div class="icon">✍️</div>
+        <div class="card-title">शास्त्रार्थ लेख</div>
+      </a>
 
-                <!-- राशी सेक्शन -->
-                <div class="rashi-section">
-                    <div class="rashi-box">
-                        <div class="icon">🌙</div>
-                        <div class="label">चंद्र राशी</div>
-                        <div class="value" id="chandraRashi">कर्क</div>
-                    </div>
-                    <div class="rashi-box">
-                        <div class="icon">☀️</div>
-                        <div class="label">गुरु राशी</div>
-                        <div class="value" id="guruRashi">वृळ</div>
-                    </div>
-                    <div class="rashi-box">
-                        <div class="icon">⭐</div>
-                        <div class="label">शुक्र राशी</div>
-                        <div class="value" id="shukraRashi">मकर</div>
-                    </div>
-                </div>
+      <a href="https://www.omkarmyog.in/p/blog-page_39.html" class="card">
+        <div class="icon">🙏</div>
+        <div class="card-title">विविध पूजा प्रयोग</div>
+      </a>
 
-                <!-- बॉटम व्हाईट फुटर -->
-                <div class="bottom-white-footer">
-                    <div class="footer-content" id="footerContent">
-                        <div class="footer-title">श्री <span id="footerName"></span></div>
-                        <div class="footer-subtitle" id="footerOffice"></div>
-                        <div class="footer-details">संपर्क: <span id="footerContact"></span></div>
-                        <div class="footer-details" id="footerAddress"></div>
-                    </div>
-                </div>
-            </div>
+      <a href="https://www.omkarmyog.in/p/blog-page_16.html?m=1" class="card">
+        <div class="icon">🎵</div>
+        <div class="card-title">भजनावली</div>
+      </a>
 
-            <!-- युजर फॉर्म -->
-            <div class="user-form-card">
-                <div class="form-header">
-                    <h3>📋 आपली माहिती भरा</h3>
-                    <p style="font-size: 0.9em; margin-top: 8px; opacity: 0.9;">(पर्यायी - रिकामे सोडू शकता)</p>
-                </div>
+      <a href="https://www.omkarmyog.in/p/karmkand.html" class="card">
+        <div class="icon">🔔</div>
+        <div class="card-title">कर्मकांड सेवा</div>
+      </a>
 
-                <div class="form-group">
-                    <label>📸 आपला फोटो</label>
-                    <div class="photo-upload-box" onclick="document.getElementById('userPhoto').click()">
-                        <div class="upload-icon">📷</div>
-                        <p><strong>फोटो निवडा</strong></p>
-                        <p style="font-size: 0.9em; color: #666;">क्लिक करा (पर्यायी)</p>
-                    </div>
-                    <input type="file" id="userPhoto" accept="image/*" style="display: none;">
-                    <img id="photoPreview" class="photo-preview" alt="Preview">
-                </div>
-
-                <div class="form-group">
-                    <label>👤 पूर्ण नाव</label>
-                    <input type="text" id="userName" placeholder="तुमचे पूर्ण नाव (पर्यायी)">
-                </div>
-
-                <div class="form-group">
-                    <label>🏢 कार्यालय/व्यवसाय नाव</label>
-                    <input type="text" id="officeName" placeholder="कार्यालयाचे/व्यवसायाचे नाव (पर्यायी)">
-                </div>
-
-                <div class="form-group">
-                    <label>📱 संपर्क क्रमांक</label>
-                    <input type="tel" id="userContact" placeholder="मोबाईल नंबर (पर्यायी)">
-                </div>
-
-                <div class="form-group">
-                    <label>📍 पत्ता</label>
-                    <textarea id="userAddress" placeholder="पूर्ण पत्ता (पर्यायी)" rows="3"></textarea>
-                </div>
-
-                <button class="btn-download" onclick="downloadPanchang()">
-                    📥 पंचांग डाउनलोड करा
-                </button>
-            </div>
-        </div>
+      <a href="https://www.omkarmyog.in/p/pooja.html" class="card">
+        <div class="icon">🎊</div>
+        <div class="card-title">आपले सण</div>
+      </a>
     </div>
-
-    <script>
-        const panchangData = {
-            tithi: ['प्रतिपदा', 'द्वितीया', 'तृतीया', 'चतुर्थी', 'पंचमी', 'षष्ठी', 'सप्तमी', 'अष्टमी', 'नवमी', 'दशमी', 'एकादशी', 'द्वादशी', 'त्रयोदशी', 'चतुर्दशी', 'पौर्णिमा'],
-            nakshatra: ['अश्विनी', 'भरणी', 'कृत्तिका', 'रोहिणी', 'मृगशिरा', 'आर्द्रा', 'पुनर्वसु', 'पुष्य', 'अश्लेषा', 'मघा', 'पूर्वा फाल्गुनी', 'उत्तरा फाल्गुनी', 'हस्त', 'चित्रा', 'स्वाती', 'विशाखा', 'अनुराधा', 'ज्येष्ठा', 'मूळ', 'पूर्वाषाढा', 'उत्तराषाढा', 'श्रवण', 'धनिष्ठा', 'शततारका', 'पूर्वाभाद्रपदा', 'उत्तराभाद्रपदा', 'रेवती'],
-            yoga: ['विष्कम्भ', 'प्रीति', 'आयुष्मान', 'सौभाग्य', 'शोभन', 'अतिगण्ड', 'सुकर्मा', 'धृति', 'शूल', 'गण्ड', 'वृद्धि', 'ध्रुव', 'व्याघात', 'हर्षण', 'वज्र', 'सिद्धि', 'व्यतिपात'],
-            karana: ['बव', 'बालव', 'कौलव', 'तैतिल', 'गर', 'वणिज', 'विष्टि', 'शकुनी', 'चतुष्पाद', 'नाग', 'किंस्तुघ्न'],
-            rashi: ['मेष', 'वृषभ', 'मिथुन', 'कर्क', 'सिंह', 'कन्या', 'तुळ', 'वृश्चिक', 'धनु', 'मकर', 'कुंभ', 'मीन'],
-            vaarSanskrit: ['रविवासरे', 'सोमवासरे', 'मंगलवासरे', 'बुधवासरे', 'गुरुवासरे', 'शुक्रवासरे', 'शनिवासरे']
-        };
-
-        const weekDaysMarathi = ['रविवार', 'सोमवार', 'मंगळवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
-
-        function generateDailyPanchang() {
-            const today = new Date();
-            const dayIndex = today.getDate() % 15;
-            const dayOfWeek = today.getDay();
-
-            const dateStr = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
-            document.getElementById('topDate').textContent = dateStr;
-            document.getElementById('topDay').textContent = weekDaysMarathi[dayOfWeek];
-
-            document.getElementById('tithiName').textContent = panchangData.tithi[dayIndex];
-            document.getElementById('vaar').textContent = weekDaysMarathi[dayOfWeek];
-            document.getElementById('vaarSanskrit').textContent = panchangData.vaarSanskrit[dayOfWeek];
-            document.getElementById('nakshatra').textContent = panchangData.nakshatra[dayIndex];
-            document.getElementById('yoga').textContent = panchangData.yoga[dayIndex % panchangData.yoga.length];
-            document.getElementById('karana').textContent = panchangData.karana[dayIndex % panchangData.karana.length];
-            document.getElementById('chandraRashi').textContent = panchangData.rashi[dayIndex % 12];
-            document.getElementById('guruRashi').textContent = panchangData.rashi[(dayIndex + 3) % 12];
-            document.getElementById('shukraRashi').textContent = panchangData.rashi[(dayIndex + 6) % 12];
-        }
-
-        document.getElementById('userPhoto').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const preview = document.getElementById('photoPreview');
-                    preview.src = event.target.result;
-                    preview.style.display = 'block';
-                    
-                    // फोटो फ्रेममध्ये दाखवा
-                    const photoFrame = document.getElementById('photoFrame');
-                    photoFrame.innerHTML = `<img src="${event.target.result}" alt="User Photo">`;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        async function downloadPanchang() {
-            const userName = document.getElementById('userName').value.trim();
-            const officeName = document.getElementById('officeName').value.trim();
-            const userContact = document.getElementById('userContact').value.trim();
-            const userAddress = document.getElementById('userAddress').value.trim();
-
-            // फुटर कंटेंट अपडेट करा
-            const footerContent = document.getElementById('footerContent');
-            
-            if (userName || officeName || userContact || userAddress) {
-                // माहिती असल्यास फुटर दाखवा
-                footerContent.classList.add('show');
-                
-                if (userName) {
-                    document.getElementById('footerName').textContent = userName;
-                } else {
-                    document.querySelector('.footer-title').style.display = 'none';
-                }
-                
-                if (officeName) {
-                    document.getElementById('footerOffice').textContent = officeName;
-                } else {
-                    document.getElementById('footerOffice').style.display = 'none';
-                }
-                
-                if (userContact) {
-                    document.getElementById('footerContact').textContent = userContact;
-                    document.querySelector('.footer-details').style.display = 'block';
-                } else {
-                    document.querySelector('.footer-details').style.display = 'none';
-                }
-                
-                if (userAddress) {
-                    document.getElementById('footerAddress').textContent = `पत्ता: ${userAddress}`;
-                    document.getElementById('footerAddress').style.display = 'block';
-                } else {
-                    document.getElementById('footerAddress').style.display = 'none';
-                }
-            } else {
-                // माहिती नसल्यास फुटर लपवा
-                footerContent.classList.remove('show');
-            }
-
-            // थोडा वेळ द्या रेंडरिंगसाठी
-            await new Promise(resolve => setTimeout(resolve, 300));
-
-            // HTML to Canvas
-            const panchangCard = document.getElementById('panchangCard');
-            const canvas = await html2canvas(panchangCard, {
-                scale: 2,
-                backgroundColor: '#ffffff',
-                logging: false,
-                useCORS: true,
-                allowTaint: true,
-                width: 1080,
-                height: 1729
-            });
-
-            // Canvas to Image Download
-            canvas.toBlob(function(blob) {
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                const today = new Date();
-                const fileName = userName 
-                    ? `पंचांग_${today.getDate()}_${today.getMonth() + 1}_${today.getFullYear()}_${userName.replace(/\s+/g, '_')}.png`
-                    : `पंचांग_${today.getDate()}_${today.getMonth() + 1}_${today.getFullYear()}.png`;
-                link.download = fileName;
-                link.href = url;
-                link.click();
-                URL.revokeObjectURL(url);
-
-                // यशस्वी संदेश
-                setTimeout(() => {
-                    alert('✅ पंचांग यशस्वीरित्या डाउनलोड झालं!\n\n📥 तुमचा पंचांग (1080x1729px) Downloads फोल्डरमध्ये सेव्ह झाला आहे.\n\n🎉 आता तुम्ही हा WhatsApp, Facebook, Instagram वर शेअर करू शकता!');
-                }, 300);
-            });
-        }
-
-        // पेज लोड झाल्यावर पंचांग जनरेट करा
-        window.onload = function() {
-            generateDailyPanchang();
-        };
-
-        // दररोज मध्यरात्री ऑटोमॅटिक अपडेट
-        setInterval(() => {
-            const now = new Date();
-            if (now.getHours() === 0 && now.getMinutes() === 0) {
-                generateDailyPanchang();
-                console.log('🕉️ पंचांग अपडेट झालं!');
-            }
-        }, 60000);
-    </script>
+  </div>
 </body>
 </html>

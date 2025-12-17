@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>स्तोत्र संग्रह</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Anek Devanagari", sans-serif;
+      background: linear-gradient(135deg, #1a0000 0%, #2d0a0a 100%);
+      min-height: 100vh;
+      padding: 20px 15px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #fff;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .category {
+      margin-bottom: 16px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(139,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .category:hover {
+      border-color: rgba(139,0,0,0.6);
+      box-shadow: 0 8px 24px rgba(139,0,0,0.2);
+    }
+
+    .category-header {
+      background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%);
+      padding: 18px 24px;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .category-header:hover {
+      background: linear-gradient(135deg, #a01010 0%, #6d0000 100%);
+      padding-left: 28px;
+    }
+
+    .category-header:active {
+      transform: scale(0.98);
+    }
+
+    .arrow {
+      font-size: 18px;
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .arrow.open {
+      transform: rotate(90deg);
+    }
+
+    .category-content {
+      display: none;
+      background: rgba(0,0,0,0.2);
+      padding: 20px;
+    }
+
+    .category-content.open {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      padding: 16px 18px;
+      border: 1px solid rgba(30,144,255,0.4);
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1e90ff 0%, #1c7ed6 100%);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .card:hover::before {
+      left: 100%;
+    }
+
+    .card:hover {
+      background: linear-gradient(135deg, #2196f3 0%, #1e88e5 100%);
+      border-color: rgba(30,144,255,0.7);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(30,144,255,0.3);
+    }
+
+    .card a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #ffffff;
+      font-size: 16px;
+      display: block;
+      line-height: 1.5;
+      transition: color 0.3s ease;
+    }
+
+    .card:hover a {
+      color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 26px;
+      }
+      
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+      }
+
+      .category-header {
+        font-size: 18px;
+        padding: 16px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🕉️ स्तोत्र संग्रह 🕉️</h1>
+      <p>पवित्र स्तोत्रांचा अनमोल खजिना</p>
+    </div>
+
+    <!-- GANESH STOTRA -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('ganesh')">
+        <span>श्री गणेश स्तोत्र</span>
+        <span class="arrow" id="ganesh-arrow">▶</span>
+      </div>
+      <div class="category-content" id="ganesh">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_65.html?m=1" target="_blank">
+              साष्टांग नमन हे माझें गौरीपुत्रा विनायका
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_27.html?m=1" target="_blank">
+              एकदन्तं महाकायं तप्तकाञ्चनसन्निभम् । गणाष्टकम् ॥
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_32.html?m=1" target="_blank">
+              अजं निर्विकल्पं निराकारमेकम् गणपतिस्तवः
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_8.html?m=1" target="_blank">
+              मुदाकरात्तमोदकं सदाविमुक्तिसाधकम् महागणेशपञ्चरत्न स्तोत्रम ॥
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEVI STOTRA -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('devi')">
+        <span>श्री देवीची स्तोत्रे</span>
+        <span class="arrow" id="devi-arrow">▶</span>
+      </div>
+      <div class="category-content" id="devi">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2024/02/shri-annapurna-stotram.html?m=1" target="_blank">
+              श्री अन्नपुर्णा स्तोत्रम् | Shri Annapurna Stotram
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/10/blog-post.html?m=1" target="_blank">
+              ॐ यद्गुह्यं परमं लोके सर्वरक्षाकरं नृणाम् । अथ देव्याः कवचम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/03/vindhyeshwari-stotram-lyrics.html?m=1" target="_blank">
+              भजामि विन्ध्यवासिनीम् | विंध्येश्वरी स्तोत्रम् |
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/02/renukashtakm.html?m=1" target="_blank">
+              जय परात्परे पुर्ण चिन्मये | शरण तुझ मी पाव रेणुके| रेणुकाष्टक |
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2022/09/shree-suktam.html?m=1" target="_blank">
+              हिरण्यवर्णां हरिणीं सुवर्णरजतस्रजाम् । श्री सूक्तम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/04/blog-post_1.html?m=1" target="_blank">
+              अङ्गं हरेः पुलकभूषणमाश्रयन्ती | कनकधारा स्तोत्रम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_52.html" target="_blank">
+              अयि गिरिनन्दिनि नंदितमेदिनि विश्वविनोदिनि नन्दिनुते । महिषासुरमर्दिनी स्तोत्र ॥
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/04/blog-post_33.html" target="_blank">
+              धर्म-अर्थ-काम-मोक्ष कल्पवृक्ष रेणुका । रेणुकाष्टकम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_91.html" target="_blank">
+              त्वदीयपादपङ्कजं नमामि देवि नर्मदे | नर्मदाष्टकम्
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATTA STOTRA -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('datta')">
+        <span>श्री दत्तांची स्तोत्रे</span>
+        <span class="arrow" id="datta-arrow">▶</span>
+      </div>
+      <div class="category-content" id="datta">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_69.html?m=1" target="_blank">
+              दत्तात्रेयं महात्मानं वरदं भक्तवत्सलम् । श्रीदत्तस्तोत्रम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_90.html" target="_blank">
+              पुष्पांजली अर्पितसे तुज दयाघना । पुष्पांजली (दत्त भजन)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_7.html?m=1" target="_blank">
+              जटाधारी पांडुरंगा । शूलधारी कृपानिधे । श्रीदत्तात्रेय स्तोत्र
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_48.html?m=1" target="_blank">
+              प्रातः स्मरामि करुणावरुणालयं तं । दत्तात्रेय प्रात:स्मरण स्तोत्रम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_13.html" target="_blank">
+              तुम्हांवीण दत्ता मला कोण तारी | श्रीदत्तस्तुति मराठी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_39.html" target="_blank">
+              दत्तात्रेया तव शरणं । दत्त गुरु शरणाष्टकम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_82.html" target="_blank">
+              वंदेऽहं नरकेसरी - सरस्वती - श्रीपादयुग्मांबुजम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_94.html" target="_blank">
+              घोरात्कष्टदुद्धरास्मान्नमत्ते | घोरकष्टोद्धरणस्तोत्रम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_54.html?m=1" target="_blank">
+              नमस्कार माझा श्रीदत्तात्रयासी | दत्त स्तोत्र मराठी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_5.html" target="_blank">
+              इंदुकोटितेजकरुणसिंधु भक्तवत्सलं | श्रीगुरुदत्ताष्टक गुरुचरित्र अध्याय ४०
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_40.html" target="_blank">
+              गुरु हा संतकुळींचा राजा । श्रीगुरुमहिमा (दत्त भजन)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_89.html" target="_blank">
+              विसरूं कसा मी गुरुपादुकाला | श्रीगुरुपादुकाष्टक मराठी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_92.html" target="_blank">
+              दत्ता कृपासाउलि दे नमूं तुला । श्रीगुरुदत्तात्रेयाष्टकम्
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHANKARA STOTRA -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('shiv')">
+        <span>श्री शंकराची स्तोत्रे</span>
+        <span class="arrow" id="shiv-arrow">▶</span>
+      </div>
+      <div class="category-content" id="shiv">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/02/anadi-kalpeshwar-stotram.html" target="_blank">
+              योsनादिकल्पेश्वर एव सोsसौ | अनादिकल्पेश्वरस्तोत्रम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/04/blog-post_8.html" target="_blank">
+              जटाटवी गलज्जलप्रवाहपावितस्थले | श्रीरावण- कृत श्री शिवतांडव स्तोत्रम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_781.html" target="_blank">
+              नागेंद्रहाराय त्रिलोचनाय | श्री शिव पंचाक्षर स्तोत्रम् ।।
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_63.html?m=1" target="_blank">
+              ब्रह्ममुरारिसुरार्चितलिंगं | लिंगाष्टकम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_37.html" target="_blank">
+              ॐकारं बिंदुसंयुक्तं नित्यं | शिव षडक्षर स्तोत्रम ||
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_69.html" target="_blank">
+              सौराष्ट्रे सोमनाथं च श्रीशैले | द्वादश ज्योतीर्लिंग स्तोत्रम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_775.html" target="_blank">
+              श्री कालभैरवाष्टक
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2024/06/blog-post_19.html?m=1" target="_blank">
+              दारिद्र दुःख दहन शिव स्तोत्रम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/shivatharvashirsh.html" target="_blank">
+              श्री शिवाथर्वशीर्ष स्तोत्रम
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SURYA STOTRA -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('surya')">
+        <span>श्री सूर्य स्तोत्र</span>
+        <span class="arrow" id="surya-arrow">▶</span>
+      </div>
+      <div class="category-content" id="surya">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2024/02/shri-sury-stuti.html?m=1" target="_blank">
+              नमस्कार त्या सूर्यनारायणासी | श्रीसूर्यस्तुति
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_6.html?m=1" target="_blank">
+              संपूर्ण आदित्यहृदयस्तोत्रम् (विनियोगासह)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISHNU STOTRA -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('vishnu')">
+        <span>श्री विष्णूंचे स्तोत्रे</span>
+        <span class="arrow" id="vishnu-arrow">▶</span>
+      </div>
+      <div class="category-content" id="vishnu">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/06/blog-post.html" target="_blank">
+              विष्णु सहस्त्रनाम स्तोत्रम
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2024/07/blog-post_16.html?m=1" target="_blank">
+              सार्थ श्री पांडुरंगाष्टकम्
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RAM STOTRA -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('ram')">
+        <span>श्री रामाचे स्तोत्र</span>
+        <span class="arrow" id="ram-arrow">▶</span>
+      </div>
+      <div class="category-content" id="ram">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_548.html" target="_blank">
+              श्री रामरक्षा स्तोत्रम् | श्री रामाचे स्तोत्र
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2024/01/blog-post.html" target="_blank">
+              श्री मारुती स्तोत्रम्
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KRISHNA STOTRA -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('krishna')">
+        <span>श्री कृष्णाचे स्तोत्र</span>
+        <span class="arrow" id="krishna-arrow">▶</span>
+      </div>
+      <div class="category-content" id="krishna">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_7.html" target="_blank">
+              अधरं मधुरं वदनं मधुरं | मधुराष्टकम्
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTHER STOTRA -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('other')">
+        <span>अन्य स्तोत्रे</span>
+        <span class="arrow" id="other-arrow">▶</span>
+      </div>
+      <div class="category-content" id="other">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2024/02/navagrah-stotram.html" target="_blank">
+              नवग्रह स्तोत्रम्
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function toggle(id) {
+      const content = document.getElementById(id);
+      const arrow = document.getElementById(id + '-arrow');
+      
+      if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        arrow.classList.remove('open');
+      } else {
+        content.classList.add('open');
+        arrow.classList.add('open');
+      }
+    }
+  </script>
+</body>
+</html>

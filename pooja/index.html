@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>पूजा प्रयोग संग्रह</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Anek Devanagari", sans-serif;
+      background: linear-gradient(135deg, #1a0000 0%, #2d0a0a 100%);
+      min-height: 100vh;
+      padding: 20px 15px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #fff;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .category {
+      margin-bottom: 16px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(139,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .category:hover {
+      border-color: rgba(139,0,0,0.6);
+      box-shadow: 0 8px 24px rgba(139,0,0,0.2);
+    }
+
+    .category-header {
+      background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%);
+      padding: 18px 24px;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .category-header.header-yellow {
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      color: #1a0000;
+      cursor: default;
+      justify-content: center;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+    }
+
+    .category-header:hover {
+      background: linear-gradient(135deg, #a01010 0%, #6d0000 100%);
+      padding-left: 28px;
+    }
+
+    .category-header.header-yellow:hover {
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      padding-left: 24px;
+    }
+
+    .category-header:active {
+      transform: scale(0.98);
+    }
+
+    .arrow {
+      font-size: 18px;
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .arrow.open {
+      transform: rotate(90deg);
+    }
+
+    .category-content {
+      display: none;
+      background: rgba(0,0,0,0.2);
+      padding: 20px;
+    }
+
+    .category-content.open {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      padding: 16px 18px;
+      border: 1px solid rgba(30,144,255,0.4);
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1e90ff 0%, #1c7ed6 100%);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .card:hover::before {
+      left: 100%;
+    }
+
+    .card:hover {
+      background: linear-gradient(135deg, #2196f3 0%, #1e88e5 100%);
+      border-color: rgba(30,144,255,0.7);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(30,144,255,0.3);
+    }
+
+    .card a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #ffffff;
+      font-size: 16px;
+      display: block;
+      line-height: 1.5;
+      transition: color 0.3s ease;
+    }
+
+    .card:hover a {
+      color: #ffffff;
+    }
+
+    .info-section {
+      text-align: center;
+      margin-top: 40px;
+      padding: 30px 20px;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(139,0,0,0.3);
+    }
+
+    .info-section p {
+      color: #20124d;
+      font-size: 18px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .info-section .index-link {
+      display: inline-block;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 20px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    .info-section .index-link:hover {
+      background: linear-gradient(135deg, #ff3333 0%, #ff0000 100%);
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(255,0,0,0.4);
+    }
+
+    .info-section .subtitle {
+      color: #ff0000;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 26px;
+      }
+      
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+      }
+
+      .category-header {
+        font-size: 18px;
+        padding: 16px 20px;
+      }
+
+      .info-section .index-link {
+        font-size: 18px;
+        padding: 10px 25px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER CATEGORY -->
+    <div class="category">
+      <div class="category-header header-yellow">
+        <span>🙏 पूजा प्रयोग संग्रह 🙏</span>
+      </div>
+    </div>
+
+    <!-- MAIN POOJA VIDHI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('main')">
+        <span>पूजा विधी</span>
+        <span class="arrow" id="main-arrow">▶</span>
+      </div>
+      <div class="category-content" id="main">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2022/08/blog-post.html" target="_blank">
+              प्राण प्रतिष्ठा पूर्वक गणपती पूजन
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/08/ll.html" target="_blank">
+              संपूर्ण नान्दीश्राध्द विधी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/04/akshayya-tritiya.html" target="_blank">
+              अक्षय्य तृतीयेचा उदक कुंभदान विधी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/08/blog-post_92.html" target="_blank">
+              श्री (नारायण) पुरुष सूक्तम्
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  <script>
+    function toggle(id) {
+      const content = document.getElementById(id);
+      const arrow = document.getElementById(id + '-arrow');
+      
+      if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        arrow.classList.remove('open');
+      } else {
+        content.classList.add('open');
+        arrow.classList.add('open');
+      }
+    }
+  </script>
+</body>
+</html>

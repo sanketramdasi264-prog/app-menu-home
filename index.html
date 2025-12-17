@@ -40,19 +40,7 @@
       box-shadow: 0 8px 24px rgba(139, 0, 0, 0.5),
                   0 4px 12px rgba(139, 0, 0, 0.3),
                   0 2px 8px rgba(0, 0, 0, 0.15);
-      animation: logoAppear 0.6s ease-out;
       border: 2.5px solid #8B0000;
-    }
-
-    @keyframes logoAppear {
-      from { 
-        opacity: 0; 
-        transform: translateY(-15px); 
-      }
-      to   { 
-        opacity: 1; 
-        transform: translateY(0); 
-      }
     }
 
     /* ----------- GRID ----------- */
@@ -89,8 +77,6 @@
       position: relative;
       overflow: hidden;
       border: 2.5px solid #5c0000;
-      animation: cardSlideIn 0.4s ease-out backwards;
-      will-change: transform;
     }
 
     .card::before {
@@ -130,25 +116,6 @@
     .card:active::after {
       opacity: 1;
       transform: translateX(3px);
-    }
-
-    /* Stagger animation for cards */
-    .card:nth-child(1) { animation-delay: 0.05s; }
-    .card:nth-child(2) { animation-delay: 0.1s; }
-    .card:nth-child(3) { animation-delay: 0.15s; }
-    .card:nth-child(4) { animation-delay: 0.2s; }
-    .card:nth-child(5) { animation-delay: 0.25s; }
-    .card:nth-child(6) { animation-delay: 0.3s; }
-
-    @keyframes cardSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .card-content {
@@ -297,15 +264,6 @@
         font-size: 13px;
       }
     }
-
-    /* Reduce motion for accessibility */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
   </style>
 
 </head>
@@ -368,7 +326,7 @@
           </div>
         </div>
       </a>
-
+      
       <a href="https://www.omkarmyog.in/p/blog-page_65.html" class="card">
         <div class="card-content">
           <div class="icon">✍️</div>

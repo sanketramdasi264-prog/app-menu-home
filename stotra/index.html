@@ -45,6 +45,25 @@
       user-select: none;
     }
 
+    .header-button {
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      padding: 20px 24px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a0000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4),
+                  0 2px 6px rgba(0, 0, 0, 0.3);
+      border: 2.5px solid #DAA520;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+      user-select: none;
+    }
+
     .category {
       margin-bottom: 16px;
       border-radius: 16px;
@@ -74,9 +93,23 @@
       user-select: none;
     }
 
+    .category-header.header-yellow {
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      color: #1a0000;
+      cursor: default;
+      justify-content: center;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+    }
+
     .category-header:hover {
       background: linear-gradient(135deg, #a01010 0%, #6d0000 100%);
       padding-left: 28px;
+    }
+
+    .category-header.header-yellow:hover {
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      padding-left: 24px;
     }
 
     .category-header:active {
@@ -156,11 +189,6 @@
     }
 
     @media (max-width: 768px) {
-      .header-button {
-        font-size: 20px;
-        padding: 18px 20px;
-      }
-      
       .grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 12px;
@@ -173,11 +201,6 @@
     }
 
     @media (max-width: 480px) {
-      .header-button {
-        font-size: 18px;
-        padding: 16px 18px;
-      }
-      
       .grid {
         grid-template-columns: 1fr;
       }
@@ -186,9 +209,11 @@
 </head>
 <body>
   <div class="container">
-    <!-- HEADER BUTTON -->
-    <div class="header-button">
-      <span>🕉️ स्तोत्र संग्रह 🕉️</span>
+    <!-- HEADER CATEGORY -->
+    <div class="category">
+      <div class="category-header header-yellow">
+        <span>🕉️ स्तोत्र संग्रह 🕉️</span>
+      </div>
     </div>
 
     <!-- GANESH STOTRA -->

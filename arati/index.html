@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>आरती संग्रह</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Anek Devanagari", sans-serif;
+      background: linear-gradient(135deg, #1a0000 0%, #2d0a0a 100%);
+      min-height: 100vh;
+      padding: 20px 15px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #fff;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .category {
+      margin-bottom: 16px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(139,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .category:hover {
+      border-color: rgba(139,0,0,0.6);
+      box-shadow: 0 8px 24px rgba(139,0,0,0.2);
+    }
+
+    .category-header {
+      background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%);
+      padding: 18px 24px;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .category-header.header-yellow {
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      color: #1a0000;
+      cursor: default;
+      justify-content: center;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+    }
+
+    .category-header:hover {
+      background: linear-gradient(135deg, #a01010 0%, #6d0000 100%);
+      padding-left: 28px;
+    }
+
+    .category-header.header-yellow:hover {
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      padding-left: 24px;
+    }
+
+    .category-header:active {
+      transform: scale(0.98);
+    }
+
+    .arrow {
+      font-size: 18px;
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .arrow.open {
+      transform: rotate(90deg);
+    }
+
+    .category-content {
+      display: none;
+      background: rgba(0,0,0,0.2);
+      padding: 20px;
+    }
+
+    .category-content.open {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      padding: 16px 18px;
+      border: 1px solid rgba(30,144,255,0.4);
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1e90ff 0%, #1c7ed6 100%);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .card:hover::before {
+      left: 100%;
+    }
+
+    .card:hover {
+      background: linear-gradient(135deg, #2196f3 0%, #1e88e5 100%);
+      border-color: rgba(30,144,255,0.7);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(30,144,255,0.3);
+    }
+
+    .card a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #ffffff;
+      font-size: 16px;
+      display: block;
+      line-height: 1.5;
+      transition: color 0.3s ease;
+    }
+
+    .card:hover a {
+      color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 32px;
+      }
+      
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+      }
+
+      .category-header {
+        font-size: 18px;
+        padding: 16px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER CATEGORY -->
+    <div class="category">
+      <div class="category-header header-yellow">
+        <span>🙏 संपूर्ण आरती संग्रह...</span>
+      </div>
+    </div>
+
+    <!-- MAIN AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('main')">
+        <span>मुख्य आरती</span>
+        <span class="arrow" id="main-arrow">▶</span>
+      </div>
+      <div class="category-content" id="main">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/09/blog-post_53.html?m=1" target="_blank">
+              उभे राहूनी सर्व आता आरती करूया
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GANESH AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('ganesh')">
+        <span>श्री गणेश आरती</span>
+        <span class="arrow" id="ganesh-arrow">▶</span>
+      </div>
+      <div class="category-content" id="ganesh">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_49.html?m=1" target="_blank">
+              जय जय जय मयुरेश्वरा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_30.html" target="_blank">
+              हेरंभ शिवकुल दिपका
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_16.html" target="_blank">
+              एकरदना गजवदना देवा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_66.html" target="_blank">
+              श्री गजानना जय गजानना
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/09/blog-post_79.html?m=1" target="_blank">
+              जय जय गौरी शिवकुमरा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/09/blog-post_80.html?m=1" target="_blank">
+              देवा लंबोदर गिरीजा नंदना – मराठी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/08/blog-post_28.html" target="_blank">
+              देवा लंबोदर गिरीजा नंदना मराठी – हिंदी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_96.html?m=1" target="_blank">
+              उंदरावर बैसोनी दुडदूडां
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_19.html?m=1" target="_blank">
+              सुखकर्ता दुःखहर्ता
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/04/shendur-laal-chadhaayo.html" target="_blank">
+              शेंदूर लाल चढायो
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/09/blog-post_92.html?m=1" target="_blank">
+              गाईये गणपती जग वन्दन
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/09/blog-post_78.html?m=1" target="_blank">
+              जय गणेश जय गणेश जय गणेश देवा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/09/blog-post_54.html?m=1" target="_blank">
+              गणपती देव बडा बलवान
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/04/dhoop-deep-jhala-ata.html" target="_blank">
+              धूप दीप झाला आता
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/04/tu-sukhkarta-tu-dukhaharta.html" target="_blank">
+              तु सुखकर्ता तु दुःखकर्ता
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/04/ganaraaj-paarvati-nandana.html" target="_blank">
+              गणराज पार्वती नंदना
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_32.html" target="_blank">
+              आधी वंदू तुज मोरया
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/09/blog-post_89.html?m=1" target="_blank">
+              जयदेव जयदेव जय श्री गजवदना
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/08/blog-post.html?m=1" target="_blank">
+              गणराया आरती ही तुजला
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/09/blog-post_90.html?m=1" target="_blank">
+              गणपती बाप्पा मोरया आरती
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/search/label/%E0%A4%97%E0%A4%A3%E0%A4%AA%E0%A4%A4%E0%A5%80%E0%A4%9A%E0%A5%8D%E0%A4%AF%E0%A4%BE%20%E0%A4%86%E0%A4%B0%E0%A4%A4%E0%A5%8D%E0%A4%AF%E0%A4%BE?m=1" target="_blank">
+              गणपती बाप्पाच्या आरत्या
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEVI AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('devi')">
+        <span>श्री देवी आरती</span>
+        <span class="arrow" id="devi-arrow">▶</span>
+      </div>
+      <div class="category-content" id="devi">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_12.html" target="_blank">
+              जय देवी जय देवी जय महालक्ष्मी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_55.html" target="_blank">
+              सोन्याच्या पावलाने महालक्ष्मी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_21.html" target="_blank">
+              जय जय नदीपतिप्रियतनये
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_42.html" target="_blank">
+              विपुल दयाघन गर्जे
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_56.html" target="_blank">
+              उदो उदो ग जगदंबे माते
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_47.html" target="_blank">
+              जय देवी सप्तशृंगा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_2.html" target="_blank">
+              जय जय रेणुके श्रीमाते
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_50.html" target="_blank">
+              जय जगदंब त्रिपुर सुंदरी तुला
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_8.html" target="_blank">
+              कापराची ज्योत अंबे ओवाळु तुजला
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2024/02/arati-jagadambe-tuz-ambe.html" target="_blank">
+              आरती जगदंबे तुज अंबे
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_44.html" target="_blank">
+              लोलो लागला अंबेचा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_10.html" target="_blank">
+              जय जय रेणुके आई जगदंबे
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_14.html" target="_blank">
+              जय जय जगदंबे श्री अंबे
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_41.html" target="_blank">
+              जय देवी अंबाबाई, परशुरामाचे आई
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2024/02/jay-devi-jay-yogeshwari.html" target="_blank">
+              जय देवी जय देवी जय योगेश्वरी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_28.html" target="_blank">
+              जय जय भवानी मनरमणी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_92.html" target="_blank">
+              येई हो एकविरा देवी माझे
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_17.html" target="_blank">
+              नमितो तुजला हिरादेवी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/07/blog-post.html" target="_blank">
+              श्रीदेवी रेणुके वंदन करितों तुजला
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2022/09/blog-post_4.html" target="_blank">
+              जय देवी महालक्ष्मी (जेष्ठ कनिष्ठा आरती)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_59.html" target="_blank">
+              दुर्गे दुर्घट भारी तुजविण
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_74.html" target="_blank">
+              देवी सुरेश्वरी भगवती गंगे
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_97.html" target="_blank">
+              आश्विन शुद्ध पक्षी अंबा (नवरात्री)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_67.html" target="_blank">
+              आरती करू अंबिकेला
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_80.html" target="_blank">
+              जय देवी जय देवी जय माय तुळशी
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_83.html" target="_blank">
+              जय देवी हरितालिके
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_45.html" target="_blank">
+              भक्तपालिके मन रंजीके
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHIV AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('shiv')">
+        <span>श्री शिव आरती</span>
+        <span class="arrow" id="shiv-arrow">▶</span>
+      </div>
+      <div class="category-content" id="shiv">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_20.html" target="_blank">
+              जय शिव ओंकारा, भज शिव ओंकारा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_89.html" target="_blank">
+              जय जय त्र्यम्बकराज गिरिजानाथा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_88.html" target="_blank">
+              देवा आरती ही ओवाळू तुज आता
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_90.html?m=1" target="_blank">
+              कर्पुर गौरा गौरी शंकरा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_72.html" target="_blank">
+              लवथवती विकाळा ब्रह्मांडी माळा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_1.html" target="_blank">
+              पंचानन हयवाहन सुरभूषितनीळा (खंडोबा आरती)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RAM AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('ram')">
+        <span>श्री राम आरती</span>
+        <span class="arrow" id="ram-arrow">▶</span>
+      </div>
+      <div class="category-content" id="ram">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_25.html" target="_blank">
+              साफल्या निजवल्या कौशल्या माता
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_62.html" target="_blank">
+              श्री राम जय राम जय जय राम
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_39.html" target="_blank">
+              हे राजाराम तेरी आरती उतारूँ
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARSHURAM AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('parshuram')">
+        <span>श्री परशुराम आरती</span>
+        <span class="arrow" id="parshuram-arrow">▶</span>
+      </div>
+      <div class="category-content" id="parshuram">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/07/blog-post_27.html" target="_blank">
+              आरती करुया भावें श्रीरामाची
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_40.html" target="_blank">
+              धूप दीप झाला आता कर्पूर आरती
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/07/blog-post_47.html" target="_blank">
+              आरती परशुरामा । पूर्ण मंगलधाम
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/07/blog-post_23.html" target="_blank">
+              आरती भर्गवरामाची । नौका भवार्ण विश्वाची
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/07/blog-post_41.html" target="_blank">
+              जय जय दीन दयाळा सखया परशुधर देवा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2023/07/blog-post_60.html" target="_blank">
+              जयदेवा जयदेवा जय परशुरामा
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATTA AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('datta')">
+        <span>श्री दत्त आरती</span>
+        <span class="arrow" id="datta-arrow">▶</span>
+      </div>
+      <div class="category-content" id="datta">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_46.html?m=1" target="_blank">
+              त्रिगुणात्मक त्रैमुर्ती दत्त हा जाणा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_76.html?m=1" target="_blank">
+              आरती श्री गुरू दत्ताची
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_75.html?m=1" target="_blank">
+              श्री गुरूदत्तराजमूर्ती ओवाळितो प्रेमे आरती
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SATYANARAYAN AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('satyanarayan')">
+        <span>श्री सत्यनारायण आरती</span>
+        <span class="arrow" id="satyanarayan-arrow">▶</span>
+      </div>
+      <div class="category-content" id="satyanarayan">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_60.html?m=1" target="_blank">
+              आरती सत्य देवा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_95.html?m=1" target="_blank">
+              जय जय श्री सत्यनारायणा देवा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_84.html?m=1" target="_blank">
+              जय लक्ष्मी रमणा, स्वामी
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISHNU NARAYAN AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('vishnu')">
+        <span>श्री (विष्णु) नारायण आरती</span>
+        <span class="arrow" id="vishnu-arrow">▶</span>
+      </div>
+      <div class="category-content" id="vishnu">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_36.html?m=1" target="_blank">
+              शेषाचल अवतार तारक तू देवा
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_38.html?m=1" target="_blank">
+              पंचफना शिखरी देव श्रीहरि
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_81.html?m=1" target="_blank">
+              जय हो जय श्री भागवता आरती करू
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_71.html?m=1" target="_blank">
+              कडकडिला स्तंभ गडगडिले गगन
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_68.html?m=1" target="_blank">
+              आरती विष्णूमूर्ति जय महालया शक्ति
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_0.html?m=1" target="_blank">
+              कमल नयन जगदिशजी (मधुसुदन हो)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_53.html?m=1" target="_blank">
+              ओ३म् जय जगदीश हरे
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_29.html?m=1" target="_blank">
+              आरती सप्रेम जय जय विठ्ठल परब्रम्ह (दशावताराची आरती)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SANT AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('sant')">
+        <span>श्री संत आरती</span>
+        <span class="arrow" id="sant-arrow">▶</span>
+      </div>
+      <div class="category-content" id="sant">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_73.html?m=1" target="_blank">
+              जयजय सदगुरु स्वामी समर्था
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_51.html" target="_blank">
+              जय जय सत् चित् स्वरुपा स्वामी गणराया
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_79.html" target="_blank">
+              आरती रामदासा भक्त (रामदास स्वामींची आरती)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_26.html" target="_blank">
+              आरती एकनाथा महाराजा समर्था (एकनाथ महाराजांची आरती)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_24.html" target="_blank">
+              आरती तुकारामा स्वामी सद्गुरुधामा (तुकाराम महाराजांची आरती)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_18.html" target="_blank">
+              आरतीज्ञानराजा महाकैवल्यतेजा (ज्ञानेश्वर महाराजांची आरती)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_33.html" target="_blank">
+              आरती साईबाबा सौख्य दातार जीवा (साईबाबाची आरती)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HANUMAN AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('hanuman')">
+        <span>श्री हनुमान आरती</span>
+        <span class="arrow" id="hanuman-arrow">▶</span>
+      </div>
+      <div class="category-content" id="hanuman">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2024/06/blog-post_16.html?m=1" target="_blank">
+              सत्राणे उड्डाणे हुंकार वदनी (मारुतीची आरती)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTHER DEVTA AARTI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('other')">
+        <span>इतर देवता आरती</span>
+        <span class="arrow" id="other-arrow">▶</span>
+      </div>
+      <div class="category-content" id="other">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_82.html" target="_blank">
+              जय जय मुंजिया नारसीया (मुंजाची आरती)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_99.html" target="_blank">
+              जय जय श्री शनिदेवा (शनि देवाची आरती)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_80.html" target="_blank">
+              जय देवी जय देवी जय माय तुळशी आरती
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANTRA PUSHPANJALI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('mantra')">
+        <span>मंत्र पुष्पांजली</span>
+        <span class="arrow" id="mantra-arrow">▶</span>
+      </div>
+      <div class="category-content" id="mantra">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_31.html?m=1" target="_blank">
+              घालीन लोटांगण वंदीन चरण
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_78.html" target="_blank">
+              वाहु सुमने तवपदकमली पुष्पांजली
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/09/blog-post_29.html?m=1" target="_blank">
+              श्री कृष्णयजुर्वेदीय मंत्रपुष्पम्
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_77.html" target="_blank">
+              पुष्पांजली ही तुम्हा अर्पितो रामचंद्र सदया
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/02/blog-post_90.html" target="_blank">
+              पुष्पांजली अर्पितसे तुज दयाघना (दत्त भजन)
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2021/03/blog-post_48.html" target="_blank">
+              मंत्रपुष्पांजली सर्व गायत्री मंत्र सह
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function toggle(id) {
+      const content = document.getElementById(id);
+      const arrow = document.getElementById(id + '-arrow');
+      
+      if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        arrow.classList.remove('open');
+      } else {
+        content.classList.add('open');
+        arrow.classList.add('open');
+      }
+    }
+  </script>
+</body>
+</html>

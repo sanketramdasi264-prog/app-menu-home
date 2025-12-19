@@ -27,87 +27,88 @@ body{
 /* LOGO */
 .header-logo{
   width:260px;
-  max-width:85%;
+  max-width:90%;
   display:block;
-  margin:16px auto 22px;
+  margin:18px auto 26px;
   background:#fff;
   padding:14px;
-  border-radius:16px;
-  border:2.5px solid #8B0000;
-  box-shadow:0 8px 24px rgba(139,0,0,.5);
+  border-radius:18px;
+  border:3px solid #8B0000;
+  box-shadow:0 8px 26px rgba(139,0,0,.55);
 }
 
-/* GRID */
+/* GRID – SINGLE COLUMN */
 .grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
+  display:flex;
+  flex-direction:column;
   gap:16px;
   padding:0 14px;
-  max-width:720px;
+  max-width:520px;
   margin:auto;
 }
 
-/* CARD */
+/* BUTTON CARD */
 .card{
   background:linear-gradient(135deg,#5c0000,#8B0000);
-  border-radius:20px;
-  padding:26px 14px;
-  min-height:140px;
+  border-radius:22px;
+  padding:28px 16px;
+  min-height:120px;
   text-decoration:none;
   color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
-  box-shadow:0 8px 22px rgba(0,0,0,.5);
-  border:2px solid rgba(255,255,255,.1);
-  transition:.18s ease;
+  box-shadow:0 8px 24px rgba(0,0,0,.5);
+  border:2px solid rgba(255,255,255,.12);
+  transition:transform .18s ease, box-shadow .18s ease;
 }
 
 .card:active{
-  transform:scale(.95);
+  transform:scale(.96);
+  box-shadow:0 5px 14px rgba(0,0,0,.45);
 }
 
 /* TEXT */
 .card-title{
-  font-size:22px;
+  font-size:26px;
   font-weight:800;
   letter-spacing:.6px;
   line-height:1.4;
 }
 
 .card-subtitle{
-  font-size:14px;
+  font-size:15px;
   font-weight:600;
   margin-top:10px;
-  color:#ffd6d6;
+  color:#ffdada;
   opacity:.95;
 }
 
 /* SMALL DEVICES */
 @media(max-width:360px){
   .card{
-    min-height:125px;
-    padding:22px 10px;
+    min-height:110px;
+    padding:24px 12px;
   }
   .card-title{
-    font-size:20px;
+    font-size:23px;
   }
   .card-subtitle{
-    font-size:13px;
+    font-size:14px;
   }
 }
 
-/* TABLET */
+/* TABLET / LARGE */
 @media(min-width:768px){
+  .grid{
+    max-width:600px;
+  }
   .card{
-    min-height:160px;
+    min-height:140px;
   }
   .card-title{
-    font-size:24px;
-  }
-  .card-subtitle{
-    font-size:15px;
+    font-size:28px;
   }
 }
 </style>

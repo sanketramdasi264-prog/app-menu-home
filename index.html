@@ -1,168 +1,343 @@
 <!DOCTYPE html>
-<html lang="mr">
+<html lang="mr"> 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>कर्मयोग</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🕉 कर्मयोग</title>
 
-<!-- STYLISH DEVANAGARI FONT -->
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans Devanagari', sans-serif;
+      background: linear-gradient(135deg, #1a0000 0%, #2d0a0a 100%);
+      color: #ffffff;
+      padding: 0 0 60px 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-body{
-  font-family:"Baloo 2","Noto Sans Devanagari",system-ui,sans-serif;
-  background:linear-gradient(135deg,#1a0000,#2d0a0a);
-  color:#fff;
-  min-height:100vh;
-  padding-bottom:60px;
-}
+    .container {
+      position: relative;
+      z-index: 1;
+    }
 
-/* LOGO */
-.header-logo{
-  width:260px;
-  max-width:90%;
-  display:block;
-  margin:18px auto 26px;
-  background:#fff;
-  padding:14px;
-  border-radius:18px;
-  border:3px solid #8B0000;
-  box-shadow:0 8px 26px rgba(139,0,0,.55);
-}
+    /* ---------------- HEADER LOGO ---------------- */
+    .header-logo {
+      width: 260px;
+      max-width: 85%;
+      display: block;
+      margin: 16px auto 20px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 8px 24px rgba(139, 0, 0, 0.5),
+                  0 4px 12px rgba(139, 0, 0, 0.3),
+                  0 2px 8px rgba(0, 0, 0, 0.15);
+      border: 2.5px solid #8B0000;
+    }
 
-/* GRID – SINGLE COLUMN */
-.grid{
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-  padding:0 14px;
-  max-width:520px;
-  margin:auto;
-}
+    /* ----------- GRID ----------- */
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      padding: 0 12px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
-/* BUTTON CARD */
-.card{
-  background:linear-gradient(135deg,#5c0000,#8B0000);
-  border-radius:22px;
-  padding:28px 16px;
-  min-height:120px;
-  text-decoration:none;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  box-shadow:0 8px 24px rgba(0,0,0,.5);
-  border:2px solid rgba(255,255,255,.12);
-  transition:transform .18s ease, box-shadow .18s ease;
-}
+    /* ----------- CARDS ----------- */
+    .card {
+      background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
+      border-radius: 14px;
+      padding: 20px 18px;
+      text-align: left;
+      text-decoration: none;
+      color: #ffffff;
+      box-shadow: 0 6px 16px rgba(139, 0, 0, 0.4),
+                  0 2px 6px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 85px;
+      width: 100%;
+      -webkit-user-select: none;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+      border: 2.5px solid #5c0000;
+    }
 
-.card:active{
-  transform:scale(.96);
-  box-shadow:0 5px 14px rgba(0,0,0,.45);
-}
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(139, 0, 0, 0.2) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
 
-/* TEXT */
-.card-title{
-  font-size:26px;
-  font-weight:800;
-  letter-spacing:.6px;
-  line-height:1.4;
-}
+    .card::after {
+      content: '›';
+      font-size: 32px;
+      color: #ffcccc;
+      font-weight: 300;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+      opacity: 0.8;
+      transition: all 0.2s ease;
+    }
 
-.card-subtitle{
-  font-size:15px;
-  font-weight:600;
-  margin-top:10px;
-  color:#ffdada;
-  opacity:.95;
-}
+    .card:active {
+      transform: scale(0.97);
+      box-shadow: 0 4px 10px rgba(139, 0, 0, 0.3),
+                  0 1px 4px rgba(0, 0, 0, 0.25);
+    }
 
-/* SMALL DEVICES */
-@media(max-width:360px){
-  .card{
-    min-height:110px;
-    padding:24px 12px;
-  }
-  .card-title{
-    font-size:23px;
-  }
-  .card-subtitle{
-    font-size:14px;
-  }
-}
+    .card:active::before {
+      opacity: 1;
+    }
 
-/* TABLET / LARGE */
-@media(min-width:768px){
-  .grid{
-    max-width:600px;
-  }
-  .card{
-    min-height:140px;
-  }
-  .card-title{
-    font-size:28px;
-  }
-}
-</style>
+    .card:active::after {
+      opacity: 1;
+      transform: translateX(3px);
+    }
+
+    .card-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .card-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .icon {
+      font-size: 40px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+      width: 48px;
+      text-align: center;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.3;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      letter-spacing: 0.4px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      font-weight: 400;
+      color: #ffcccc;
+      line-height: 1.3;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.2px;
+      opacity: 0.9;
+    }
+
+    /* ----------- Loading optimization ----------- */
+    .header-logo {
+      content-visibility: auto;
+    }
+
+    .card {
+      content-visibility: auto;
+      contain: layout style paint;
+    }
+
+    /* ----------- Smaller screens ----------- */
+    @media (max-width: 360px) {
+      .grid {
+        gap: 10px;
+        padding: 0 10px;
+      }
+      
+      .card {
+        padding: 18px 14px;
+        min-height: 80px;
+        gap: 14px;
+      }
+      
+      .icon {
+        font-size: 36px;
+        width: 44px;
+      }
+      
+      .card-title {
+        font-size: 16px;
+      }
+      
+      .card-subtitle {
+        font-size: 11px;
+      }
+      
+      .header-logo {
+        width: 240px;
+        margin: 12px auto 16px;
+      }
+    }
+
+    /* ----------- Larger phones ----------- */
+    @media (min-width: 400px) {
+      .grid {
+        gap: 14px;
+        padding: 0 14px;
+      }
+      
+      .card {
+        padding: 22px 20px;
+        min-height: 90px;
+        gap: 18px;
+      }
+      
+      .icon {
+        font-size: 44px;
+        width: 52px;
+      }
+      
+      .card-title {
+        font-size: 19px;
+      }
+      
+      .card-subtitle {
+        font-size: 13px;
+      }
+    }
+
+    /* ----------- Tablets and larger ----------- */
+    @media (min-width: 768px) {
+      .grid {
+        gap: 16px;
+        max-width: 700px;
+      }
+      
+      .header-logo {
+        width: 300px;
+        margin: 20px auto 24px;
+      }
+      
+      .card {
+        min-height: 95px;
+        padding: 24px 22px;
+      }
+      
+      .icon {
+        font-size: 46px;
+        width: 54px;
+      }
+      
+      .card-title {
+        font-size: 20px;
+      }
+      
+      .card-subtitle {
+        font-size: 13px;
+      }
+    }
+  </style>
+
 </head>
-
 <body>
 
-<img src="1000894411 (1).png" class="header-logo" alt="OmKarmyog Logo">
+  <img src="1000894411 (1).png"
+       alt="Omkarmyog Logo" 
+       class="header-logo"
+       loading="eager">
 
-<div class="grid">
+  <div class="container">
+    <div class="grid">
 
-<a href="https://sanketramdasi264-prog.github.io/app-menu-home/arati/" class="card">
-  <div>
-    <div class="card-title">आरती संग्रह</div>
-    <div class="card-subtitle">नवीन आरती उपलब्ध</div>
+      <a href="https://sanketramdasi264-prog.github.io/app-menu-home/arati/" class="card">
+        <div class="card-content">
+          <div class="icon">🪔</div>
+          <div class="card-text">
+            <div class="card-title">आरती संग्रह</div>
+            <div class="card-subtitle">नवीन आरती उपलब्ध</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://sanketramdasi264-prog.github.io/app-menu-home/stotra/" class="card">
+        <div class="card-content">
+          <div class="icon">🕉️</div>
+          <div class="card-text">
+            <div class="card-title">स्तोत्र संग्रह</div>
+            <div class="card-subtitle">सर्व स्तोत्रे व अष्टके</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://sanketramdasi264-prog.github.io/app-menu-home/bhajan/" class="card">
+        <div class="card-content">
+          <div class="icon">🥁</div>
+          <div class="card-text">
+            <div class="card-title">भजनावली</div>
+            <div class="card-subtitle">भजने, जोगवा, दृष्ट इत्यादी</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://sanketramdasi264-prog.github.io/app-menu-home/pooja/" class="card">
+        <div class="card-content">
+          <div class="icon">🙏</div>
+          <div class="card-text">
+            <div class="card-title">विविध पूजा प्रयोग</div>
+            <div class="card-subtitle">पूजन, आवाहन, हवन इत्यादी</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.omkarmyog.in/p/blog-page_25.html" class="card">
+        <div class="card-content">
+          <div class="icon">📜</div>
+          <div class="card-text">
+            <div class="card-title">मनाचे श्लोक व चिंतन</div>
+            <div class="card-subtitle">समर्थ रामदास स्वामी</div>
+          </div>
+        </div>
+      </a>
+      
+      <a href="https://www.omkarmyog.in/p/blog-page_65.html" class="card">
+        <div class="card-content">
+          <div class="icon">✍️</div>
+          <div class="card-text">
+            <div class="card-title">शास्त्रार्थ लेख</div>
+            <div class="card-subtitle">कुलधर्म कुलाचार, आन्हिक इत्यादि</div>
+          </div>
+        </div>
+      </a>
+
+    </div>
   </div>
-</a>
-
-<a href="https://sanketramdasi264-prog.github.io/app-menu-home/stotra/" class="card">
-  <div>
-    <div class="card-title">स्तोत्र संग्रह</div>
-    <div class="card-subtitle">सर्व स्तोत्रे व अष्टके</div>
-  </div>
-</a>
-
-<a href="https://sanketramdasi264-prog.github.io/app-menu-home/bhajan/" class="card">
-  <div>
-    <div class="card-title">भजनावली</div>
-    <div class="card-subtitle">भजने व अभंग</div>
-  </div>
-</a>
-
-<a href="https://sanketramdasi264-prog.github.io/app-menu-home/pooja/" class="card">
-  <div>
-    <div class="card-title">पूजा प्रयोग</div>
-    <div class="card-subtitle">पूजन, हवन, आवाहन</div>
-  </div>
-</a>
-
-<a href="https://www.omkarmyog.in/p/blog-page_25.html" class="card">
-  <div>
-    <div class="card-title">मनाचे श्लोक</div>
-    <div class="card-subtitle">समर्थ रामदास</div>
-  </div>
-</a>
-
-<a href="https://www.omkarmyog.in/p/blog-page_65.html" class="card">
-  <div>
-    <div class="card-title">शास्त्रार्थ लेख</div>
-    <div class="card-subtitle">कुलधर्म व कुलाचार</div>
-  </div>
-</a>
-
-</div>
-
 </body>
 </html>

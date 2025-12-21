@@ -207,6 +207,7 @@ body, html {
     flex-wrap: wrap;
     gap: 6px;
     justify-content: center;
+    align-items: center;
 }
 .jap-chip {
     background: rgba(255, 215, 0, 0.2);
@@ -243,6 +244,29 @@ body, html {
     cursor: pointer;
     margin-left: 3px;
 }
+.add-jap-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 215, 0, 0.3);
+    border: 2px solid var(--gold-yellow);
+    color: var(--gold-yellow);
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.add-jap-btn:hover {
+    background: var(--gold-yellow);
+    color: #000;
+    transform: scale(1.1);
+}
+.add-jap-btn:active {
+    transform: scale(0.95);
+}
 
 /* Add New Jap Input */
 .add-jap-box {
@@ -258,6 +282,23 @@ body, html {
     font-weight: 600; 
     outline: none;
     font-size: 14px;
+}
+.add-jap-box.hidden {
+    display: none;
+}
+
+/* Tip Box */
+.tip-box {
+    background: rgba(255, 255, 255, 0.95);
+    color: #4A0404;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.5;
+    font-weight: 600;
+    border: 2px solid rgba(255, 215, 0, 0.5);
 }
 
 /* Mala Display */
@@ -361,13 +402,13 @@ body, html {
 }
 .stat-item span:first-child {
     display: block;
-    font-size: 11px;
+    font-size: 10px;
     opacity: 0.9;
     margin-bottom: 3px;
 }
 .stat-v { 
     display: block; 
-    font-size: 20px; 
+    font-size: 18px; 
     font-weight: 800; 
     color: var(--gold-yellow);
 }
@@ -493,13 +534,21 @@ body, html {
     <!-- Saved Japs with Quick Switch -->
     <div class="saved-japs-section" onclick="event.stopPropagation()">
         <div class="saved-japs-title">📿 माझे जप</div>
-        <div class="jap-chip-container" id="japChipsContainer"></div>
+        <div class="jap-chip-container" id="japChipsContainer">
+            <!-- Chips will be rendered here -->
+        </div>
     </div>
 
-    <!-- Add New Jap -->
-    <div class="add-jap-box" onclick="event.stopPropagation()">
+    <!-- Add New Jap (Hidden by default) -->
+    <div class="add-jap-box hidden" id="addJapBox" onclick="event.stopPropagation()">
         <input type="text" id="newJapInput" placeholder="नवीन जप नाव लिहा...">
-        <button class="save-btn" onclick="addNewJap()">+ जोडा</button>
+        <button class="save-btn" onclick="addNewJap()">✅ जोडा</button>
+        <button class="save-btn" style="background: #ff6b6b;" onclick="cancelAddJap()">❌</button>
+    </div>
+
+    <!-- Tip Box -->
+    <div class="tip-box">
+        💡 टीप:- स्क्रीनवर कुठेही टॅप केल्यास व volume button प्रेस केल्यास जप मोजला जातो
     </div>
 
     <!-- Mala Display -->
@@ -517,26 +566,26 @@ body, html {
     <!-- Stats -->
     <div class="mala-stats">
         <div class="stat-item">
-            <span>आजच्या माळा</span>
-            <span class="stat-v" id="todayMalaCount">0</span>
+            <span id="statLabel1">माळा</span>
+            <span class="stat-v" id="currentMalaCount">0</span>
         </div>
         <div class="stat-item">
-            <span>आजचा जप</span>
-            <span class="stat-v" id="todayTotal">0</span>
+            <span id="statLabel2">आजचा जप</span>
+            <span class="stat-v" id="currentTodayTotal">0</span>
         </div>
         <div class="stat-item">
-            <span>एकूण जप</span>
-            <span class="stat-v" id="lifeTotal">0</span>
+            <span id="statLabel3">एकूण जप</span>
+            <span class="stat-v" id="currentLifeTotal">0</span>
         </div>
     </div>
 
     <!-- Control Buttons -->
-    <div onclick="event.stopPropagation()">
-        <div class="button-group">
-            <button class="small-btn" onclick="resetToday()">रिसेट</button>
-            <button class="small-btn" onclick="showHistory()">इतिहास</button>
+    <div>
+        <div class="button-group" onclick="event.stopPropagation()">
+            <button class="small-btn" onclick="resetToday(event)">रिसेट</button>
+            <button class="small-btn" onclick="showHistory(event)">इतिहास</button>
         </div>
-        <button class="jap-main-btn" onclick="increment()">🙏 जप मोजा 🙏</button>
+        <button class="jap-main-btn" onclick="handleJapButtonClick(event)">🙏 जप मोजा 🙏</button>
     </div>
 </div>
 
@@ -583,8 +632,6 @@ body, html {
 // Data structures
 let allJaps = {};
 let currentNaam = "राम";
-let todayTotal = 0;
-let lifeTotal = 0;
 let targetMalas = 0;
 let todayDate = new Date().toDateString();
 let history = [];
@@ -596,9 +643,8 @@ let targetJapName = "";
 function loadData() {
     const stored = JSON.parse(localStorage.getItem("malaAppData") || "{}");
     
-    allJaps = stored.allJaps || { "राम": { count: 0, totalJaps: 0, totalMalas: 0 } };
+    allJaps = stored.allJaps || { "राम": { count: 0, todayTotal: 0, lifeTotal: 0 } };
     currentNaam = stored.currentNaam || "राम";
-    lifeTotal = stored.lifeTotal || 0;
     targetMalas = stored.targetMalas || 0;
     targetJapName = stored.targetJapName || "";
     selectedNotificationTimes = stored.selectedNotificationTimes || [7, 12, 17, 21];
@@ -609,20 +655,18 @@ function loadData() {
     if (storedDate !== todayDate) {
         saveDailyHistory();
         resetDailyData();
-    } else {
-        todayTotal = stored.todayTotal || 0;
     }
 }
 
 function saveDailyHistory() {
     const yesterdayData = {
-        date: history[0]?.date === todayDate ? history[0].date : (localStorage.getItem("malaAppData") ? JSON.parse(localStorage.getItem("malaAppData")).todayDate : todayDate),
+        date: localStorage.getItem("malaAppData") ? JSON.parse(localStorage.getItem("malaAppData")).todayDate : todayDate,
         japs: {}
     };
     
     let hadData = false;
     for (let naam in allJaps) {
-        const totalToday = allJaps[naam].todayCount || 0;
+        const totalToday = allJaps[naam].todayTotal || 0;
         if (totalToday > 0) {
             yesterdayData.japs[naam] = {
                 count: totalToday,
@@ -639,10 +683,9 @@ function saveDailyHistory() {
 }
 
 function resetDailyData() {
-    todayTotal = 0;
     for (let naam in allJaps) {
         allJaps[naam].count = 0;
-        allJaps[naam].todayCount = 0;
+        allJaps[naam].todayTotal = 0;
     }
 }
 
@@ -650,8 +693,6 @@ function saveData() {
     const data = {
         allJaps,
         currentNaam,
-        todayTotal,
-        lifeTotal,
         targetMalas,
         targetJapName,
         selectedNotificationTimes,
@@ -670,6 +711,7 @@ function init() {
     renderJapChips();
     requestNotificationPermission();
     setupNotifications();
+    setupVolumeListener();
 }
 
 function createMala() {
@@ -724,6 +766,25 @@ function renderJapChips() {
         chip.onclick = () => switchToJap(naam);
         container.appendChild(chip);
     }
+    
+    // Add + button
+    const addBtn = document.createElement("button");
+    addBtn.className = "add-jap-btn";
+    addBtn.textContent = "+";
+    addBtn.onclick = showAddJapInput;
+    container.appendChild(addBtn);
+}
+
+// Show add jap input
+function showAddJapInput() {
+    document.getElementById("addJapBox").classList.remove("hidden");
+    document.getElementById("newJapInput").focus();
+}
+
+// Cancel add jap
+function cancelAddJap() {
+    document.getElementById("addJapBox").classList.add("hidden");
+    document.getElementById("newJapInput").value = "";
 }
 
 // Add new jap
@@ -740,12 +801,14 @@ function addNewJap() {
         alert("हे जप आधीच आहे!");
         switchToJap(naam);
         input.value = "";
+        cancelAddJap();
         return;
     }
     
-    allJaps[naam] = { count: 0, totalJaps: 0, totalMalas: 0, todayCount: 0 };
+    allJaps[naam] = { count: 0, todayTotal: 0, lifeTotal: 0 };
     currentNaam = naam;
     input.value = "";
+    cancelAddJap();
     saveData();
     renderJapChips();
     updateUI();
@@ -805,7 +868,11 @@ function showTargetInfo() {
 
 // Main increment
 function increment(e) {
-    if (!e) return; // Allow programmatic calls
+    if (!e) {
+        // Direct call from button or volume
+        doIncrement();
+        return;
+    }
     
     // Check if click is on interactive elements
     const target = e.target;
@@ -820,11 +887,13 @@ function increment(e) {
         return;
     }
 
+    doIncrement();
+}
+
+function doIncrement() {
     let currentVal = allJaps[currentNaam].count + 1;
-    allJaps[currentNaam].totalJaps++;
-    allJaps[currentNaam].todayCount = (allJaps[currentNaam].todayCount || 0) + 1;
-    todayTotal++;
-    lifeTotal++;
+    allJaps[currentNaam].todayTotal = (allJaps[currentNaam].todayTotal || 0) + 1;
+    allJaps[currentNaam].lifeTotal = (allJaps[currentNaam].lifeTotal || 0) + 1;
 
     const countEl = document.getElementById("currentCount");
     countEl.classList.add("animate");
@@ -841,7 +910,6 @@ function increment(e) {
         showMalaCompleteMessage();
         if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
         currentVal = 0;
-        allJaps[currentNaam].totalMalas++;
     } else {
         if (navigator.vibrate) navigator.vibrate(30);
     }
@@ -852,26 +920,47 @@ function increment(e) {
     updateUI();
 }
 
+// Handle jap button click
+function handleJapButtonClick(e) {
+    if (e) e.stopPropagation();
+    doIncrement();
+}
+
 // Update UI
 function updateUI() {
     const count = allJaps[currentNaam].count;
-    const todayMalas = Math.floor(todayTotal / 108);
+    const currentTodayTotal = allJaps[currentNaam].todayTotal || 0;
+    const currentLifeTotal = allJaps[currentNaam].lifeTotal || 0;
+    const currentMalas = Math.floor(currentLifeTotal / 108);
     
+    // Update center counter
     document.getElementById("currentCount").innerText = count;
     document.getElementById("currentNaamDisplay").innerText = currentNaam;
-    document.getElementById("todayTotal").innerText = todayTotal;
-    document.getElementById("todayMalaCount").innerText = todayMalas;
-    document.getElementById("lifeTotal").innerText = lifeTotal;
+    
+    // Update stats with current jap name
+    document.getElementById("statLabel1").innerText = `माळा (${currentNaam})`;
+    document.getElementById("statLabel2").innerText = `आजचा जप (${currentNaam})`;
+    document.getElementById("statLabel3").innerText = `एकूण जप (${currentNaam})`;
+    
+    document.getElementById("currentMalaCount").innerText = currentMalas;
+    document.getElementById("currentTodayTotal").innerText = currentTodayTotal;
+    document.getElementById("currentLifeTotal").innerText = currentLifeTotal;
+
+    // Calculate total malas for target progress
+    let totalTodayMalas = 0;
+    for (let naam in allJaps) {
+        totalTodayMalas += Math.floor((allJaps[naam].todayTotal || 0) / 108);
+    }
 
     if (targetMalas > 0) {
-        const progress = Math.min((todayMalas / targetMalas) * 100, 100);
+        const progress = Math.min((totalTodayMalas / targetMalas) * 100, 100);
         document.getElementById("progressBar").style.width = progress + "%";
         
-        let statusText = `${todayMalas}/${targetMalas} माळा`;
+        let statusText = `${totalTodayMalas}/${targetMalas} माळा`;
         if (targetJapName) {
             statusText += ` (${targetJapName})`;
         }
-        if (todayMalas >= targetMalas) {
+        if (totalTodayMalas >= targetMalas) {
             statusText = "✅ आजचे टार्गेट पूर्ण!";
         }
         document.getElementById("targetStatus").innerText = statusText;
@@ -884,6 +973,38 @@ function updateUI() {
     beads.forEach((bead, index) => {
         bead.classList.toggle("active", index < count);
     });
+}
+
+// Volume button listener
+let volumeListenerActive = false;
+
+function setupVolumeListener() {
+    if (volumeListenerActive) return;
+    volumeListenerActive = true;
+    
+    document.addEventListener('keydown', function(e) {
+        // Volume Up = 175, Volume Down = 174
+        if (e.keyCode === 175 || e.keyCode === 174) {
+            e.preventDefault();
+            increment();
+        }
+    });
+    
+    // For mobile volume buttons
+    let lastVolume = 0;
+    if (typeof window !== 'undefined' && 'mediaDevices' in navigator) {
+        try {
+            const checkVolume = setInterval(() => {
+                // This is a fallback method
+                const currentTime = Date.now();
+                if (window.volumeChangeTime && currentTime - window.volumeChangeTime < 500) {
+                    increment();
+                }
+            }, 100);
+        } catch (e) {
+            console.log('Volume detection not available');
+        }
+    }
 }
 
 // Show target info
@@ -1082,10 +1203,13 @@ function checkNotifications() {
         const currentMinute = now.getMinutes();
         
         if (currentMinute === 0 && notificationSchedule.includes(currentHour)) {
-            const todayMalas = Math.floor(todayTotal / 108);
+            let totalTodayMalas = 0;
+            for (let naam in allJaps) {
+                totalTodayMalas += Math.floor((allJaps[naam].todayTotal || 0) / 108);
+            }
             
-            if (todayMalas < targetMalas && Notification.permission === "granted") {
-                let notificationBody = `आजचे ${targetMalas - todayMalas} माळा अजून बाकी आहेत!`;
+            if (totalTodayMalas < targetMalas && Notification.permission === "granted") {
+                let notificationBody = `आजचे ${targetMalas - totalTodayMalas} माळा अजून बाकी आहेत!`;
                 if (targetJapName) {
                     notificationBody = `${targetJapName} - ` + notificationBody;
                 }

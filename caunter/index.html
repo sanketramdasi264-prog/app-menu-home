@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Premium Jap Counter</title>
+<title>Premium Rudraksha Mala</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -12,11 +12,13 @@
     --text-color: #ffffff;
 }
 
+* { box-sizing: border-box; }
+
 body, html {
     margin: 0; padding: 0;
     width: 100%; height: 100%;
     font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-maroon);
+    background: linear-gradient(135deg, #4A0404 0%, #2d0202 100%);
     color: var(--text-color);
     overflow: hidden;
 }
@@ -28,247 +30,1451 @@ body, html {
     display: flex;
     flex-direction: column;
     padding: 15px;
-    box-sizing: border-box;
 }
 
-/* Notification & Target Card */
-.top-card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 12px;
-    border-radius: 15px;
+/* Header Capsules */
+.header-capsules {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
+    gap: 10px;
+}
+.capsule-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 165, 0, 0.3));
+    border: 2px solid var(--gold-yellow);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--gold-yellow);
+}
+.capsule-btn:hover {
+    background: linear-gradient(135deg, var(--gold-yellow), #FFA500);
+    color: #000;
+    transform: scale(1.05);
+}
+.capsule-btn:active {
+    transform: scale(0.95);
+}
+.target-section label { 
+    font-size: 13px; 
+    display: block; 
+    margin-bottom: 8px; 
     text-align: center;
 }
-
 .target-input-group { 
-    display: flex; justify-content: center; gap: 10px; margin-top: 5px;
+    display: flex; 
+    justify-content: center; 
+    gap: 10px; 
+    align-items: center;
 }
-
 .target-input-group input { 
-    width: 70px; padding: 8px; border-radius: 8px; border: none; text-align: center; font-weight: bold;
+    width: 80px; 
+    padding: 8px; 
+    border-radius: 8px; 
+    border: none; 
+    text-align: center; 
+    font-weight: bold;
+    font-size: 16px;
+}
+.save-btn {
+    background: var(--gold-yellow); 
+    color: #000; 
+    border: none; 
+    padding: 8px 15px; 
+    border-radius: 8px; 
+    font-weight: 800; 
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-size: 12px;
+}
+.save-btn:active {
+    transform: scale(0.95);
+}
+.target-status {
+    font-size: 12px;
+    font-weight: 600;
 }
 
-.notif-test-btn {
-    background: transparent; color: var(--gold-yellow); border: 1px solid var(--gold-yellow);
-    padding: 4px 10px; border-radius: 10px; font-size: 10px; margin-top: 8px; cursor: pointer;
+/* Target Settings Modal */
+.target-modal-body {
+    padding: 15px 0;
+}
+.target-input-field {
+    margin-bottom: 15px;
+}
+.target-input-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--gold-yellow);
+}
+.target-input-field input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    outline: none;
+}
+.target-input-field input:focus {
+    border-color: var(--gold-yellow);
+}
+.target-progress-display {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+.target-progress-display label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 8px;
+    text-align: center;
+    opacity: 0.9;
+}
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+.target-status {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold-yellow);
+    text-align: center;
+    display: block;
+}
+.notification-times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+.time-chip {
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid rgba(255, 215, 0, 0.4);
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.time-chip.selected {
+    background: var(--gold-yellow);
+    color: #000;
+    border-color: var(--gold-yellow);
+}
+.save-target-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--gold-yellow), #FFA500);
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.2s;
+}
+.save-target-btn:active {
+    transform: scale(0.95);
 }
 
-/* Jap Input */
-.jap-input-box { display: flex; gap: 8px; margin-bottom: 15px; }
-input[type="text"] { flex: 1; padding: 12px; border-radius: 12px; border: none; font-weight: 600; outline: none; }
-.save-btn { background: var(--gold-yellow); color: #000; border: none; padding: 0 15px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+/* Audio Jap Modal */
+.audio-jap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+.audio-jap-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+.audio-jap-info {
+    flex: 1;
+}
+.audio-jap-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--gold-yellow);
+    margin-bottom: 5px;
+}
+.audio-jap-count {
+    font-size: 12px;
+    opacity: 0.8;
+}
+.audio-play-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-yellow), #FFA500);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.audio-play-btn:active {
+    transform: scale(0.9);
+}
+.audio-play-btn.playing {
+    background: linear-gradient(135deg, #ff6b6b, #ff4444);
+}
 
-/* Counter Visual */
-.display-area { position: relative; flex: 1; display: flex; justify-content: center; align-items: center; }
-.mala-circle { position: relative; width: 260px; height: 260px; display: flex; justify-content: center; align-items: center; }
-#mala-beads { position: absolute; width: 100%; height: 100%; transform: rotate(-90deg); }
-.bead { position: absolute; width: 9px; height: 9px; background: rgba(255,255,255,0.2); border-radius: 50%; transition: 0.2s; }
-.bead.active { background: var(--gold-yellow); box-shadow: 0 0 8px var(--gold-yellow); transform: scale(1.3); }
+/* Progress Bar */
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* Saved Japs Section */
+.saved-japs-section {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    backdrop-filter: blur(10px);
+    max-height: 120px;
+    overflow-y: auto;
+}
+.saved-japs-title {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: center;
+    opacity: 0.9;
+}
+.jap-chip-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+}
+.jap-chip {
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.jap-chip:hover {
+    background: rgba(255, 215, 0, 0.3);
+}
+.jap-chip.active {
+    background: var(--gold-yellow);
+    color: #000;
+    border-color: var(--gold-yellow);
+}
+.jap-chip-count {
+    font-size: 10px;
+    opacity: 0.8;
+}
+.delete-chip {
+    background: rgba(255, 0, 0, 0.3);
+    border: none;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 3px;
+}
+.add-jap-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 215, 0, 0.3);
+    border: 2px solid var(--gold-yellow);
+    color: var(--gold-yellow);
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.add-jap-btn:hover {
+    background: var(--gold-yellow);
+    color: #000;
+    transform: scale(1.1);
+}
+.add-jap-btn:active {
+    transform: scale(0.95);
+}
+
+/* Add New Jap Input */
+.add-jap-box {
+    display: flex; 
+    gap: 6px; 
+    margin-bottom: 10px;
+}
+.add-jap-box input {
+    flex: 1; 
+    padding: 10px; 
+    border-radius: 10px; 
+    border: none; 
+    font-weight: 600; 
+    outline: none;
+    font-size: 14px;
+}
+.add-jap-box.hidden {
+    display: none;
+}
+
+/* Tip Box */
+.tip-box {
+    background: rgba(255, 255, 255, 0.95);
+    color: #4A0404;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.5;
+    font-weight: 600;
+    border: 2px solid rgba(255, 215, 0, 0.5);
+}
+
+/* Mala Display */
+.display-area {
+    position: relative; 
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+.mala-circle {
+    position: relative; 
+    width: 280px; 
+    height: 280px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+#mala-beads { 
+    position: absolute; 
+    width: 100%; 
+    height: 100%; 
+    transform: rotate(-90deg); 
+}
+.bead { 
+    position: absolute; 
+    width: 10px; 
+    height: 10px; 
+    background: rgba(255,255,255,0.25); 
+    border-radius: 50%; 
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.bead.active { 
+    background: var(--gold-yellow); 
+    box-shadow: 0 0 12px var(--gold-yellow); 
+    transform: scale(1.4);
+    border-color: #fff;
+}
+.bead.pulse {
+    animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1.4); }
+    50% { transform: scale(1.8); }
+}
 
 .counter-box {
-    width: 140px; height: 140px; background: var(--gold-yellow); border-radius: 50%;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5); z-index: 5; border: 4px solid #fff;
+    width: 150px; 
+    height: 150px; 
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border-radius: 50%;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.6); 
+    z-index: 5; 
+    border: 5px solid #fff;
 }
-#currentCount { font-size: 55px; font-weight: 900; color: #000; line-height: 1; }
-#currentNaamDisplay { font-size: 14px; color: #4A0404; font-weight: 800; }
+#currentCount { 
+    font-size: 60px; 
+    font-weight: 900; 
+    color: #000; 
+    line-height: 1;
+    transition: all 0.3s ease;
+}
+#currentCount.animate {
+    animation: countPop 0.3s ease;
+}
 
-/* Stats Display */
-.stats-bar {
-    display: flex; justify-content: space-around; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 15px; margin-bottom: 15px;
+@keyframes countPop {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
 }
-.stat-item { text-align: center; }
-.stat-item span { display: block; font-size: 11px; opacity: 0.8; }
-.stat-v { font-size: 18px; font-weight: 800; color: var(--gold-yellow); }
 
-/* Main Tap Button */
-.controls-area { position: relative; padding-bottom: 10px; }
-.reset-btn {
-    position: absolute; top: -35px; left: 0; width: 55px; height: 55px; border-radius: 50%; border: 3px solid #fff;
-    background: #444; color: #fff; font-size: 10px; font-weight: 800; cursor: pointer; z-index: 10;
+#currentNaamDisplay { 
+    font-size: 14px; 
+    color: #4A0404; 
+    font-weight: 800;
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
+
+/* Stats */
+.mala-stats {
+    display: flex; 
+    justify-content: space-around; 
+    background: rgba(0,0,0,0.3); 
+    padding: 12px; 
+    border-radius: 12px; 
+    margin-bottom: 12px;
+    backdrop-filter: blur(10px);
+}
+.stat-item { 
+    text-align: center; 
+    flex: 1;
+}
+.stat-item span:first-child {
+    display: block;
+    font-size: 10px;
+    opacity: 0.9;
+    margin-bottom: 3px;
+}
+.stat-v { 
+    display: block; 
+    font-size: 18px; 
+    font-weight: 800; 
+    color: var(--gold-yellow);
+}
+
+/* Controls */
+.button-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.small-btn {
+    flex: 1;
+    height: 42px;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+}
+.small-btn:active {
+    transform: scale(0.95);
+}
+
 .jap-main-btn {
-    width: 100%; height: 90px; background: #fff; color: #4A0404; border: none; border-radius: 20px;
-    font-size: 28px; font-weight: 900; box-shadow: 0 8px 15px rgba(0,0,0,0.5); cursor: pointer;
+    width: 100%; 
+    height: 100px; 
+    background: linear-gradient(135deg, #fff, #f0f0f0);
+    color: #4A0404; 
+    border: none; 
+    border-radius: 15px;
+    font-size: 32px; 
+    font-weight: 900; 
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4); 
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.jap-main-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
+.modal.show {
+    display: flex;
+}
+.modal-content {
+    background: linear-gradient(135deg, #4A0404, #2d0202);
+    padding: 20px;
+    border-radius: 15px;
+    max-width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 2px solid var(--gold-yellow);
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+.history-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+.history-date {
+    font-weight: 800;
+    color: var(--gold-yellow);
+    margin-bottom: 8px;
+}
+.history-jap-entry {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: 6px;
+    font-size: 13px;
 }
 </style>
 </head>
-<body onclick="increment()">
+<body onclick="increment(event)">
 
 <div class="app-container">
-    <div class="top-card" onclick="event.stopPropagation()">
-        <label style="font-size: 12px; font-weight: 600;">🎯 रोजचे टार्गेट (माळा)</label>
-        <div class="target-input-group">
-            <input type="number" id="targetInput" placeholder="0" onchange="saveTarget()">
-            <span id="targetStatus" style="font-size: 12px; align-self: center; color: var(--gold-yellow);">0/0 पूर्ण</span>
+<div class="app-container">
+    <!-- Header Capsules -->
+    <div class="header-capsules" onclick="event.stopPropagation()">
+        <button class="capsule-btn" onclick="showTargetSettings()">
+            🎯 Daily Target
+        </button>
+        <button class="capsule-btn" onclick="showAudioJap()">
+            🔊 Audio Jap
+        </button>
+    </div>
+
+    <!-- Saved Japs with Quick Switch -->
+    <div class="saved-japs-section" onclick="event.stopPropagation()">
+        <div class="saved-japs-title">📿 माझे जप</div>
+        <div class="jap-chip-container" id="japChipsContainer">
+            <!-- Chips will be rendered here -->
         </div>
-        <button class="notif-test-btn" onclick="sendInstantNotification()">🔔 चेक करा नोटिफिकेशन येते का?</button>
     </div>
 
-    <div class="jap-input-box" onclick="event.stopPropagation()">
-        <input type="text" id="naamInput" placeholder="जपाचे नाव...">
-        <button class="save-btn" onclick="switchJap()">सेट करा</button>
+    <!-- Add New Jap (Hidden by default) -->
+    <div class="add-jap-box hidden" id="addJapBox" onclick="event.stopPropagation()">
+        <input type="text" id="newJapInput" placeholder="नवीन जप नाव लिहा...">
+        <button class="save-btn" onclick="addNewJap()">✅ जोडा</button>
+        <button class="save-btn" style="background: #ff6b6b;" onclick="cancelAddJap()">❌</button>
     </div>
 
+    <!-- Tip Box -->
+    <div class="tip-box">
+        💡 टीप:- स्क्रीनवर कुठेही टॅप केल्यास व volume button प्रेस केल्यास जप मोजला जातो
+    </div>
+
+    <!-- Mala Display -->
     <div class="display-area">
         <div class="mala-circle">
             <div id="mala-beads"></div>
             <div class="counter-box">
                 <div id="currentNaamDisplay">राम</div>
                 <div id="currentCount">0</div>
-                <div style="font-size: 10px; color: #000; font-weight: bold;">संख्या</div>
+                <div style="font-size: 10px; color: #000; font-weight: bold;">/ 108</div>
             </div>
         </div>
     </div>
 
-    <div class="stats-bar">
-        <div class="stat-item"><span>माळा</span><span class="stat-v" id="malaCount">0</span></div>
-        <div class="stat-item"><span>आजचा जप</span><span class="stat-v" id="todayTotal">0</span></div>
-        <div class="stat-item"><span>एकूण जप</span><span class="stat-v" id="lifeTotal">0</span></div>
+    <!-- Stats -->
+    <div class="mala-stats">
+        <div class="stat-item">
+            <span id="statLabel1">माळा</span>
+            <span class="stat-v" id="currentMalaCount">0</span>
+        </div>
+        <div class="stat-item">
+            <span id="statLabel2">आजचा जप</span>
+            <span class="stat-v" id="currentTodayTotal">0</span>
+        </div>
+        <div class="stat-item">
+            <span id="statLabel3">एकूण जप</span>
+            <span class="stat-v" id="currentLifeTotal">0</span>
+        </div>
     </div>
 
-    <div class="controls-area">
-        <button class="reset-btn" onclick="resetCurrent(event)">रिसेट</button>
-        <button class="jap-main-btn">जप मोजा</button>
+    <!-- Control Buttons -->
+    <div>
+        <div class="button-group" onclick="event.stopPropagation()">
+            <button class="small-btn" onclick="resetToday(event)">रिसेट</button>
+            <button class="small-btn" onclick="showHistory(event)">इतिहास</button>
+        </div>
+        <button class="jap-main-btn" onclick="handleJapButtonClick(event)">🙏 जप मोजा 🙏</button>
     </div>
 </div>
 
-<audio id="bell" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+<!-- History Modal -->
+<div class="modal" id="historyModal" onclick="closeHistory()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 style="margin: 0;">📜 जप इतिहास</h3>
+            <button class="close-btn" onclick="closeHistory()">×</button>
+        </div>
+        <div id="historyContent"></div>
+    </div>
+</div>
+
+<!-- Target Settings Modal -->
+<div class="modal" id="targetModal" onclick="closeTargetModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 style="margin: 0;">🎯 Daily Target सेट करा</h3>
+            <button class="close-btn" onclick="closeTargetModal()">×</button>
+        </div>
+        <div class="target-modal-body">
+            <div class="target-input-field">
+                <label>किती माळा पूर्ण करायच्या आहेत?</label>
+                <input type="number" id="targetMalaInput" placeholder="उदा. 11" min="1" max="108">
+            </div>
+            
+            <div class="target-input-field">
+                <label>कोणत्या जपाचे टार्गेट आहे?</label>
+                <input type="text" id="targetJapInput" placeholder="उदा. राम, कृष्ण, शिव" value="">
+            </div>
+            
+            <div class="target-input-field">
+                <label>⏰ कधी कधी आठवण करू? (वेळ निवडा)</label>
+                <div class="notification-times" id="notificationTimes"></div>
+            </div>
+            
+            <div class="target-progress-display">
+                <label>📊 आजची Progress</label>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="modalProgressBar"></div>
+                </div>
+                <span class="target-status" id="modalTargetStatus">Target सेट करा</span>
+            </div>
+            
+            <button class="save-target-btn" onclick="saveTargetSettings()">✅ सेव्ह करा</button>
+        </div>
+    </div>
+</div>
+
+<!-- Audio Jap Modal -->
+<div class="modal" id="audioJapModal" onclick="closeAudioJapModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 style="margin: 0;">🔊 Audio Jap</h3>
+            <button class="close-btn" onclick="closeAudioJapModal()">×</button>
+        </div>
+        <div class="audio-jap-list" id="audioJapList"></div>
+    </div>
+</div>
 
 <script>
-let japData = JSON.parse(localStorage.getItem("japData")) || { "राम": 0 };
-let currentNaam = localStorage.getItem("lastNaam") || "राम";
-let lifeTotal = parseInt(localStorage.getItem("lifeTotal")) || 0;
-let targetMalas = parseInt(localStorage.getItem("targetMalas")) || 0;
+// Data structures
+let allJaps = {};
+let currentNaam = "राम";
+let targetMalas = 0;
+let todayDate = new Date().toDateString();
+let history = [];
+let notificationSchedule = [];
+let selectedNotificationTimes = [7, 12, 17, 21];
+let targetJapName = "";
 
+// Audio Jap data
+let audioJaps = {
+    "राम": {
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        count: 0,
+        playing: false
+    },
+    "कृष्ण": {
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        count: 0,
+        playing: false
+    },
+    "स्वामी समर्थ": {
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+        count: 0,
+        playing: false
+    }
+};
+let currentAudio = null;
+let audioCountInterval = null;
+
+// Load data
+function loadData() {
+    const stored = JSON.parse(localStorage.getItem("malaAppData") || "{}");
+    
+    allJaps = stored.allJaps || { "राम": { count: 0, todayTotal: 0, lifeTotal: 0 } };
+    currentNaam = stored.currentNaam || "राम";
+    targetMalas = stored.targetMalas || 0;
+    targetJapName = stored.targetJapName || "";
+    selectedNotificationTimes = stored.selectedNotificationTimes || [7, 12, 17, 21];
+    history = stored.history || [];
+    notificationSchedule = stored.notificationSchedule || [];
+    audioJaps = stored.audioJaps || audioJaps;
+    
+    const storedDate = stored.todayDate;
+    if (storedDate !== todayDate) {
+        saveDailyHistory();
+        resetDailyData();
+    }
+}
+
+function saveDailyHistory() {
+    const yesterdayData = {
+        date: localStorage.getItem("malaAppData") ? JSON.parse(localStorage.getItem("malaAppData")).todayDate : todayDate,
+        japs: {}
+    };
+    
+    let hadData = false;
+    for (let naam in allJaps) {
+        const totalToday = allJaps[naam].todayTotal || 0;
+        if (totalToday > 0) {
+            yesterdayData.japs[naam] = {
+                count: totalToday,
+                malas: Math.floor(totalToday / 108)
+            };
+            hadData = true;
+        }
+    }
+    
+    if (hadData) {
+        history.unshift(yesterdayData);
+        if (history.length > 60) history = history.slice(0, 60);
+    }
+}
+
+function resetDailyData() {
+    for (let naam in allJaps) {
+        allJaps[naam].count = 0;
+        allJaps[naam].todayTotal = 0;
+    }
+}
+
+function saveData() {
+    const data = {
+        allJaps,
+        currentNaam,
+        targetMalas,
+        targetJapName,
+        selectedNotificationTimes,
+        todayDate,
+        history,
+        notificationSchedule,
+        audioJaps
+    };
+    localStorage.setItem("malaAppData", JSON.stringify(data));
+}
+
+// Initialize
 function init() {
-    document.getElementById("naamInput").value = currentNaam;
-    document.getElementById("targetInput").value = targetMalas || "";
+    loadData();
     createMala();
     updateUI();
-    askPermission();
-    startNotificationLoop();
+    renderJapChips();
+    requestNotificationPermission();
+    setupNotifications();
+    setupVolumeListener();
 }
 
 function createMala() {
-    const beadsContainer = document.getElementById("mala-beads");
-    beadsContainer.innerHTML = "";
+    const container = document.getElementById("mala-beads");
+    container.innerHTML = "";
     for (let i = 0; i < 108; i++) {
         const bead = document.createElement("div");
         bead.className = "bead";
         const angle = (i / 108) * 2 * Math.PI;
-        const x = 130 + 115 * Math.cos(angle) - 4.5;
-        const y = 130 + 115 * Math.sin(angle) - 4.5;
-        bead.style.left = x + "px"; bead.style.top = y + "px";
-        beadsContainer.appendChild(bead);
+        const x = 140 + 125 * Math.cos(angle) - 5;
+        const y = 140 + 125 * Math.sin(angle) - 5;
+        bead.style.left = x + "px";
+        bead.style.top = y + "px";
+        container.appendChild(bead);
     }
 }
 
-function increment(e) {
-    if (e && (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON')) return;
-
-    let currentVal = (japData[currentNaam] || 0) + 1;
-    lifeTotal++;
-
-    if (currentVal >= 108) {
-        const bell = document.getElementById("bell");
-        bell.currentTime = 0;
-        bell.play();
-        currentVal = 0;
-        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-    } else {
-        if (navigator.vibrate) navigator.vibrate(40);
-    }
-
-    japData[currentNaam] = currentVal;
-    save();
-    updateUI();
-}
-
-function saveTarget() {
-    targetMalas = parseInt(document.getElementById("targetInput").value) || 0;
-    localStorage.setItem("targetMalas", targetMalas);
-    updateUI();
-}
-
-function switchJap() {
-    let inputVal = document.getElementById("naamInput").value.trim();
-    if (inputVal === "") return;
-    currentNaam = inputVal;
-    if (japData[currentNaam] === undefined) japData[currentNaam] = 0;
-    save();
-    updateUI();
-}
-
-function updateUI() {
-    let count = japData[currentNaam] || 0;
-    document.getElementById("currentCount").innerText = count;
-    document.getElementById("currentNaamDisplay").innerText = currentNaam;
-    document.getElementById("lifeTotal").innerText = lifeTotal;
+// Render saved jap chips
+function renderJapChips() {
+    const container = document.getElementById("japChipsContainer");
+    container.innerHTML = "";
     
-    let mCount = Math.floor(lifeTotal / 108);
-    document.getElementById("malaCount").innerText = mCount;
-    document.getElementById("todayTotal").innerText = lifeTotal;
+    for (let naam in allJaps) {
+        const chip = document.createElement("div");
+        chip.className = "jap-chip" + (naam === currentNaam ? " active" : "");
+        
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = naam;
+        
+        const countSpan = document.createElement("span");
+        countSpan.className = "jap-chip-count";
+        countSpan.textContent = `(${allJaps[naam].count}/108)`;
+        
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-chip";
+        deleteBtn.textContent = "×";
+        deleteBtn.onclick = (e) => {
+            e.stopPropagation();
+            if (confirm(`"${naam}" हा जप डिलीट करायचा का?`)) {
+                if (confirm(`खात्री आहे? ${naam} चा सर्व डेटा कायमचा डिलीट होईल!`)) {
+                    deleteJap(naam);
+                }
+            }
+        };
+        
+        chip.appendChild(nameSpan);
+        chip.appendChild(countSpan);
+        if (Object.keys(allJaps).length > 1) {
+            chip.appendChild(deleteBtn);
+        }
+        
+        chip.onclick = () => switchToJap(naam);
+        container.appendChild(chip);
+    }
+    
+    // Add + button
+    const addBtn = document.createElement("button");
+    addBtn.className = "add-jap-btn";
+    addBtn.textContent = "+";
+    addBtn.onclick = showAddJapInput;
+    container.appendChild(addBtn);
+}
 
-    document.getElementById("targetStatus").innerText = `${mCount}/${targetMalas} पूर्ण`;
+// Show add jap input
+function showAddJapInput() {
+    document.getElementById("addJapBox").classList.remove("hidden");
+    document.getElementById("newJapInput").focus();
+}
+
+// Cancel add jap
+function cancelAddJap() {
+    document.getElementById("addJapBox").classList.add("hidden");
+    document.getElementById("newJapInput").value = "";
+}
+
+// Add new jap
+function addNewJap() {
+    const input = document.getElementById("newJapInput");
+    const naam = input.value.trim();
+    
+    if (naam === "") {
+        alert("कृपया नाव लिहा!");
+        return;
+    }
+    
+    if (allJaps[naam]) {
+        alert("हे जप आधीच आहे!");
+        switchToJap(naam);
+        input.value = "";
+        cancelAddJap();
+        return;
+    }
+    
+    allJaps[naam] = { count: 0, todayTotal: 0, lifeTotal: 0 };
+    currentNaam = naam;
+    input.value = "";
+    cancelAddJap();
+    saveData();
+    renderJapChips();
+    updateUI();
+}
+
+// Switch to existing jap
+function switchToJap(naam) {
+    currentNaam = naam;
+    saveData();
+    renderJapChips();
+    updateUI();
+}
+
+// Delete jap
+function deleteJap(naam) {
+    if (Object.keys(allJaps).length === 1) {
+        alert("किमान एक जप असणे आवश्यक आहे!");
+        return;
+    }
+    
+    delete allJaps[naam];
+    
+    if (currentNaam === naam) {
+        currentNaam = Object.keys(allJaps)[0];
+    }
+    
+    saveData();
+    renderJapChips();
+    updateUI();
+}
+
+// Show target info
+function showTargetInfo() {
+    const infoText = `
+🎯 डेली टार्गेट माहिती:
+
+📌 टार्गेट कसे सेट करावे?
+• वरील बॉक्समध्ये माळांची संख्या लिहा (उदा. 11)
+• "सेव्ह" बटन दाबा
+
+⏰ Notification वेळ:
+• सकाळी ७ वाजल्यापासून सुरुवात
+• प्रत्येक ५ तासांनी आठवण
+• वेळ: ७, १२, १७, २१ वाजता
+
+📊 Progress Bar:
+• हिरव्या बारमधून progress दिसेल
+• टार्गेट पूर्ण झाल्यावर ✅ दिसेल
+
+💡 टीप:
+• टार्गेट सेट केल्यावरच notification येईल
+• टार्गेट पूर्ण झाल्यावर notification येणार नाही
+    `;
+    
+    alert(infoText);
+}
+
+// Main increment
+function increment(e) {
+    if (!e) {
+        // Direct call from button or volume
+        doIncrement();
+        return;
+    }
+    
+    // Check if click is on interactive elements
+    const target = e.target;
+    if (target.tagName === 'INPUT' || 
+        target.tagName === 'BUTTON' || 
+        target.closest('.target-section') ||
+        target.closest('.saved-japs-section') ||
+        target.closest('.add-jap-box') ||
+        target.closest('.button-group') ||
+        target.closest('.jap-main-btn') ||
+        target.closest('.modal')) {
+        return;
+    }
+
+    doIncrement();
+}
+
+function doIncrement() {
+    let currentVal = allJaps[currentNaam].count + 1;
+    allJaps[currentNaam].todayTotal = (allJaps[currentNaam].todayTotal || 0) + 1;
+    allJaps[currentNaam].lifeTotal = (allJaps[currentNaam].lifeTotal || 0) + 1;
+
+    const countEl = document.getElementById("currentCount");
+    countEl.classList.add("animate");
+    setTimeout(() => countEl.classList.remove("animate"), 300);
 
     const beads = document.querySelectorAll(".bead");
-    beads.forEach((bead, index) => bead.classList.toggle("active", index < count));
+    if (beads[currentVal - 1]) {
+        beads[currentVal - 1].classList.add("pulse");
+        setTimeout(() => beads[currentVal - 1].classList.remove("pulse"), 500);
+    }
+
+    if (currentVal >= 108) {
+        playSound("complete");
+        showMalaCompleteMessage();
+        if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
+        currentVal = 0;
+    } else {
+        if (navigator.vibrate) navigator.vibrate(30);
+    }
+
+    allJaps[currentNaam].count = currentVal;
+    saveData();
+    renderJapChips();
+    updateUI();
 }
 
-function resetCurrent(e) {
-    e.stopPropagation();
-    if (confirm("प्रगती रिसेट करायची का?")) {
-        japData[currentNaam] = 0;
-        lifeTotal = 0;
-        save();
+// Handle jap button click
+function handleJapButtonClick(e) {
+    if (e) e.stopPropagation();
+    doIncrement();
+}
+
+// Update UI
+function updateUI() {
+    const count = allJaps[currentNaam].count;
+    const currentTodayTotal = allJaps[currentNaam].todayTotal || 0;
+    const currentLifeTotal = allJaps[currentNaam].lifeTotal || 0;
+    const currentMalas = Math.floor(currentLifeTotal / 108);
+    
+    // Update center counter
+    document.getElementById("currentCount").innerText = count;
+    document.getElementById("currentNaamDisplay").innerText = currentNaam;
+    
+    // Update stats with current jap name
+    document.getElementById("statLabel1").innerText = `माळा (${currentNaam})`;
+    document.getElementById("statLabel2").innerText = `आजचा जप (${currentNaam})`;
+    document.getElementById("statLabel3").innerText = `एकूण जप (${currentNaam})`;
+    
+    document.getElementById("currentMalaCount").innerText = currentMalas;
+    document.getElementById("currentTodayTotal").innerText = currentTodayTotal;
+    document.getElementById("currentLifeTotal").innerText = currentLifeTotal;
+
+    // Calculate total malas for target progress
+    let totalTodayMalas = 0;
+    for (let naam in allJaps) {
+        totalTodayMalas += Math.floor((allJaps[naam].todayTotal || 0) / 108);
+    }
+
+    // Update modal progress if modal is open
+    const modalProgressBar = document.getElementById("modalProgressBar");
+    const modalTargetStatus = document.getElementById("modalTargetStatus");
+    
+    if (modalProgressBar && modalTargetStatus) {
+        if (targetMalas > 0) {
+            const progress = Math.min((totalTodayMalas / targetMalas) * 100, 100);
+            modalProgressBar.style.width = progress + "%";
+            
+            let statusText = `${totalTodayMalas}/${targetMalas} माळा`;
+            if (targetJapName) {
+                statusText += ` (${targetJapName})`;
+            }
+            if (totalTodayMalas >= targetMalas) {
+                statusText = "✅ आजचे टार्गेट पूर्ण!";
+            }
+            modalTargetStatus.innerText = statusText;
+        } else {
+            modalProgressBar.style.width = "0%";
+            modalTargetStatus.innerText = "Target सेट करा";
+        }
+    }
+
+    const beads = document.querySelectorAll(".bead");
+    beads.forEach((bead, index) => {
+        bead.classList.toggle("active", index < count);
+    });
+}
+
+// Volume button listener
+let volumeListenerActive = false;
+
+function setupVolumeListener() {
+    if (volumeListenerActive) return;
+    volumeListenerActive = true;
+    
+    document.addEventListener('keydown', function(e) {
+        // Volume Up = 175, Volume Down = 174
+        if (e.keyCode === 175 || e.keyCode === 174) {
+            e.preventDefault();
+            increment();
+        }
+    });
+    
+    // For mobile volume buttons
+    let lastVolume = 0;
+    if (typeof window !== 'undefined' && 'mediaDevices' in navigator) {
+        try {
+            const checkVolume = setInterval(() => {
+                // This is a fallback method
+                const currentTime = Date.now();
+                if (window.volumeChangeTime && currentTime - window.volumeChangeTime < 500) {
+                    increment();
+                }
+            }, 100);
+        } catch (e) {
+            console.log('Volume detection not available');
+        }
+    }
+}
+
+// Show target info
+function showTargetInfo() {
+    const infoText = `
+🎯 डेली टार्गेट माहिती:
+
+📌 टार्गेट कसे सेट करावे?
+• वरील बॉक्समध्ये माळांची संख्या लिहा (उदा. 11)
+• "सेव्ह" बटन दाबा
+
+⏰ Notification वेळ:
+• सकाळी ७ वाजल्यापासून सुरुवात
+• प्रत्येक ५ तासांनी आठवण
+• वेळ: ७, १२, १७, २१ वाजता
+
+📊 Progress Bar:
+• हिरव्या बारमधून progress दिसेल
+• टार्गेट पूर्ण झाल्यावर ✅ दिसेल
+
+💡 टीप:
+• टार्गेट सेट केल्यावरच notification येईल
+• टार्गेट पूर्ण झाल्यावर notification येणार नाही
+    `;
+    
+    alert(infoText);
+}
+
+// Show target settings modal
+function showTargetSettings() {
+    const modal = document.getElementById("targetModal");
+    
+    // Populate current values
+    document.getElementById("targetMalaInput").value = targetMalas || "";
+    document.getElementById("targetJapInput").value = targetJapName || "";
+    
+    // Render notification time chips
+    renderNotificationTimes();
+    
+    // Update progress display in modal
+    updateUI();
+    
+    modal.classList.add("show");
+}
+
+function closeTargetModal() {
+    document.getElementById("targetModal").classList.remove("show");
+}
+
+// Render notification time selection
+function renderNotificationTimes() {
+    const container = document.getElementById("notificationTimes");
+    const allTimes = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+    
+    container.innerHTML = allTimes.map(hour => {
+        const isSelected = selectedNotificationTimes.includes(hour);
+        return `<div class="time-chip ${isSelected ? 'selected' : ''}" onclick="toggleNotificationTime(${hour})">
+            ${hour}:00
+        </div>`;
+    }).join("");
+}
+
+function toggleNotificationTime(hour) {
+    const index = selectedNotificationTimes.indexOf(hour);
+    if (index > -1) {
+        selectedNotificationTimes.splice(index, 1);
+    } else {
+        selectedNotificationTimes.push(hour);
+    }
+    selectedNotificationTimes.sort((a, b) => a - b);
+    renderNotificationTimes();
+}
+
+// Save target settings
+function saveTargetSettings() {
+    const malaInput = parseInt(document.getElementById("targetMalaInput").value);
+    const japInput = document.getElementById("targetJapInput").value.trim();
+    
+    if (!malaInput || malaInput < 1) {
+        alert("कृपया किमान 1 माळा टार्गेट लिहा!");
+        return;
+    }
+    
+    if (selectedNotificationTimes.length === 0) {
+        alert("कृपया किमान एक notification वेळ निवडा!");
+        return;
+    }
+    
+    targetMalas = malaInput;
+    targetJapName = japInput;
+    
+    saveData();
+    updateUI();
+    setupNotifications();
+    closeTargetModal();
+    
+    alert(`✅ Target सेव्ह झाले!\n\n${targetMalas} माळा ${targetJapName ? '(' + targetJapName + ')' : ''}\n\nNotification: ${selectedNotificationTimes.map(h => h + ':00').join(', ')}`);
+}
+
+// Audio Jap functions
+function showAudioJap() {
+    const modal = document.getElementById("audioJapModal");
+    renderAudioJapList();
+    modal.classList.add("show");
+}
+
+function closeAudioJapModal() {
+    document.getElementById("audioJapModal").classList.remove("show");
+}
+
+function renderAudioJapList() {
+    const container = document.getElementById("audioJapList");
+    container.innerHTML = "";
+    
+    for (let naam in audioJaps) {
+        const item = document.createElement("div");
+        item.className = "audio-jap-item";
+        
+        const info = document.createElement("div");
+        info.className = "audio-jap-info";
+        
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "audio-jap-name";
+        nameDiv.textContent = naam;
+        
+        const countDiv = document.createElement("div");
+        countDiv.className = "audio-jap-count";
+        countDiv.textContent = `जप: ${audioJaps[naam].count}`;
+        
+        info.appendChild(nameDiv);
+        info.appendChild(countDiv);
+        
+        const playBtn = document.createElement("button");
+        playBtn.className = "audio-play-btn" + (audioJaps[naam].playing ? " playing" : "");
+        playBtn.textContent = audioJaps[naam].playing ? "⏸" : "▶";
+        playBtn.onclick = () => toggleAudioJap(naam);
+        
+        item.appendChild(info);
+        item.appendChild(playBtn);
+        container.appendChild(item);
+    }
+}
+
+function toggleAudioJap(naam) {
+    // Stop any currently playing audio
+    if (currentAudio && currentAudio !== naam) {
+        stopAudioJap(currentAudio);
+    }
+    
+    if (audioJaps[naam].playing) {
+        stopAudioJap(naam);
+    } else {
+        startAudioJap(naam);
+    }
+}
+
+function startAudioJap(naam) {
+    // Create audio element if not exists
+    if (!currentAudio || currentAudio !== naam) {
+        const audio = new Audio(audioJaps[naam].url);
+        audio.loop = true;
+        audio.play().catch(e => console.log("Audio play error:", e));
+        window.currentAudioElement = audio;
+    }
+    
+    audioJaps[naam].playing = true;
+    currentAudio = naam;
+    
+    // Start counting - every 5 seconds increment
+    audioCountInterval = setInterval(() => {
+        if (audioJaps[naam].playing) {
+            audioJaps[naam].count++;
+            saveData();
+            renderAudioJapList();
+        }
+    }, 5000); // 5 seconds per jap
+    
+    // Keep screen awake
+    if ('wakeLock' in navigator) {
+        navigator.wakeLock.request('screen').catch(e => console.log("Wake lock error:", e));
+    }
+    
+    renderAudioJapList();
+}
+
+function stopAudioJap(naam) {
+    if (window.currentAudioElement) {
+        window.currentAudioElement.pause();
+        window.currentAudioElement = null;
+    }
+    
+    audioJaps[naam].playing = false;
+    currentAudio = null;
+    
+    if (audioCountInterval) {
+        clearInterval(audioCountInterval);
+        audioCountInterval = null;
+    }
+    
+    saveData();
+    renderAudioJapList();
+}
+
+// Reset today
+function resetToday() {
+    if (confirm("आजचा संपूर्ण जप रिसेट करायचा का?")) {
+        todayTotal = 0;
+        for (let naam in allJaps) {
+            allJaps[naam].count = 0;
+            allJaps[naam].todayCount = 0;
+        }
+        saveData();
+        renderJapChips();
         updateUI();
     }
 }
 
-function save() {
-    localStorage.setItem("japData", JSON.stringify(japData));
-    localStorage.setItem("lastNaam", currentNaam);
-    localStorage.setItem("lifeTotal", lifeTotal);
+// Show history
+function showHistory() {
+    const modal = document.getElementById("historyModal");
+    const content = document.getElementById("historyContent");
+    
+    if (history.length === 0) {
+        content.innerHTML = "<p style='text-align: center; opacity: 0.7;'>अजून इतिहास नाही</p>";
+    } else {
+        content.innerHTML = history.map(day => {
+            let japsHtml = "";
+            for (let naam in day.japs) {
+                japsHtml += `
+                    <div class="history-jap-entry">
+                        <strong>${naam}:</strong> ${day.japs[naam].count} जप | ${day.japs[naam].malas} माळा
+                    </div>
+                `;
+            }
+            return `
+                <div class="history-item">
+                    <div class="history-date">${day.date}</div>
+                    ${japsHtml}
+                </div>
+            `;
+        }).join("");
+    }
+    
+    modal.classList.add("show");
 }
 
-// --- Notification Logic ---
+function closeHistory() {
+    document.getElementById("historyModal").classList.remove("show");
+}
 
-function askPermission() {
-    if ("Notification" in window) {
+// Mala complete message
+function showMalaCompleteMessage() {
+    const msg = document.createElement("div");
+    msg.innerHTML = `🎉 ${currentNaam} - एक माळा पूर्ण! 🙏`;
+    msg.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        color: #000;
+        padding: 20px 40px;
+        border-radius: 15px;
+        font-size: 24px;
+        font-weight: 900;
+        z-index: 2000;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        animation: fadeInOut 2s ease;
+    `;
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 2000);
+}
+
+function playSound(type) {
+    const audio = new Audio();
+    if (type === "complete") {
+        audio.src = "https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3";
+    }
+    audio.play().catch(() => {});
+}
+
+// Notification system
+function requestNotificationPermission() {
+    if ("Notification" in window && Notification.permission === "default") {
         Notification.requestPermission();
     }
 }
 
-function sendInstantNotification() {
-    if (Notification.permission === "granted") {
-        new Notification("नाम जप", {
-            body: "छान! नोटिफिकेशन चालू झाले आहे.",
-            icon: "https://cdn-icons-png.flaticon.com/512/2850/2850812.png"
-        });
-    } else {
-        alert("कृपया ब्राउझर सेटिंगमध्ये नोटिफिकेशन Allow करा.");
-        askPermission();
-    }
+function setupNotifications() {
+    if (!targetMalas || targetMalas === 0) return;
+    
+    notificationSchedule = selectedNotificationTimes;
+    saveData();
+    checkNotifications();
 }
 
-function startNotificationLoop() {
-    // दर १ तासाने चेक करेल (बॅटरी वाचवण्यासाठी)
+function checkNotifications() {
     setInterval(() => {
-        let hour = new Date().getHours();
-        if (hour >= 6 && hour <= 22) { // सकाळी ६ ते रात्री १०
-            let mCount = Math.floor(lifeTotal / 108);
-            if (mCount < targetMalas && Notification.permission === "granted") {
-                new Notification("आजचा जप पूर्ण करा", {
-                    body: `तुमचे ${targetMalas} माळांचे टार्गेट अजून बाकी आहे. जप सुरू करा.`,
+        if (!targetMalas || targetMalas === 0) return;
+        
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+        
+        if (currentMinute === 0 && notificationSchedule.includes(currentHour)) {
+            let totalTodayMalas = 0;
+            for (let naam in allJaps) {
+                totalTodayMalas += Math.floor((allJaps[naam].todayTotal || 0) / 108);
+            }
+            
+            if (totalTodayMalas < targetMalas && Notification.permission === "granted") {
+                let notificationBody = `आजचे ${targetMalas - totalTodayMalas} माळा अजून बाकी आहेत!`;
+                if (targetJapName) {
+                    notificationBody = `${targetJapName} - ` + notificationBody;
+                }
+                notificationBody += `\n⏰ पुढील आठवण: ${getNextNotificationTime(currentHour)}`;
+                
+                new Notification("🙏 नाम जप आठवण", {
+                    body: notificationBody,
+                    icon: "https://cdn-icons-png.flaticon.com/512/2850/2850812.png",
+                    requireInteraction: false
                 });
             }
         }
-    }, 60 * 60 * 1000); // Check every hour
+    }, 60000);
 }
+
+function getNextNotificationTime(currentHour) {
+    const nextTime = notificationSchedule.find(h => h > currentHour);
+    if (nextTime) {
+        return nextTime + ":00 वाजता";
+    } else if (notificationSchedule.length > 0) {
+        return "उद्या " + notificationSchedule[0] + ":00 वाजता";
+    }
+    return "आजचे notifications संपले";
+}
+
+const style = document.createElement("style");
+style.textContent = `
+    @keyframes fadeInOut {
+        0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        10%, 90% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+`;
+document.head.appendChild(style);
 
 init();
 </script>
 </body>
 </html>
-

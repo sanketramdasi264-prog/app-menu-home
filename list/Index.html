@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium पूजा साहित्य यादी</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    :root { --primary: #c62828; --secondary: #ef6c00; --bg: #f5f5f5; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; justify-content: center; }
+    .app { max-width: 500px; width: 100%; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+    
+    .input-group { margin-bottom: 12px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #444; }
+    input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 14px; }
+
+    .list-header { display: flex; font-weight: bold; background: #eee; padding: 10px; border-radius: 5px; margin-top: 10px; }
+    .list-container { max-height: 350px; overflow-y: auto; border: 1px solid #eee; margin-bottom: 15px; }
+    .list-item { display: flex; align-items: center; padding: 8px; border-bottom: 1px solid #f1f1f1; }
+    .list-item input[type="checkbox"] { width: 22px; height: 22px; margin-right: 12px; accent-color: var(--primary); }
+    .item-text { flex: 2; border: none; background: transparent; font-size: 15px; padding: 5px; width: 100%; }
+    .qty-input { flex: 1; padding: 6px; border: 1px solid #ccc; border-radius: 4px; max-width: 90px; text-align: center; }
+
+    .btn-main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 18px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 10px; }
+    .btn-main:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-secondary { background: #666; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; width: 100%; cursor: pointer; }
+
+    .progress { background: #eee; height: 8px; border-radius: 10px; overflow: hidden; margin: 10px 0; display: none; }
+    .progress-bar { background: linear-gradient(45deg, var(--primary), var(--secondary)); height: 100%; transition: width 0.3s; }
+
+    /* Export Template - Fixed Height Management */
+    #export-container { position: fixed; left: -99999px; top: 0; }
+    .page-template { 
+        width: 2130px; 
+        height: 3231px; 
+        background: #ffffff; 
+        padding: 100px 140px; 
+        position: relative;
+        overflow: hidden;
+    }
+    .page-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .p-logo-box { 
+        position: absolute; 
+        top: 110px; 
+        right: 140px; 
+        width: 260px; 
+        height: 260px; 
+        border: 5px solid var(--primary);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff5f5;
+        font-size: 90px;
+        color: var(--primary);
+    }
+    .p-ganesh { 
+        text-align: center; 
+        font-size: 50px; 
+        font-weight: bold; 
+        color: #c62828; 
+        margin-bottom: 25px; 
+    }
+    .p-header { 
+        text-align: center; 
+        margin-bottom: 50px; 
+        width: 68%; 
+        margin-left: auto; 
+        margin-right: auto; 
+    }
+    .p-header h1 { 
+        font-size: 95px; 
+        color: var(--primary); 
+        margin: 0 0 25px 0; 
+        text-decoration: underline; 
+        line-height: 1.2;
+    }
+    .p-info { 
+        font-size: 48px; 
+        margin-top: 25px; 
+        line-height: 1.4; 
+        color: #333;
+    }
+    .p-table-wrapper {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .p-table { 
+        width: 100%; 
+        border-collapse: collapse;
+    }
+    .p-table th { 
+        background: #fdf2f2; 
+        padding: 30px 38px; 
+        text-align: left; 
+        border-bottom: 5px solid #333; 
+        font-size: 56px; 
+        color: #000;
+    }
+    .p-table td { 
+        padding: 26px 38px; 
+        border-bottom: 2px solid #eee; 
+        font-size: 50px; 
+        color: #000;
+    }
+    .p-footer { 
+        margin-top: 40px;
+        padding-top: 35px;
+        text-align: center; 
+        border-top: 3px solid #ddd;
+    }
+    .tip-text { 
+        font-size: 46px; 
+        font-weight: 600; 
+        color: #222; 
+        margin-bottom: 25px; 
+        line-height: 1.3;
+    }
+    .page-no { 
+        font-size: 40px; 
+        color: #666; 
+        font-weight: 500;
+    }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <h2 style="color:var(--primary); text-align:center; margin-top: 0;">🚩 पूजा साहित्य यादी</h2>
+    
+    <div class="input-group">
+        <label>येथे पूजेचे नाव लिहा:</label>
+        <input type="text" id="poojaName" placeholder="उदा. श्री सत्यनारायण महापूजा...">
+    </div>
+    <div class="input-group">
+        <label>आचार्य / गुरुजींचे नाव:</label>
+        <input type="text" id="guruName" placeholder="उदा. श्री _________ गुरुजी">
+    </div>
+    <div class="input-group">
+        <label>संपर्क क्रमांक:</label>
+        <input type="text" id="contactNo" placeholder="मोबाईल नंबर">
+    </div>
+
+    <div class="list-header">
+        <div style="flex:2;">साहित्याचे नाव</div>
+        <div style="flex:1; text-align:center;">विवरण</div>
+    </div>
+    <div class="list-container" id="mainList"></div>
+
+    <div class="progress" id="progressBar">
+        <div class="progress-bar" id="progressFill"></div>
+    </div>
+
+    <button class="btn-main" id="btnDownload" onclick="processExport()">
+        📥 डाऊनलोड & शेअर
+    </button>
+    <button class="btn-secondary" onclick="clearAllData()">
+        🗑️ सर्व डेटा साफ करा
+    </button>
+</div>
+
+<div id="export-container"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+    const samagri = ["हळद", "कुंकू", "अबिर", "गुलाल", "शेंदूर", "अष्टगंध", "अत्तर", "मध", "गोमूत्र", "गंगाजल", "गुलाबपाणी", "नाडापुडी", "जानवे जोड", "लाल कपडा", "हिरवा कपडा", "पांढरा कपडा", "सुपारी", "खारीक", "बदाम", "हळकुंड", "अक्रोड", "रांगोळी", "कापूर", "धूप", "तांदूळ", "गुळ", "खोबरे वाटी", "नारळ", "फुलवाती", "उदबत्ती", "कापूस", "तूप", "तेल", "खडीसाखर", "सुटे पैसे", "विडा पाने", "दुर्वा", "तुळस", "बेल", "फुले", "हार", "फळे", "पंचामृत", "ताम्हण", "तांब्या", "पळी", "पंचपात्र"];
+
+    async function loadSavedData() {
+        try {
+            const savedData = await window.storage.get('pooja-data');
+            if (savedData && savedData.value) {
+                const data = JSON.parse(savedData.value);
+                document.getElementById('poojaName').value = data.poojaName || '';
+                document.getElementById('guruName').value = data.guruName || '';
+                document.getElementById('contactNo').value = data.contactNo || '';
+                
+                if (data.items) {
+                    data.items.forEach((item, i) => {
+                        const chk = document.getElementById(`chk-${i}`);
+                        const txt = document.getElementById(`txt-${i}`);
+                        const qty = document.getElementById(`qty-${i}`);
+                        if (chk) chk.checked = item.checked || false;
+                        if (txt) txt.value = item.name || samagri[i];
+                        if (qty) qty.value = item.qty || '';
+                    });
+                }
+            }
+        } catch (err) {
+            console.log('No saved data');
+        }
+    }
+
+    async function saveData() {
+        const items = samagri.map((_, i) => ({
+            checked: document.getElementById(`chk-${i}`).checked,
+            name: document.getElementById(`txt-${i}`).value,
+            qty: document.getElementById(`qty-${i}`).value
+        }));
+
+        const data = {
+            poojaName: document.getElementById('poojaName').value,
+            guruName: document.getElementById('guruName').value,
+            contactNo: document.getElementById('contactNo').value,
+            items: items
+        };
+
+        try {
+            await window.storage.set('pooja-data', JSON.stringify(data));
+        } catch (err) {
+            console.error('Save failed:', err);
+        }
+    }
+
+    function loadItems() {
+        const container = document.getElementById('mainList');
+        samagri.forEach((item, index) => {
+            container.innerHTML += `
+                <div class="list-item">
+                    <input type="checkbox" id="chk-${index}" onchange="saveData()">
+                    <input type="text" class="item-text" id="txt-${index}" value="${item}" onchange="saveData()">
+                    <input type="text" class="qty-input" id="qty-${index}" placeholder="नग" onchange="saveData()">
+                </div>`;
+        });
+        loadSavedData();
+    }
+
+    async function clearAllData() {
+        if (confirm('सर्व डेटा साफ करायचा? हे पूर्ववत करता येणार नाही!')) {
+            try {
+                await window.storage.delete('pooja-data');
+                location.reload();
+            } catch (err) {
+                console.error('Delete failed:', err);
+            }
+        }
+    }
+
+    function updateProgress(percent) {
+        const bar = document.getElementById('progressBar');
+        const fill = document.getElementById('progressFill');
+        bar.style.display = 'block';
+        fill.style.width = percent + '%';
+    }
+
+    async function processExport() {
+        await saveData();
+        
+        const selected = [];
+        samagri.forEach((_, i) => {
+            if(document.getElementById(`chk-${i}`).checked) {
+                selected.push({ 
+                    name: document.getElementById(`txt-${i}`).value, 
+                    qty: document.getElementById(`qty-${i}`).value || "-" 
+                });
+            }
+        });
+
+        if(selected.length === 0) {
+            alert("कृपया साहित्य निवडा!");
+            return;
+        }
+
+        const btn = document.getElementById('btnDownload');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = "⏳ कृपया थांबा...";
+        btn.disabled = true;
+
+        const pNameInput = document.getElementById('poojaName').value.trim() || "पूजा साहित्य यादी";
+        const gNameInput = document.getElementById('guruName').value.trim();
+        const contactInput = document.getElementById('contactNo').value.trim();
+
+        const exportContainer = document.getElementById('export-container');
+        exportContainer.innerHTML = ""; 
+
+        let currentItem = 0;
+        let pageNum = 1;
+        const allImages = [];
+
+        // Conservative item limits to ensure everything fits with footer
+        const hasHeader = gNameInput ? true : false;
+        const firstPageLimit = hasHeader ? 18 : 22;  // Reduced for safety
+        const otherPageLimit = 24;  // Reduced for safety
+
+        const totalPages = Math.ceil(Math.max(0, selected.length - firstPageLimit) / otherPageLimit) + 1;
+
+        while (currentItem < selected.length) {
+            updateProgress((pageNum / totalPages) * 80);
+            
+            let limit = (pageNum === 1) ? firstPageLimit : otherPageLimit;
+            const pageData = selected.slice(currentItem, currentItem + limit);
+            const isLastPage = (currentItem + limit) >= selected.length;
+            
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'page-template';
+            
+            let pageHtml = '<div class="page-content">';
+            pageHtml += `<div class="p-ganesh">॥ श्री गणेशाय नम: ॥</div>`;
+            
+            if(pageNum === 1) {
+                pageHtml += `
+                    <div class="p-logo-box">🕉️</div>
+                    <div class="p-header">
+                        <h1>${pNameInput}</h1>
+                        ${hasHeader ? `<div class="p-info"><b>पूजेचे आचार्य:</b> ${gNameInput}${contactInput ? ` | <b>संपर्क:</b> ${contactInput}` : ""}</div>` : ""}
+                    </div>`;
+            } else {
+                pageHtml += `<div style="text-align:center; font-size:78px; font-weight:bold; color:#c62828; margin: 35px 0 45px 0;">${pNameInput}</div>`;
+            }
+
+            let rowsHtml = pageData.map(item => `<tr><td>${item.name}</td><td>${item.qty}</td></tr>`).join('');
+            
+            pageHtml += `
+                <div class="p-table-wrapper">
+                    <table class="p-table">
+                        <thead><tr><th style="width:65%">साहित्याचे नाव</th><th style="width:35%">विवरण</th></tr></thead>
+                        <tbody>${rowsHtml}</tbody>
+                    </table>
+                </div>
+                <div class="p-footer">
+                    <div class="tip-text">🙏 कृपया वरील सर्व साहित्य पूजेपूर्वी उपलब्ध करून ठेवावे 🙏</div>
+                    <div class="page-no">पान क्र. ${pageNum} / ${totalPages}${!isLastPage ? ' (पुढील पान पहा 👉)' : ''}</div>
+                </div>
+            </div>`;
+            
+            pageDiv.innerHTML = pageHtml;
+            exportContainer.appendChild(pageDiv);
+            
+            // Wait for fonts and render
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            try {
+                const canvas = await html2canvas(pageDiv, { 
+                    backgroundColor: '#ffffff',
+                    scale: 1,
+                    logging: false,
+                    useCORS: false,
+                    allowTaint: false,
+                    imageTimeout: 0,
+                    removeContainer: false,
+                    width: 2130,
+                    height: 3231
+                });
+                
+                const dataUrl = canvas.toDataURL("image/png", 1.0);
+                allImages.push({ 
+                    dataUrl, 
+                    fileName: `${pNameInput}_पान_${pageNum}.png` 
+                });
+            } catch (err) {
+                console.error('Canvas error:', err);
+                alert('Image तयार करताना error आली. कृपया पुन्हा प्रयत्न करा.');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return;
+            }
+            
+            currentItem += limit;
+            pageNum++;
+        }
+
+        updateProgress(95);
+
+        // Download all images with delay
+        for (let i = 0; i < allImages.length; i++) {
+            setTimeout(() => {
+                downloadFile(allImages[i].dataUrl, allImages[i].fileName);
+            }, i * 400);
+        }
+
+        updateProgress(100);
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            document.getElementById('progressBar').style.display = 'none';
+            alert(`✅ ${allImages.length} पाने यशस्वीपणे download झाली!\n\nतुमच्या Downloads फोल्डरमध्ये पहा.`);
+        }, allImages.length * 400 + 500);
+    }
+
+    function downloadFile(url, name) {
+        const link = document.createElement('a');
+        link.download = name;
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    loadItems();
+
+    ['poojaName', 'guruName', 'contactNo'].forEach(id => {
+        document.getElementById(id).addEventListener('input', saveData);
+    });
+</script>
+</body>
+</html>

@@ -23,27 +23,23 @@
     .item-text { flex: 2; border: none; background: transparent; font-size: 15px; padding: 5px; width: 100%; }
     .qty-input { flex: 1; padding: 6px; border: 1px solid #ccc; border-radius: 4px; max-width: 90px; text-align: center; }
 
+    .btn-add { background: #e8f5e9; color: #2e7d32; border: 2px dashed #2e7d32; padding: 10px; border-radius: 8px; font-size: 15px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 15px; transition: 0.3s; }
+    .btn-add:hover { background: #c8e6c9; }
+
     .btn-main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 18px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 10px; }
     .btn-secondary { background: #444; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 15px; width: 100%; cursor: pointer; }
 
-    /* History Overlay - Full Page */
-    #historyOverlay { 
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        background: white; z-index: 1000; display: none; flex-direction: column; padding: 20px;
-        overflow-y: auto;
-    }
+    #historyOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
     .history-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 15px; }
     .history-note { background: #fff3e0; border-left: 5px solid #ff9800; padding: 15px; font-size: 14px; color: #555; margin-bottom: 20px; border-radius: 5px; }
     .history-item { border: 1px solid #ddd; padding: 15px; border-radius: 10px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-    .history-item:active { background: #f0f0f0; }
 
-    /* Export Template Styles */
     #export-container { position: fixed; left: -99999px; top: 0; }
     .page-template { width: 2130px; height: 3231px; background: #ffffff; padding: 100px 140px; position: relative; overflow: hidden; }
     .page-content { height: 100%; display: flex; flex-direction: column; }
     .p-logo-box { position: absolute; top: 110px; right: 140px; width: 280px; height: 280px; }
     .p-logo-box img { width: 100%; height: 100%; object-fit: contain; }
-    .p-ganesh { text-align: center; font-size: 50px; font-weight: bold; color: #c62828; margin-bottom: 25px; }
+    .p-ganesh { text-align: center; font-size: 60px; font-weight: bold; color: #c62828; margin-bottom: 25px; }
     .p-header { text-align: center; margin-bottom: 50px; width: 68%; margin-left: auto; margin-right: auto; }
     .p-header h1 { font-size: 95px; color: var(--primary); margin: 0 0 25px 0; text-decoration: underline; line-height: 1.2; }
     .p-info { font-size: 48px; margin-top: 25px; line-height: 1.4; color: #333; }
@@ -53,19 +49,7 @@
     .p-table td { padding: 26px 38px; border-bottom: 2px solid #eee; font-size: 50px; color: #000; }
     .p-footer { margin-top: auto; padding-top: 35px; text-align: center; border-top: 3px solid #ddd; display: flex; flex-direction: column; align-items: center; }
     .tip-text { font-size: 46px; font-weight: 600; color: #222; margin-bottom: 25px; }
-    
-    /* Yellow Capsule Style for Page Number */
-    .page-capsule {
-        background-color: #ffeb3b;
-        color: #000;
-        padding: 10px 40px;
-        border-radius: 50px;
-        font-size: 40px;
-        font-weight: bold;
-        display: inline-block;
-        margin-top: 10px;
-        border: 2px solid #fdd835;
-    }
+    .page-capsule { background-color: #ffeb3b; color: #000; padding: 10px 40px; border-radius: 50px; font-size: 40px; font-weight: bold; display: inline-block; margin-top: 10px; border: 2px solid #fdd835; }
 </style>
 </head>
 <body>
@@ -92,6 +76,8 @@
     </div>
     <div class="list-container" id="mainList"></div>
 
+    <button class="btn-add" onclick="addNewItem()">➕ नवीन साहित्य जोडा (Add More)</button>
+
     <button class="btn-main" id="btnDownload" onclick="processExport()">📥 डाऊनलोड & शेअर</button>
     <button class="btn-secondary" onclick="toggleHistory(true)">📜 जुनी हिस्ट्री (History)</button>
 </div>
@@ -113,20 +99,35 @@
 
 <script>
     const LOGO_URL = "1000894411 (1).png"; 
-    const samagri = ["हळद", "कुंकू", "अबिर", "गुलाल", "शेंदूर", "अष्टगंध", "अत्तर", "मध", "गोमूत्र", "गंगाजल", "गुलाबपाणी", "नाडापुडी", "जानवे जोड", "लाल कपडा", "हिरवा कपडा", "पांढरा कपडा", "सुपारी", "खारीक", "बदाम", "हळकुंड", "अक्रोड", "रांगोळी", "कापूर", "धूप", "तांदूळ", "गुळ", "खोबरे वाटी", "नारळ", "फुलवाती", "उदबत्ती", "कापूस", "तूप", "तेल", "खडीसाखर", "सुटे पैसे", "विडा पाने", "दुर्वा", "तुळस", "बेल", "फुले", "हार", "फळे", "पंचामृत", "ताम्हण", "तांब्या", "पळी", "पंचपात्र"];
+    let currentSamagri = ["हळद", "कुंकू", "अबिर", "गुलाल", "शेंदूर", "अष्टगंध", "अत्तर", "मध", "गोमूत्र", "गंगाजल", "गुलाबपाणी", "नाडापुडी", "जानवे जोड", "लाल कपडा", "हिरवा कपडा", "पांढरा कपडा", "सुपारी", "खारीक", "बदाम", "हळकुंड", "अक्रोड", "रांगोळी", "कापूर", "धूप", "तांदूळ", "गुळ", "खोबरे वाटी", "नारळ", "फुलवाती", "उदबत्ती", "कापूस", "तूप", "तेल", "खडीसाखर", "सुटे पैसे", "विडा पाने", "दुर्वा", "तुळस", "बेल", "फुले", "हार", "फळे", "पंचामृत", "ताम्हण", "तांब्या", "पळी", "पंचपात्र"];
 
     function init() {
         const container = document.getElementById('mainList');
         container.innerHTML = "";
-        samagri.forEach((item, index) => {
-            container.innerHTML += `
-                <div class="list-item">
-                    <input type="checkbox" id="chk-${index}">
-                    <input type="text" class="item-text" id="txt-${index}" value="${item}">
-                    <input type="text" class="qty-input" id="qty-${index}" placeholder="प्रमाण">
-                </div>`;
+        currentSamagri.forEach((item, index) => {
+            addItemToUI(item, index);
         });
         updateHistoryList();
+    }
+
+    function addItemToUI(name, index) {
+        const container = document.getElementById('mainList');
+        const div = document.createElement('div');
+        div.className = 'list-item';
+        div.innerHTML = `
+            <input type="checkbox" id="chk-${index}">
+            <input type="text" class="item-text" id="txt-${index}" value="${name}">
+            <input type="text" class="qty-input" id="qty-${index}" placeholder="प्रमाण">
+        `;
+        container.appendChild(div);
+    }
+
+    function addNewItem() {
+        const newIndex = document.querySelectorAll('.list-item').length;
+        addItemToUI("", newIndex);
+        const listContainer = document.getElementById('mainList');
+        listContainer.scrollTop = listContainer.scrollHeight;
+        setTimeout(() => document.getElementById(`txt-${newIndex}`).focus(), 100);
     }
 
     function toggleHistory(show) {
@@ -138,22 +139,20 @@
         let history = JSON.parse(localStorage.getItem('pooja_history') || '[]');
         const entry = { id: Date.now(), date: new Date().toLocaleString('mr-IN'), data: data };
         history.unshift(entry);
-        localStorage.setItem('pooja_history', JSON.stringify(history.slice(0, 15))); // Keep last 15
+        localStorage.setItem('pooja_history', JSON.stringify(history.slice(0, 15)));
     }
 
     function updateHistoryList() {
         const historyListContent = document.getElementById('historyListContent');
         const history = JSON.parse(localStorage.getItem('pooja_history') || '[]');
-        
         if(history.length === 0) {
             historyListContent.innerHTML = "<p style='text-align:center; color:#999; margin-top:50px;'>अद्याप कोणतीही हिस्ट्री उपलब्ध नाही.</p>";
             return;
         }
-
         historyListContent.innerHTML = history.map(h => `
             <div class="history-item" onclick="loadHistoryItem(${h.id})">
                 <div>
-                    <div style="font-weight:700; font-size:16px;">${h.data.poojaName || 'अनामिक पूजा'}</div>
+                    <div style="font-weight:700; font-size:16px;">${h.data.poojaName.trim() || 'अज्ञात साहित्य यादी'}</div>
                     <div style="font-size:12px; color:#666;">📅 ${h.date}</div>
                     <div style="font-size:12px; color:var(--secondary);">👤 ${h.data.guruName || '-'}</div>
                 </div>
@@ -165,20 +164,21 @@
     function loadHistoryItem(id) {
         const history = JSON.parse(localStorage.getItem('pooja_history') || '[]');
         const entry = history.find(h => h.id === id).data;
-
         document.getElementById('poojaName').value = entry.poojaName;
         document.getElementById('guruName').value = entry.guruName;
         document.getElementById('contactNo').value = entry.contactNo;
-
+        const container = document.getElementById('mainList');
+        container.innerHTML = "";
         entry.items.forEach((item, i) => {
-            const chk = document.getElementById(`chk-${i}`);
-            const qty = document.getElementById(`qty-${i}`);
-            const txt = document.getElementById(`txt-${i}`);
-            if(chk) chk.checked = item.checked;
-            if(qty) qty.value = item.qty;
-            if(txt) txt.value = item.name;
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `
+                <input type="checkbox" id="chk-${i}" ${item.checked ? 'checked' : ''}>
+                <input type="text" class="item-text" id="txt-${i}" value="${item.name}">
+                <input type="text" class="qty-input" id="qty-${i}" value="${item.qty || ''}" placeholder="प्रमाण">
+            `;
+            container.appendChild(div);
         });
-
         toggleHistory(false);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         alert("निवडलेली यादी लोड झाली आहे!");
@@ -186,33 +186,34 @@
 
     async function processExport() {
         const selected = [];
-        samagri.forEach((_, i) => {
-            if(document.getElementById(`chk-${i}`).checked) {
-                selected.push({ name: document.getElementById(`txt-${i}`).value, qty: document.getElementById(`qty-${i}`).value || "-" });
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((itemDiv, i) => {
+            const isChecked = document.getElementById(`chk-${i}`).checked;
+            const name = document.getElementById(`txt-${i}`).value;
+            const qty = document.getElementById(`qty-${i}`).value || "-";
+            if(isChecked && name.trim() !== "") {
+                selected.push({ name, qty });
             }
         });
-
         if(!selected.length) return alert("साहित्य निवडा!");
-
+        
+        const poojaNameVal = document.getElementById('poojaName').value;
         const poojaData = {
-            poojaName: document.getElementById('poojaName').value,
+            poojaName: poojaNameVal,
             guruName: document.getElementById('guruName').value,
             contactNo: document.getElementById('contactNo').value,
-            items: samagri.map((_, i) => ({
+            items: Array.from(items).map((_, i) => ({
                 checked: document.getElementById(`chk-${i}`).checked,
                 name: document.getElementById(`txt-${i}`).value,
                 qty: document.getElementById(`qty-${i}`).value
             }))
         };
-        
         saveToHistory(poojaData);
 
         const btn = document.getElementById('btnDownload');
         btn.innerHTML = "⏳ कृपया थांबा..."; btn.disabled = true;
-
         const container = document.getElementById('export-container');
         container.innerHTML = "";
-
         const itemsPerPage = 18;
         const totalPages = Math.ceil(selected.length / itemsPerPage);
 
@@ -222,10 +223,10 @@
             pageDiv.className = 'page-template';
             pageDiv.innerHTML = `
                 <div class="page-content">
-                    <div class="p-ganesh">॥ श्री गणेशाय नम: ॥</div>
+                    <div class="p-ganesh">॥ श्री ॥</div>
                     <div class="p-logo-box"><img src="${LOGO_URL}" crossorigin="anonymous"></div>
                     <div class="p-header">
-                        <h1>${poojaData.poojaName || "पूजा साहित्य"}</h1>
+                        <h1>${poojaData.poojaName.trim() || "अज्ञात साहित्य यादी"}</h1>
                         <div class="p-info"><b>गुरुजी:</b> ${poojaData.guruName} | <b>संपर्क:</b> ${poojaData.contactNo}</div>
                     </div>
                     <div class="p-table-wrapper">
@@ -248,7 +249,6 @@
         }
         btn.innerHTML = "📥 डाऊनलोड & शेअर"; btn.disabled = false;
     }
-
     init();
 </script>
 </body>

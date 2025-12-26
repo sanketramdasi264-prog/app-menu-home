@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>कर्मयोग | Karmyog</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
-    
-    <script src="https://unpkg.com/lucide@latest"></script>
-
     <style>
         :root {
             --primary-red: #8B0000;
@@ -25,7 +21,8 @@
         }
 
         body {
-            font-family: "Baloo 2", "Noto Sans Devanagari", sans-serif;
+            /* System fonts load instantly and look native on Android/iOS */
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: radial-gradient(circle at top, #3d0c0c, #1a0000);
             color: #fff;
             min-height: 100vh;
@@ -45,6 +42,7 @@
 
         .header-logo {
             width: 200px;
+            height: auto; /* Prevents layout shift */
             background: #fff;
             padding: 10px;
             border-radius: 18px;
@@ -67,7 +65,7 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: 0.2s;
+            transition: transform 0.1s;
         }
 
         .share-btn:active {
@@ -98,12 +96,12 @@
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-            transition: all 0.2s ease;
+            transition: transform 0.1s ease;
+            will-change: transform; /* Performance hint */
         }
 
         .card:active {
-            transform: scale(0.94);
-            filter: brightness(1.1);
+            transform: scale(0.96);
         }
 
         .icon-box {
@@ -121,7 +119,7 @@
 
         .card-title {
             font-size: 19px;
-            font-weight: 800;
+            font-weight: 700;
             line-height: 1.2;
             margin-bottom: 4px;
         }
@@ -131,6 +129,17 @@
             font-weight: 400;
             color: #ffcccc;
             opacity: 0.9;
+        }
+
+        /* Universal SVG Styles */
+        .icon-svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .custom-svg {
@@ -149,10 +158,16 @@
 <body>
 
 <div class="header-container">
-    <img src="1000894411 (1).png" class="header-logo" alt="Karmyog Logo">
+    <img src="1000894411 (1).png" class="header-logo" alt="Karmyog Logo" loading="eager">
     
-    <div class="share-btn" onclick="shareApp()">
-        <i data-lucide="share-2"></i>
+    <div class="share-btn" onclick="shareApp()" aria-label="Share">
+        <svg class="icon-svg" viewBox="0 0 24 24">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+        </svg>
     </div>
 </div>
 
@@ -170,7 +185,16 @@
     </a>
 
     <a href="https://sanketramdasi264-prog.github.io/app-menu-home/stotra/" class="card">
-        <div class="icon-box"><i data-lucide="scroll"></i></div>
+        <div class="icon-box">
+            <svg class="icon-svg" viewBox="0 0 24 24">
+                <path d="M8 2h11v20H8z" />
+                <path d="M19 22H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h3" />
+                <path d="M8 6h4" />
+                <path d="M8 10h8" />
+                <path d="M8 14h8" />
+                <path d="M8 18h4" />
+            </svg>
+        </div>
         <div class="card-title">स्तोत्र संग्रह</div>
         <div class="card-subtitle">सर्व स्तोत्रे व अष्टके</div>
     </a>
@@ -188,25 +212,59 @@
     </a>
 
     <a href="https://sanketramdasi264-prog.github.io/app-menu-home/pooja/" class="card">
-        <div class="icon-box"><i data-lucide="flame"></i></div>
+        <div class="icon-box">
+            <svg class="icon-svg" viewBox="0 0 24 24">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.243-2.188.7-3.125A3.99 3.99 0 0 0 8.5 14.5Z" />
+            </svg>
+        </div>
         <div class="card-title">कर्मकांड</div>
         <div class="card-subtitle">पूजन, हवन, आवाहन</div>
     </a>
 
     <a href="#" class="card">
-        <div class="icon-box"><i data-lucide="calendar-days"></i></div>
+        <div class="icon-box">
+            <svg class="icon-svg" viewBox="0 0 24 24">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+                <path d="M8 14h.01" />
+                <path d="M12 14h.01" />
+                <path d="M16 14h.01" />
+                <path d="M8 18h.01" />
+                <path d="M12 18h.01" />
+                <path d="M16 18h.01" />
+            </svg>
+        </div>
         <div class="card-title">पंचांग मुहूर्त</div>
         <div class="card-subtitle">विवाह मुहूर्त इत्यादी...</div>
     </a>
 
     <a href="https://sanketramdasi264-prog.github.io/app-menu-home/list/" class="card">
-        <div class="icon-box"><i data-lucide="clipboard-list"></i></div>
+        <div class="icon-box">
+            <svg class="icon-svg" viewBox="0 0 24 24">
+                <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                <path d="M12 11h4" />
+                <path d="M12 16h4" />
+                <path d="M8 11h.01" />
+                <path d="M8 16h.01" />
+            </svg>
+        </div>
         <div class="card-title">साहित्य यादी</div>
         <div class="card-subtitle">पूजा साहित्य</div>
     </a>
 
     <a href="https://sanketramdasi264-prog.github.io/app-menu-home/kundali/" class="card">
-        <div class="icon-box"><i data-lucide="file-text"></i></div>
+        <div class="icon-box">
+            <svg class="icon-svg" viewBox="0 0 24 24">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <line x1="10" y1="9" x2="8" y2="9" />
+            </svg>
+        </div>
         <div class="card-title">जन्म कुंडली</div>
         <div class="card-subtitle">PDF तयार करा</div>
     </a>
@@ -232,10 +290,7 @@
 </div>
 
 <script>
-    // Initialize icons
-    lucide.createIcons();
-
-    // Share Functionality
+    // Share Functionality (No external dependencies needed)
     function shareApp() {
         if (navigator.share) {
             navigator.share({

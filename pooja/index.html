@@ -26,24 +26,6 @@
       margin: 0 auto;
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #fff;
-    }
-
-    .header h1 {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .header p {
-      font-size: 16px;
-      opacity: 0.9;
-    }
-
     .category {
       margin-bottom: 16px;
       border-radius: 16px;
@@ -92,10 +74,6 @@
       padding-left: 24px;
     }
 
-    .category-header:active {
-      transform: scale(0.98);
-    }
-
     .arrow {
       font-size: 18px;
       transition: transform 0.3s ease;
@@ -132,24 +110,8 @@
       overflow: hidden;
     }
 
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s ease;
-    }
-
-    .card:hover::before {
-      left: 100%;
-    }
-
     .card:hover {
       background: linear-gradient(135deg, #2196f3 0%, #1e88e5 100%);
-      border-color: rgba(30,144,255,0.7);
       transform: translateY(-4px);
       box-shadow: 0 8px 20px rgba(30,144,255,0.3);
     }
@@ -161,93 +123,63 @@
       font-size: 16px;
       display: block;
       line-height: 1.5;
-      transition: color 0.3s ease;
-    }
-
-    .card:hover a {
-      color: #ffffff;
-    }
-
-    .info-section {
-      text-align: center;
-      margin-top: 40px;
-      padding: 30px 20px;
-      background: rgba(255,255,255,0.03);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      border: 1px solid rgba(139,0,0,0.3);
-    }
-
-    .info-section p {
-      color: #20124d;
-      font-size: 18px;
-      margin-bottom: 20px;
-      font-weight: 600;
-    }
-
-    .info-section .index-link {
-      display: inline-block;
-      padding: 12px 30px;
-      background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 20px;
-      font-weight: 700;
-      transition: all 0.3s ease;
-      margin-bottom: 15px;
-    }
-
-    .info-section .index-link:hover {
-      background: linear-gradient(135deg, #ff3333 0%, #ff0000 100%);
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(255,0,0,0.4);
-    }
-
-    .info-section .subtitle {
-      color: #ff0000;
-      font-size: 16px;
-      font-weight: 600;
     }
 
     @media (max-width: 768px) {
-      .header h1 {
-        font-size: 26px;
-      }
-      
-      .grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 12px;
-      }
-
-      .category-header {
-        font-size: 18px;
-        padding: 16px 20px;
-      }
-
-      .info-section .index-link {
-        font-size: 18px;
-        padding: 10px 25px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+      .category-header { font-size: 18px; }
     }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <!-- HEADER CATEGORY -->
+    
     <div class="category">
       <div class="category-header header-yellow">
         <span>🙏 पूजा प्रयोग संग्रह 🙏</span>
       </div>
     </div>
 
-    <!-- MAIN POOJA VIDHI -->
+    <div class="category">
+      <div class="category-header" onclick="toggle('nitya')">
+        <span>मंडल देवता स्थापना</span>
+        <span class="arrow" id="nitya-arrow">▶</span>
+      </div>
+      <div class="category-content" id="nitya">
+        <div class="grid">
+          <div class="card">
+            <a href="https://www.omkarmyog.in/2025/12/blog-post_26.html" 
+               target="_blank">गौर्यादि मातृका देवता स्थापनम्</a>
+          </div>
+          <div class="card">
+            <a href="#" target="_blank">शिख्यादि वास्तूमंडल देवता स्थापनम्</a>
+          </div>
+          <div class="card">
+            <a href="#" target="_blank">गजाननादी चतुश्षष्ठी योगिनीमंडल देवता स्थापनम् </a>
+          </div>
+           <div class="card">
+            <a href="#" target="_blank">अजरादी एकपंचाशत क्षेत्रपालमंडल देवता स्थापनम् </a>
+          </div>
+           <div class="card">
+            <a href="#" target="_blank">चतुश्षष्ठी भैरवमंडल देवता स्थापनम् </a>
+          </div>
+           <div class="card">
+            <a href="#" target="_blank">ब्रम्हादी सर्वतोभद्रमंडल देवता स्थापनम् </a>
+          </div>
+           <div class="card">
+            <a href="#" target="_blank">नवग्रह मंडल देवता स्थापनम् </a>
+          </div>
+           <div class="card">
+            <a href="#" target="_blank">आवरण देवता स्थापनम् </a>
+          </div>
+           <div class="card">
+            <a href="#" target="_blank">पीठ - यंत्र देवता स्थापनम् </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="category">
       <div class="category-header" onclick="toggle('main')">
         <span>पूजा विधी</span>
@@ -279,6 +211,22 @@
       </div>
     </div>
 
+    <div class="category">
+      <div class="category-header" onclick="toggle('stotra')">
+        <span>मंगलाष्टके</span>
+        <span class="arrow" id="stotra-arrow">▶</span>
+      </div>
+      <div class="category-content" id="stotra">
+        <div class="grid">
+          <div class="card">
+            <a href="#" target="_blank">विवाह मंगलाष्टके</a>
+          </div>
+          <div class="card">
+            <a href="#" target="_blank">उपनयन मौंजविधी मंगलाष्टके </a>
+          
+        </div>
+      </div>
+    </div>
 
   </div>
 

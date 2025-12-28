@@ -23,74 +23,61 @@
     .item-text { flex: 2; border: none; background: transparent; font-size: 15px; padding: 5px; width: 100%; }
     .qty-input { flex: 1; padding: 6px; border: 1px solid #ccc; border-radius: 4px; max-width: 90px; text-align: center; }
 
-    .btn-add { background: #e8f5e9; color: #2e7d32; border: 2px dashed #2e7d32; padding: 10px; border-radius: 8px; font-size: 15px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 15px; transition: 0.3s; }
-    .btn-add:hover { background: #c8e6c9; }
-
+    .btn-add { background: #e8f5e9; color: #2e7d32; border: 2px dashed #2e7d32; padding: 10px; border-radius: 8px; font-size: 15px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 15px; }
     .btn-main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 18px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 10px; }
     .btn-secondary { background: #444; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 15px; width: 100%; cursor: pointer; }
 
-    #historyOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
-    .history-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 15px; }
-    .history-note { background: #fff3e0; border-left: 5px solid #ff9800; padding: 15px; font-size: 14px; color: #555; margin-bottom: 20px; border-radius: 5px; }
-    .history-item { border: 1px solid #ddd; padding: 15px; border-radius: 10px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    /* Export Styles */
+    #export-container { position: fixed; left: -9999px; top: 0; }
+    .page-template { width: 2130px; height: 3231px; background: #fffaf0; padding: 120px 100px; position: relative; }
+    .p-content { height: 100%; display: flex; flex-direction: column; }
+    
+    .p-ganesh { text-align: center; font-size: 70px; font-weight: bold; color: #c62828; margin-bottom: 10px; }
+    .p-title { text-align: center; font-size: 130px; color: #c62828; margin: 0 0 20px 0; font-weight: 700; border-bottom: 6px solid #c62828; display: inline-block; width: 100%; }
+    .p-header-info { text-align: center; font-size: 60px; margin-bottom: 50px; color: #333; }
+    
+    .p-list-area { display: flex; gap: 70px; flex-grow: 1; justify-content: center; align-items: flex-start; }
+    .p-column { flex: 1; }
+    .full-width { flex: 0 0 75%; }
 
-    #export-container { position: fixed; left: -99999px; top: 0; }
-    .page-template { width: 2130px; height: 3231px; background: #ffffff; padding: 100px 140px; position: relative; overflow: hidden; }
-    .page-content { height: 100%; display: flex; flex-direction: column; }
-    .p-logo-box { position: absolute; top: 110px; right: 140px; width: 280px; height: 280px; }
-    .p-logo-box img { width: 100%; height: 100%; object-fit: contain; }
-    .p-ganesh { text-align: center; font-size: 60px; font-weight: bold; color: #c62828; margin-bottom: 25px; }
-    .p-header { text-align: center; margin-bottom: 50px; width: 68%; margin-left: auto; margin-right: auto; }
-    .p-header h1 { font-size: 95px; color: var(--primary); margin: 0 0 25px 0; text-decoration: underline; line-height: 1.2; }
-    .p-info { font-size: 48px; margin-top: 25px; line-height: 1.4; color: #333; }
-    .p-table-wrapper { flex: 1; min-height: 0; }
-    .p-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    .p-table th { background: #fdf2f2; padding: 30px 38px; text-align: left; border-bottom: 5px solid #333; font-size: 56px; color: #000; }
-    .p-table td { padding: 26px 38px; border-bottom: 2px solid #eee; font-size: 50px; color: #000; }
-    .p-footer { margin-top: auto; padding-top: 35px; text-align: center; border-top: 3px solid #ddd; display: flex; flex-direction: column; align-items: center; }
-    .tip-text { font-size: 46px; font-weight: 600; color: #222; margin-bottom: 25px; }
-    .page-capsule { background-color: #ffeb3b; color: #000; padding: 10px 40px; border-radius: 50px; font-size: 40px; font-weight: bold; display: inline-block; margin-top: 10px; border: 2px solid #fdd835; }
+    .p-table { width: 100%; border-collapse: collapse; background: #fff; }
+    .p-table th { background: #ffe082; padding: 25px; font-size: 52px; border: 2px solid #444; text-align: left; }
+    .p-table th:last-child { text-align: center; } /* Column header center */
+    .p-table td { padding: 20px 25px; font-size: 46px; border: 1.5px solid #ccc; border-left: 2px solid #444; border-right: 2px solid #444; color: #000; line-height: 1.2; }
+    .p-table td:last-child { text-align: center; } /* Praman column data center */
+    .p-table tr:last-child td { border-bottom: 2px solid #444; }
+
+    .p-footer { text-align: center; margin-top: auto; padding-top: 40px; padding-bottom: 20px; }
+    .p-footer-text { font-size: 50px; font-weight: 600; color: #333; margin-bottom: 25px; }
+    .p-page-num { background: #ffeb3b; padding: 15px 55px; border-radius: 60px; font-size: 42px; display: inline-block; font-weight: bold; border: 3px solid #fdd835; }
+    
+    .p-logo { position: absolute; top: 110px; right: 120px; width: 320px; height: 320px; object-fit: contain; }
+
+    #historyOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
 </style>
 </head>
 <body>
 
 <div class="app">
-    <h2 style="color:var(--primary); text-align:center; margin-top: 0;">🚩 पूजा साहित्य यादी</h2>
-    
-    <div class="input-group">
-        <label>पूजेचे नाव:</label>
-        <input type="text" id="poojaName" placeholder="उदा. श्री सत्यनारायण महापूजा">
-    </div>
-    <div class="input-group">
-        <label>आचार्य / गुरुजींचे नाव:</label>
-        <input type="text" id="guruName" placeholder="उदा. श्री _________ गुरुजी">
-    </div>
-    <div class="input-group">
-        <label>संपर्क क्रमांक:</label>
-        <input type="text" id="contactNo" placeholder="मोबाईल नंबर">
-    </div>
+    <h2 style="color:var(--primary); text-align:center; margin-top: 0;">पूजा साहित्य यादी</h2>
+    <div class="input-group"><label>पूजेचे नाव:</label><input type="text" id="poojaName" placeholder="उदा. श्री सत्यनारायण महापूजा"></div>
+    <div class="input-group"><label>आचार्य / गुरुजींचे नाव:</label><input type="text" id="guruName" placeholder="उदा. श्री _________ गुरुजी"></div>
+    <div class="input-group"><label>संपर्क क्रमांक:</label><input type="text" id="contactNo" placeholder="मोबाईल नंबर"></div>
 
-    <div class="list-header">
-        <div style="flex:2;">साहित्याचे नाव</div>
-        <div style="flex:1; text-align:center;">प्रमाण</div>
-    </div>
+    <div class="list-header"><div style="flex:2;">साहित्याचे नाव</div><div style="flex:1; text-align:center;">प्रमाण</div></div>
     <div class="list-container" id="mainList"></div>
-
-    <button class="btn-add" onclick="addNewItem()">➕ नवीन साहित्य जोडा (Add More)</button>
-
+    
+    <button class="btn-add" onclick="addNewItem()">➕ नवीन साहित्य जोडा</button>
     <button class="btn-main" id="btnDownload" onclick="processExport()">📥 डाऊनलोड & शेअर</button>
-    <button class="btn-secondary" onclick="toggleHistory(true)">📜 जुनी हिस्ट्री (History)</button>
+    <button class="btn-secondary" onclick="toggleHistory(true)">📜 जुनी हिस्ट्री</button>
 </div>
 
 <div id="historyOverlay">
-    <div class="history-header">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:10px;">
         <h2 style="margin:0; color:var(--primary);">📜 जुनी हिस्ट्री</h2>
         <button onclick="toggleHistory(false)" style="padding:8px 15px; background:#eee; border:none; border-radius:5px; cursor:pointer;">बंद करा ✖</button>
     </div>
-    <div class="history-note">
-        💡 <b>महत्त्वाची टीप:</b> जुन्या साहित्य यादीवर क्लिक केल्यास, त्या वेळी निवडलेले आयटम्स आता आपोआप टिक मार्क होतील.
-    </div>
-    <div id="historyListContent"></div>
+    <div id="historyListContent" style="margin-top:20px;"></div>
 </div>
 
 <div id="export-container"></div>
@@ -99,34 +86,26 @@
 
 <script>
     const LOGO_URL = "1000894411 (1).png"; 
-    let currentSamagri = ["हळद", "कुंकू", "अबिर", "गुलाल", "शेंदूर", "अष्टगंध", "अत्तर", "मध", "गोमूत्र", "गंगाजल", "गुलाबपाणी", "नाडापुडी", "जानवे जोड", "लाल कपडा", "हिरवा कपडा", "पांढरा कपडा", "सुपारी", "खारीक", "बदाम", "हळकुंड", "अक्रोड", "रांगोळी", "कापूर", "धूप", "तांदूळ", "गुळ", "खोबरे वाटी", "नारळ", "फुलवाती", "उदबत्ती", "कापूस", "तूप", "तेल", "खडीसाखर", "सुटे पैसे", "विडा पाने", "दुर्वा", "तुळस", "बेल", "फुले", "हार", "फळे", "पंचामृत", "ताम्हण", "तांब्या", "पळी", "पंचपात्र"];
+    let defaultItems = ["हळद", "कुंकू", "अबिर", "गुलाल", "शेंदूर", "अष्टगंध", "अत्तर", "मध", "गोमूत्र", "गंगाजल", "गुलाबपाणी", "नाडापुडी", "सुपारी", "खारीक", "बदाम", "हळकुंड", "अक्रोड", "रांगोळी", "कापूर", "धूप", "तांदूळ", "नारळ", "फुलवाती", "उदबत्ती", "तूप", "तेल", "खडीसाखर", "विडा पाने", "दुर्वा", "तुळस", "बेल", "फुले"];
 
     function init() {
         const container = document.getElementById('mainList');
         container.innerHTML = "";
-        currentSamagri.forEach((item, index) => {
-            addItemToUI(item, index);
-        });
+        defaultItems.forEach((item, index) => addItemToUI(item, index));
         updateHistoryList();
     }
 
-    function addItemToUI(name, index) {
+    function addItemToUI(name, index, checked = false, qty = "") {
         const container = document.getElementById('mainList');
         const div = document.createElement('div');
         div.className = 'list-item';
-        div.innerHTML = `
-            <input type="checkbox" id="chk-${index}">
-            <input type="text" class="item-text" id="txt-${index}" value="${name}">
-            <input type="text" class="qty-input" id="qty-${index}" placeholder="प्रमाण">
-        `;
+        div.innerHTML = `<input type="checkbox" id="chk-${index}" ${checked ? 'checked' : ''}><input type="text" class="item-text" id="txt-${index}" value="${name}"><input type="text" class="qty-input" id="qty-${index}" value="${qty}" placeholder="प्रमाण">`;
         container.appendChild(div);
     }
 
     function addNewItem() {
         const newIndex = document.querySelectorAll('.list-item').length;
         addItemToUI("", newIndex);
-        const listContainer = document.getElementById('mainList');
-        listContainer.scrollTop = listContainer.scrollHeight;
         setTimeout(() => document.getElementById(`txt-${newIndex}`).focus(), 100);
     }
 
@@ -137,28 +116,18 @@
 
     function saveToHistory(data) {
         let history = JSON.parse(localStorage.getItem('pooja_history') || '[]');
-        const entry = { id: Date.now(), date: new Date().toLocaleString('mr-IN'), data: data };
-        history.unshift(entry);
-        localStorage.setItem('pooja_history', JSON.stringify(history.slice(0, 15)));
+        history.unshift({ id: Date.now(), date: new Date().toLocaleString('mr-IN'), data: data });
+        localStorage.setItem('pooja_history', JSON.stringify(history.slice(0, 10)));
     }
 
     function updateHistoryList() {
-        const historyListContent = document.getElementById('historyListContent');
+        const content = document.getElementById('historyListContent');
         const history = JSON.parse(localStorage.getItem('pooja_history') || '[]');
-        if(history.length === 0) {
-            historyListContent.innerHTML = "<p style='text-align:center; color:#999; margin-top:50px;'>अद्याप कोणतीही हिस्ट्री उपलब्ध नाही.</p>";
-            return;
-        }
-        historyListContent.innerHTML = history.map(h => `
-            <div class="history-item" onclick="loadHistoryItem(${h.id})">
-                <div>
-                    <div style="font-weight:700; font-size:16px;">${h.data.poojaName.trim() || 'साहित्य यादी'}</div>
-                    <div style="font-size:12px; color:#666;">📅 ${h.date}</div>
-                    <div style="font-size:12px; color:var(--secondary);">👤 ${h.data.guruName || '-'}</div>
-                </div>
-                <div style="color:var(--primary); font-weight:600;">लोड करा ➔</div>
-            </div>
-        `).join('');
+        content.innerHTML = history.length === 0 ? "<p>हिस्ट्री रिकामी आहे.</p>" : history.map(h => `
+            <div style="border:1px solid #ddd; padding:15px; border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between; cursor:pointer;" onclick="loadHistoryItem(${h.id})">
+                <div><b>${h.data.poojaName || 'साहित्य यादी'}</b><br><small>${h.date}</small></div>
+                <div style="color:var(--primary);">लोड करा ➔</div>
+            </div>`).join('');
     }
 
     function loadHistoryItem(id) {
@@ -169,86 +138,82 @@
         document.getElementById('contactNo').value = entry.contactNo;
         const container = document.getElementById('mainList');
         container.innerHTML = "";
-        entry.items.forEach((item, i) => {
-            const div = document.createElement('div');
-            div.className = 'list-item';
-            div.innerHTML = `
-                <input type="checkbox" id="chk-${i}" ${item.checked ? 'checked' : ''}>
-                <input type="text" class="item-text" id="txt-${i}" value="${item.name}">
-                <input type="text" class="qty-input" id="qty-${i}" value="${item.qty || ''}" placeholder="प्रमाण">
-            `;
-            container.appendChild(div);
-        });
+        entry.items.forEach((item, i) => addItemToUI(item.name, i, item.checked, item.qty));
         toggleHistory(false);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        alert("निवडलेली यादी लोड झाली आहे!");
     }
 
     async function processExport() {
         const selected = [];
-        const items = document.querySelectorAll('.list-item');
-        items.forEach((itemDiv, i) => {
-            const isChecked = document.getElementById(`chk-${i}`).checked;
-            const name = document.getElementById(`txt-${i}`).value;
-            const qty = document.getElementById(`qty-${i}`).value || "-";
-            if(isChecked && name.trim() !== "") {
-                selected.push({ name, qty });
+        const allRows = document.querySelectorAll('.list-item');
+        allRows.forEach((_, i) => {
+            if(document.getElementById(`chk-${i}`).checked) {
+                selected.push({ name: document.getElementById(`txt-${i}`).value, qty: document.getElementById(`qty-${i}`).value || "-" });
             }
         });
+
         if(!selected.length) return alert("साहित्य निवडा!");
-        
-        const poojaNameVal = document.getElementById('poojaName').value;
-        const poojaData = {
-            poojaName: poojaNameVal,
+
+        saveToHistory({
+            poojaName: document.getElementById('poojaName').value,
             guruName: document.getElementById('guruName').value,
             contactNo: document.getElementById('contactNo').value,
-            items: Array.from(items).map((_, i) => ({
+            items: Array.from(allRows).map((_, i) => ({
                 checked: document.getElementById(`chk-${i}`).checked,
                 name: document.getElementById(`txt-${i}`).value,
                 qty: document.getElementById(`qty-${i}`).value
             }))
-        };
-        saveToHistory(poojaData);
+        });
 
         const btn = document.getElementById('btnDownload');
-        btn.innerHTML = "⏳ कृपया थांबा..."; btn.disabled = true;
+        btn.innerHTML = "⏳ तयार होत आहे..."; btn.disabled = true;
+
         const container = document.getElementById('export-container');
         container.innerHTML = "";
-        const itemsPerPage = 18;
+
+        // Changed logic: 21 items for full page
+        const itemsPerPage = 46; 
         const totalPages = Math.ceil(selected.length / itemsPerPage);
 
-        for (let i = 0; i < totalPages; i++) {
-            const pageData = selected.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
+        for (let p = 0; p < totalPages; p++) {
+            const pageData = selected.slice(p * itemsPerPage, (p + 1) * itemsPerPage);
             const pageDiv = document.createElement('div');
             pageDiv.className = 'page-template';
+            
+            let listHTML = "";
+            if (pageData.length <= 23) {
+                listHTML = `<div class="p-column full-width">${renderTable(pageData)}</div>`;
+            } else {
+                const mid = Math.ceil(pageData.length / 2);
+                listHTML = `<div class="p-column">${renderTable(pageData.slice(0, mid))}</div><div class="p-column">${renderTable(pageData.slice(mid))}</div>`;
+            }
+
             pageDiv.innerHTML = `
-                <div class="page-content">
+                <div class="p-content">
+                    <img src="${LOGO_URL}" class="p-logo" crossorigin="anonymous">
                     <div class="p-ganesh">॥ श्री ॥</div>
-                    <div class="p-logo-box"><img src="${LOGO_URL}" crossorigin="anonymous"></div>
-                    <div class="p-header">
-                        <h1>${poojaData.poojaName.trim() || "साहित्य यादी"}</h1>
-                        <div class="p-info"><b>गुरुजी:</b> ${poojaData.guruName} | <b>संपर्क:</b> ${poojaData.contactNo}</div>
-                    </div>
-                    <div class="p-table-wrapper">
-                        <table class="p-table">
-                            <thead><tr><th style="width:65%">साहित्याचे नाव</th><th style="width:35%">प्रमाण</th></tr></thead>
-                            <tbody>${pageData.map(item => `<tr><td>${item.name}</td><td>${item.qty}</td></tr>`).join('')}</tbody>
-                        </table>
-                    </div>
+                    <h1 class="p-title">${document.getElementById('poojaName').value || "साहित्य यादी"}</h1>
+                    <div class="p-header-info"><b>आचार्य:</b> ${document.getElementById('guruName').value || "_______"} | <b>संपर्क:</b> ${document.getElementById('contactNo').value || "_______"}</div>
+                    <div class="p-list-area">${listHTML}</div>
                     <div class="p-footer">
-                        <div class="tip-text">🙏 कृपया वरील सर्व साहित्य पूजेपूर्वी उपलब्ध करून ठेवावे 🙏</div>
-                        <div class="page-capsule">पान क्र. ${i + 1} / ${totalPages}</div>
+                        <div class="p-footer-text">🙏 कृपया वरील सर्व साहित्य पूजेपूर्वी उपलब्ध करून ठेवावे 🙏</div>
+                        <div class="p-page-num">पान क्र. ${p + 1} / ${totalPages}</div>
                     </div>
                 </div>`;
+            
             container.appendChild(pageDiv);
             const canvas = await html2canvas(pageDiv, { scale: 1, useCORS: true });
             const link = document.createElement('a');
-            link.download = `Pooja_List_P${i+1}.png`;
-            link.href = canvas.toDataURL();
+            link.download = `Pooja_List_P${p+1}.png`;
+            link.href = canvas.toDataURL("image/png");
             link.click();
         }
         btn.innerHTML = "📥 डाऊनलोड & शेअर"; btn.disabled = false;
     }
+
+    function renderTable(data) {
+        return `<table class="p-table"><thead><tr><th>साहित्याचे नाव</th><th style="width:30%">प्रमाण</th></tr></thead><tbody>${data.map(item => `<tr><td>${item.name}</td><td>${item.qty}</td></tr>`).join('')}</tbody></table>`;
+    }
+
     init();
 </script>
 </body>

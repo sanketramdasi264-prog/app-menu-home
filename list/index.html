@@ -8,16 +8,17 @@
 <style>
     :root { --primary: #c62828; --secondary: #ef6c00; --bg: #f5f5f5; }
     * { box-sizing: border-box; }
-    body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+    body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
     
-    .app { max-width: 500px; width: 100%; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+    .app { max-width: 500px; width: 100%; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 20px; }
     
     .input-group { margin-bottom: 12px; }
     label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #444; }
     input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 14px; }
 
     .list-header { display: flex; font-weight: bold; background: #eee; padding: 10px; border-radius: 5px; margin-top: 10px; }
-    .list-container { max-height: 350px; overflow-y: auto; border: 1px solid #eee; margin-bottom: 15px; }
+    /* Scroll काढण्यासाठी खालील बदल केला आहे */
+    .list-container { margin-bottom: 15px; }
     .list-item { display: flex; align-items: center; padding: 8px; border-bottom: 1px solid #f1f1f1; }
     .list-item input[type="checkbox"] { width: 22px; height: 22px; margin-right: 12px; accent-color: var(--primary); }
     .item-text { flex: 2; border: none; background: transparent; font-size: 15px; padding: 5px; width: 100%; }
@@ -42,9 +43,9 @@
 
     .p-table { width: 100%; border-collapse: collapse; background: #fff; }
     .p-table th { background: #ffe082; padding: 25px; font-size: 52px; border: 2px solid #444; text-align: left; }
-    .p-table th:last-child { text-align: center; } /* Column header center */
+    .p-table th:last-child { text-align: center; } 
     .p-table td { padding: 20px 25px; font-size: 46px; border: 1.5px solid #ccc; border-left: 2px solid #444; border-right: 2px solid #444; color: #000; line-height: 1.2; }
-    .p-table td:last-child { text-align: center; } /* Praman column data center */
+    .p-table td:last-child { text-align: center; } 
     .p-table tr:last-child td { border-bottom: 2px solid #444; }
 
     .p-footer { text-align: center; margin-top: auto; padding-top: 40px; padding-bottom: 20px; }
@@ -68,7 +69,7 @@
     <div class="list-container" id="mainList"></div>
     
     <button class="btn-add" onclick="addNewItem()">➕ नवीन साहित्य जोडा</button>
-    <button class="btn-main" id="btnDownload" onclick="processExport()">📥 डाऊनलोड & शेअर</button>
+    <button class="btn-main" id="btnDownload" onclick="processExport()">📥 डाउनलोड आणि शेअर</button>
     <button class="btn-secondary" onclick="toggleHistory(true)">📜 जुनी हिस्ट्री</button>
 </div>
 
@@ -147,7 +148,8 @@
         const allRows = document.querySelectorAll('.list-item');
         allRows.forEach((_, i) => {
             if(document.getElementById(`chk-${i}`).checked) {
-                selected.push({ name: document.getElementById(`txt-${i}`).value, qty: document.getElementById(`qty-${i}`).value || "-" });
+                // रिकामे प्रमाण असल्यास रिकामी स्ट्रिंग ठेवली आहे
+                selected.push({ name: document.getElementById(`txt-${i}`).value, qty: document.getElementById(`qty-${i}`).value || "" });
             }
         });
 
@@ -170,7 +172,6 @@
         const container = document.getElementById('export-container');
         container.innerHTML = "";
 
-        // Changed logic: 21 items for full page
         const itemsPerPage = 46; 
         const totalPages = Math.ceil(selected.length / itemsPerPage);
 
@@ -192,7 +193,7 @@
                     <img src="${LOGO_URL}" class="p-logo" crossorigin="anonymous">
                     <div class="p-ganesh">॥ श्री ॥</div>
                     <h1 class="p-title">${document.getElementById('poojaName').value || "साहित्य यादी"}</h1>
-                    <div class="p-header-info"><b>आचार्य:</b> ${document.getElementById('guruName').value || "_______"} | <b>संपर्क:</b> ${document.getElementById('contactNo').value || "_______"}</div>
+                    <div class="p-header-info"><b></b> ${document.getElementById('guruName').value || "_______"} | <b>संपर्क:</b> ${document.getElementById('contactNo').value || "_______"}</div>
                     <div class="p-list-area">${listHTML}</div>
                     <div class="p-footer">
                         <div class="p-footer-text">🙏 कृपया वरील सर्व साहित्य पूजेपूर्वी उपलब्ध करून ठेवावे 🙏</div>
@@ -202,12 +203,30 @@
             
             container.appendChild(pageDiv);
             const canvas = await html2canvas(pageDiv, { scale: 1, useCORS: true });
+            
+            // Download File
+            const imageData = canvas.toDataURL("image/png");
             const link = document.createElement('a');
             link.download = `Pooja_List_P${p+1}.png`;
-            link.href = canvas.toDataURL("image/png");
+            link.href = imageData;
             link.click();
+
+            // Share functionality (Mobile)
+            try {
+                const blob = await (await fetch(imageData)).blob();
+                const file = new File([blob], `Pooja_List.png`, { type: 'image/png' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'पूजा साहित्य यादी',
+                        text: 'आमची पूजा साहित्य यादी'
+                    });
+                }
+            } catch (err) {
+                console.log("Sharing not supported or cancelled");
+            }
         }
-        btn.innerHTML = "📥 डाऊनलोड & शेअर"; btn.disabled = false;
+        btn.innerHTML = "📥 डाउनलोड आणि शेअर"; btn.disabled = false;
     }
 
     function renderTable(data) {

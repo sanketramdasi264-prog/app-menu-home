@@ -4,245 +4,282 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>पूजा प्रयोग संग्रह</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg-dark: #120101;
+      --crimson: #800000;
+      --gold: #D4AF37;
+      --gold-light: #FFD700;
+      --ivory: #FFFFF0;
+      --glass: rgba(255, 255, 255, 0.05);
     }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: "Anek Devanagari", sans-serif;
-      background: linear-gradient(135deg, #1a0000 0%, #2d0a0a 100%);
-      min-height: 100vh;
+      background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at top, #3d0000 0%, #120101 100%);
+      background-attachment: fixed;
+      color: var(--ivory);
       padding: 20px 15px;
+      line-height: 1.6;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
+    .container { max-width: 800px; margin: 0 auto; }
+
+    /* Header Section */
+    .header-box {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(145deg, #960000, #5c0000);
+      border-radius: 20px;
+      margin-bottom: 25px;
+      border: 2px solid var(--gold);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
+    .header-box h1 {
+      font-size: 28px;
+      color: var(--gold-light);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      margin-bottom: 15px;
+    }
+
+    /* Search Bar */
+    #searchBar {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 50px;
+      border: 1px solid var(--gold);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 16px;
+      outline: none;
+      font-family: inherit;
+    }
+    #searchBar::placeholder { color: rgba(255,255,255,0.5); }
+
+    /* Category Style */
     .category {
-      margin-bottom: 16px;
-      border-radius: 16px;
+      background: var(--glass);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 15px;
+      margin-bottom: 15px;
       overflow: hidden;
-      background: rgba(255,255,255,0.03);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(139,0,0,0.3);
-      transition: all 0.3s ease;
-    }
-
-    .category:hover {
-      border-color: rgba(139,0,0,0.6);
-      box-shadow: 0 8px 24px rgba(139,0,0,0.2);
+      backdrop-filter: blur(5px);
     }
 
     .category-header {
-      background: linear-gradient(135deg, #8B0000 0%, #5c0000 100%);
-      padding: 18px 24px;
-      font-size: 20px;
-      font-weight: 700;
-      cursor: pointer;
-      color: #fff;
+      padding: 18px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: all 0.3s ease;
+      cursor: pointer;
       user-select: none;
+      transition: background 0.3s;
+      background: rgba(128, 0, 0, 0.4);
     }
 
-    .category-header.header-yellow {
-      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-      color: #1a0000;
-      cursor: default;
+    .category-header:hover { background: rgba(128, 0, 0, 0.6); }
+
+    .category-header h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    .icon-circle {
+      width: 30px;
+      height: 30px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
       justify-content: center;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-      pointer-events: none;
+      color: var(--bg-dark);
+      font-weight: bold;
+      transition: transform 0.3s;
     }
 
-    .category-header:hover {
-      background: linear-gradient(135deg, #a01010 0%, #6d0000 100%);
-      padding-left: 28px;
-    }
+    .open .icon-circle { transform: rotate(180deg); }
 
-    .category-header.header-yellow:hover {
-      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-      padding-left: 24px;
-    }
-
-    .arrow {
-      font-size: 18px;
-      transition: transform 0.3s ease;
-      display: inline-block;
-    }
-
-    .arrow.open {
-      transform: rotate(90deg);
-    }
-
+    /* Content Area */
     .category-content {
-      display: none;
-      background: rgba(0,0,0,0.2);
-      padding: 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
     }
 
-    .category-content.open {
-      display: block;
+    .category.open .category-content {
+      max-height: 1500px;
+      padding: 15px;
+      opacity: 1;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 14px;
-    }
+    /* List Item Cards */
+    .item-list { display: flex; flex-direction: column; gap: 10px; }
 
-    .card {
-      padding: 16px 18px;
-      border: 1px solid rgba(30,144,255,0.4);
-      border-radius: 12px;
-      background: linear-gradient(135deg, #1e90ff 0%, #1c7ed6 100%);
+    .item-card {
+      background: white;
+      border-radius: 10px;
       transition: all 0.3s ease;
       position: relative;
-      overflow: hidden;
     }
 
-    .card:hover {
-      background: linear-gradient(135deg, #2196f3 0%, #1e88e5 100%);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(30,144,255,0.3);
-    }
-
-    .card a {
-      text-decoration: none;
-      font-weight: 600;
-      color: #ffffff;
-      font-size: 16px;
+    .item-card a {
       display: block;
-      line-height: 1.5;
+      padding: 15px 20px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      font-size: 17px;
     }
 
-    @media (max-width: 768px) {
-      .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-      .category-header { font-size: 18px; }
+    .item-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+      background: var(--ivory);
+    }
+
+    .item-card::after {
+      content: '→';
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--crimson);
+      opacity: 0.5;
+    }
+
+    /* Empty search result */
+    #noResults {
+      text-align: center;
+      padding: 20px;
+      display: none;
+      color: var(--gold);
+    }
+
+    @media (max-width: 600px) {
+      .header-box h1 { font-size: 22px; }
+      .category-header h2 { font-size: 18px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    
-    <div class="category">
-      <div class="category-header header-yellow">
-        <span>🙏 पूजा प्रयोग संग्रह 🙏</span>
-      </div>
-    </div>
-
-    <div class="category">
-      <div class="category-header" onclick="toggle('nitya')">
-        <span>मंडल देवता स्थापना</span>
-        <span class="arrow" id="nitya-arrow">▶</span>
-      </div>
-      <div class="category-content" id="nitya">
-        <div class="grid">
-          <div class="card">
-            <a href="https://www.omkarmyog.in/2025/12/blog-post_26.html" 
-               target="_blank">गौर्यादि मातृका देवता स्थापनम्</a>
-          </div>
-          <div class="card">
-            <a href="#" target="_blank">शिख्यादि वास्तूमंडल देवता स्थापनम्</a>
-          </div>
-          <div class="card">
-            <a href="#" target="_blank">गजाननादी चतुश्षष्ठी योगिनीमंडल देवता स्थापनम् </a>
-          </div>
-           <div class="card">
-            <a href="#" target="_blank">अजरादी एकपंचाशत क्षेत्रपालमंडल देवता स्थापनम् </a>
-          </div>
-           <div class="card">
-            <a href="#" target="_blank">चतुश्षष्ठी भैरवमंडल देवता स्थापनम् </a>
-          </div>
-           <div class="card">
-            <a href="#" target="_blank">ब्रम्हादी सर्वतोभद्रमंडल देवता स्थापनम् </a>
-          </div>
-           <div class="card">
-            <a href="https://www.omkarmyog.in/2025/12/blog-post_27.html" target="_blank">नवग्रह मंडल देवता स्थापनम् </a>
-          </div>
-           <div class="card">
-            <a href="#" target="_blank">आवरण देवता स्थापनम् </a>
-          </div>
-           <div class="card">
-            <a href="#" target="_blank">पीठ - यंत्र देवता स्थापनम् </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="category">
-      <div class="category-header" onclick="toggle('main')">
-        <span>पूजा विधी</span>
-        <span class="arrow" id="main-arrow">▶</span>
-      </div>
-      <div class="category-content" id="main">
-        <div class="grid">
-          <div class="card">
-            <a href="https://www.omkarmyog.in/2022/08/blog-post.html" target="_blank">
-              प्राण प्रतिष्ठा पूर्वक गणपती पूजन
-            </a>
-          </div>
-          <div class="card">
-            <a href="https://www.omkarmyog.in/2025/08/ll.html" target="_blank">
-              संपूर्ण नान्दीश्राध्द विधी
-            </a>
-          </div>
-          <div class="card">
-            <a href="https://www.omkarmyog.in/2023/04/akshayya-tritiya.html" target="_blank">
-              अक्षय्य तृतीयेचा उदक कुंभदान विधी
-            </a>
-          </div>
-          <div class="card">
-            <a href="https://www.omkarmyog.in/2025/08/blog-post_92.html" target="_blank">
-              श्री (नारायण) पुरुष सूक्तम्
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="category">
-      <div class="category-header" onclick="toggle('stotra')">
-        <span>मंगलाष्टके</span>
-        <span class="arrow" id="stotra-arrow">▶</span>
-      </div>
-      <div class="category-content" id="stotra">
-        <div class="grid">
-          <div class="card">
-            <a href="#" target="_blank">विवाह मंगलाष्टके</a>
-          </div>
-          <div class="card">
-            <a href="#" target="_blank">उपनयन मौंजविधी मंगलाष्टके </a>
-          
-        </div>
-      </div>
-    </div>
-
+<div class="container">
+  
+  <div class="header-box">
+    <h1>🙏 पूजा प्रयोग संग्रह 🙏</h1>
+    <input type="text" id="searchBar" placeholder="येथे शोधा (उदा. गणपती, मंडल...)" onkeyup="searchFunction()">
   </div>
 
-  <script>
-    function toggle(id) {
-      const content = document.getElementById(id);
-      const arrow = document.getElementById(id + '-arrow');
-      
-      if (content.classList.contains('open')) {
-        content.classList.remove('open');
-        arrow.classList.remove('open');
+  <div id="noResults">कोणतेही निकाल सापडले नाहीत.</div>
+
+  <div class="category">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h2>मंडल देवता स्थापना</h2>
+      <div class="icon-circle">↓</div>
+    </div>
+    <div class="category-content">
+      <div class="item-list">
+        <div class="item-card"><a href="https://www.omkarmyog.in/2025/12/blog-post_26.html" target="_blank">गौर्यादि मातृका देवता स्थापनम्</a></div>
+        <div class="item-card"><a href="#">शिख्यादि वास्तूमंडल देवता स्थापनम्</a></div>
+        <div class="item-card"><a href="#">गजाननादी चतुश्षष्ठी योगिनीमंडल देवता स्थापनम्</a></div>
+        <div class="item-card"><a href="#">अजरादी एकपंचाशत क्षेत्रपालमंडल देवता स्थापनम्</a></div>
+        <div class="item-card"><a href="#">चतुश्षष्ठी भैरवमंडल देवता स्थापनम्</a></div>
+        <div class="item-card"><a href="#">ब्रम्हादी सर्वतोभद्रमंडल देवता स्थापनम्</a></div>
+        <div class="item-card"><a href="https://www.omkarmyog.in/2025/12/blog-post_27.html" target="_blank">नवग्रह मंडल देवता स्थापनम्</a></div>
+        <div class="item-card"><a href="#">आवरण देवता स्थापनम्</a></div>
+        <div class="item-card"><a href="#">पीठ - यंत्र देवता स्थापनम्</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h2>पूजा विधी</h2>
+      <div class="icon-circle">↓</div>
+    </div>
+    <div class="category-content">
+      <div class="item-list">
+        <div class="item-card"><a href="https://www.omkarmyog.in/2022/08/blog-post.html" target="_blank">प्राण प्रतिष्ठा पूर्वक गणपती पूजन</a></div>
+        <div class="item-card"><a href="https://www.omkarmyog.in/2025/08/ll.html" target="_blank">संपूर्ण नान्दीश्राध्द विधी</a></div>
+        <div class="item-card"><a href="https://www.omkarmyog.in/2023/04/akshayya-tritiya.html" target="_blank">अक्षय्य तृतीयेचा उदक कुंभदान विधी</a></div>
+        <div class="item-card"><a href="https://www.omkarmyog.in/2025/08/blog-post_92.html" target="_blank">श्री (नारायण) पुरुष सूक्तम्</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h2>मंगलाष्टके</h2>
+      <div class="icon-circle">↓</div>
+    </div>
+    <div class="category-content">
+      <div class="item-list">
+        <div class="item-card"><a href="#">विवाह मंगलाष्टके</a></div>
+        <div class="item-card"><a href="#">उपनयन मौंजविधी मंगलाष्टके</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Toggle Collapse/Expand
+  function toggleCategory(header) {
+    const parent = header.parentElement;
+    const isOpen = parent.classList.contains('open');
+    
+    // Close all other categories first
+    document.querySelectorAll('.category').forEach(cat => cat.classList.remove('open'));
+    
+    // Toggle current
+    if (!isOpen) {
+      parent.classList.add('open');
+    }
+  }
+
+  // Live Search Function
+  function searchFunction() {
+    let input = document.getElementById('searchBar').value.toLowerCase();
+    let cards = document.getElementsByClassName('item-card');
+    let categories = document.getElementsByClassName('category');
+    let foundTotal = 0;
+
+    for (let i = 0; i < cards.length; i++) {
+      let text = cards[i].innerText.toLowerCase();
+      if (text.includes(input)) {
+        cards[i].style.display = "block";
+        foundTotal++;
       } else {
-        content.classList.add('open');
-        arrow.classList.add('open');
+        cards[i].style.display = "none";
       }
     }
-  </script>
+
+    // Auto-open categories if searching, and show/hide category based on results
+    for (let i = 0; i < categories.length; i++) {
+      let visibleCards = categories[i].querySelectorAll('.item-card[style="display: block;"]');
+      if (input.length > 0) {
+        if (visibleCards.length > 0) {
+          categories[i].style.display = "block";
+          categories[i].classList.add('open');
+        } else {
+          categories[i].style.display = "none";
+        }
+      } else {
+        categories[i].style.display = "block";
+        categories[i].classList.remove('open');
+      }
+    }
+
+    document.getElementById('noResults').style.display = (foundTotal === 0 && input !== "") ? "block" : "none";
+  }
+</script>
+
 </body>
 </html>

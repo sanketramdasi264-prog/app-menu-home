@@ -12,7 +12,7 @@
             --gold: #ffd700;
             --text-white: #ffffff;
             --text-muted: #ffdddd;
-            --icon-bg: rgba(0, 0, 0, 0.3);
+            --icon-bg: rgba(0, 0, 0, 0.4);
         }
 
         * {
@@ -27,7 +27,11 @@
             background: var(--bg-dark);
             color: var(--text-white);
             min-height: 100vh;
-            padding: 10px 0 40px 0;
+            /* Added padding to top and bottom to fill screen better */
+            padding: 20px 0 60px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .header-container {
@@ -35,21 +39,22 @@
             align-items: center;
             justify-content: space-between;
             padding: 15px 16px;
-            max-width: 550px;
-            margin: 0 auto 10px auto;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 25px;
         }
 
         .header-logo {
-            width: 170px;
+            width: 190px; /* Slightly larger logo */
             background: #fff;
-            padding: 6px;
+            padding: 8px;
             border-radius: 12px;
             border: 2px solid var(--gold);
         }
 
         .header-icon-btn {
-            width: 42px;
-            height: 42px;
+            width: 48px; /* Larger header buttons */
+            height: 48px;
             background: var(--icon-bg);
             border-radius: 50%;
             display: flex;
@@ -57,40 +62,46 @@
             justify-content: center;
             color: var(--gold);
             cursor: pointer;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            padding: 0 14px;
-            max-width: 550px;
-            margin: auto;
+            gap: 16px; /* Increased gap for better spacing */
+            padding: 0 16px;
+            width: 100%;
+            max-width: 600px;
         }
 
         .card {
             background: var(--card-maroon);
-            border-radius: 16px;
-            min-height: 95px; 
-            padding: 12px 10px;
+            border-radius: 20px; /* Softer rounded corners */
+            /* Increased height to fill the screen */
+            min-height: 115px; 
+            padding: 15px 14px;
             text-decoration: none;
             color: var(--text-white);
             display: flex;
             align-items: center; 
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+            transition: transform 0.1s;
+        }
+
+        .card:active {
+            transform: scale(0.95);
         }
 
         .icon-box {
-            min-width: 45px;
-            height: 45px;
+            min-width: 52px; /* Larger icon containers */
+            height: 52px;
             background: var(--icon-bg);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 10px;
+            margin-right: 12px;
         }
 
         .card-content {
@@ -99,26 +110,26 @@
         }
 
         .card-title {
-            font-size: 17px;
-            font-weight: 700;
+            font-size: 20px; /* Larger title text */
+            font-weight: 800;
             color: var(--gold);
             line-height: 1.2;
         }
 
         .card-subtitle {
-            font-size: 13px; 
-            font-weight: 400;
+            font-size: 14px; /* Larger subtitle text */
+            font-weight: 500;
             color: var(--text-muted);
             line-height: 1.3;
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
         .custom-svg {
-            width: 26px;
-            height: 26px;
+            width: 30px;
+            height: 30px;
             fill: none;
             stroke: var(--gold);
-            stroke-width: 2;
+            stroke-width: 2.2;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
@@ -130,7 +141,7 @@
 
 <div class="header-container">
     <div class="header-icon-btn" onclick="location.href='#'">
-        <svg style="width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
+        <svg style="width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="16" x2="12" y2="12"></line>
             <line x1="12" y1="8" x2="12.01" y2="8"></line>
@@ -140,7 +151,7 @@
     <img src="1000894316-removebg-preview.webp" class="header-logo" alt="Karmyog Logo">
 
     <div class="header-icon-btn" onclick="shareApp()">
-        <svg style="width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
+        <svg style="width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
             <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
             <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
         </svg>
@@ -215,7 +226,6 @@
         <div class="icon-box">
             <svg class="custom-svg" viewBox="0 0 24 24">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                <line x1="12" y1="5" x2="12" y2="19" opacity="0.5"/>
             </svg>
         </div>
         <div class="card-content">

@@ -12,7 +12,7 @@
             --gold: #ffd700;
             --text-white: #ffffff;
             --text-muted: #ffdddd;
-            --icon-bg: rgba(0, 0, 0, 0.4); /* थोडा जास्त गडद बॅकग्राउंड */
+            --icon-bg: rgba(0, 0, 0, 0.4); 
         }
 
         * {
@@ -27,30 +27,29 @@
             background: var(--bg-dark);
             color: var(--text-white);
             min-height: 100vh;
-            padding: 10px 0 40px 0;
+            padding: 10px 0 50px 0;
         }
 
-        /* HEADER SECTION */
         .header-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 20px 16px;
-            max-width: 550px;
-            margin: 0 auto 15px auto;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
         }
 
         .header-logo {
-            width: 190px; /* लोगो साईज मोठी ठेवली आहे */
+            width: 200px; 
             background: #fff;
-            padding: 7px;
-            border-radius: 12px;
+            padding: 8px;
+            border-radius: 15px;
             border: 2px solid var(--gold);
         }
 
         .header-icon-btn {
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             background: var(--icon-bg);
             border-radius: 50%;
             display: flex;
@@ -66,41 +65,41 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px; /* गॅप वाढवला आहे */
-            padding: 0 14px;
-            max-width: 550px;
+            gap: 15px; 
+            padding: 0 16px;
+            max-width: 600px;
             margin: auto;
         }
 
-        /* BUTTONS SIZE INCREASED */
+        /* INCREASED BUTTON HEIGHT TO 120px */
         .card {
             background: var(--card-maroon);
-            border-radius: 18px;
-            min-height: 100px; /* उंची वाढवून 100px केली आहे */
-            padding: 15px 12px;
+            border-radius: 20px;
+            min-height: 120px; /* उंची वाढवली आहे */
+            padding: 15px;
             text-decoration: none;
             color: var(--text-white);
             display: flex;
             align-items: center; 
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            transition: transform 0.1s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            transition: transform 0.1s ease;
         }
 
         .card:active {
-            transform: scale(0.95);
+            transform: scale(0.94);
         }
 
-        /* ICON CIRCLE */
+        /* ICON CIRCLE LARGER */
         .icon-box {
-            min-width: 50px;
-            height: 50px;
+            min-width: 55px;
+            height: 55px;
             background: var(--icon-bg);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 12px;
+            margin-right: 15px;
         }
 
         .card-content {
@@ -109,27 +108,26 @@
         }
 
         .card-title {
-            font-size: 19px; /* टायटल मोठे केले */
+            font-size: 21px; /* फॉन्ट वाढवला */
             font-weight: 800;
             color: var(--gold);
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
         .card-subtitle {
-            font-size: 13px; 
+            font-size: 14px; 
             font-weight: 400;
             color: var(--text-muted);
-            line-height: 1.3;
-            margin-top: 4px;
+            line-height: 1.4;
+            margin-top: 6px;
         }
 
-        /* SVG ICONS - YELLOW/GOLD */
         .custom-svg {
-            width: 28px;
-            height: 28px;
+            width: 32px; /* आयकॉन मोठे केले */
+            height: 32px;
             fill: none;
             stroke: var(--gold);
-            stroke-width: 2.5; /* स्ट्रोक जाड केला जेणेकरून स्पष्ट दिसेल */
+            stroke-width: 2.2; 
             stroke-linecap: round;
             stroke-linejoin: round;
         }
@@ -141,7 +139,7 @@
 
 <div class="header-container">
     <a href="#" class="header-icon-btn">
-        <svg style="width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
+        <svg style="width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="16" x2="12" y2="12"></line>
             <line x1="12" y1="8" x2="12.01" y2="8"></line>
@@ -151,7 +149,7 @@
     <img src="1000894316-removebg-preview.webp" class="header-logo" alt="Karmyog Logo">
 
     <div class="header-icon-btn" onclick="shareApp()">
-        <svg style="width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
+        <svg style="width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
             <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
             <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
         </svg>
@@ -226,7 +224,6 @@
         <div class="icon-box">
             <svg class="custom-svg" viewBox="0 0 24 24">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                <path d="M12 21.23l-1.06-1.06" opacity="0.5"/>
             </svg>
         </div>
         <div class="card-content">

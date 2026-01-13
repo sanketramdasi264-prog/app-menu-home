@@ -36,29 +36,32 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 
 /* --- DOWNLOADED IMAGE STYLES (Export) --- */
 
-/* Blue Header for Downloaded Image */
-.export-header {
+/* Blue Banner positioned directly above the user panel */
+.export-blue-banner {
     background: #0000FF; color: white; display: flex; align-items: center;
-    justify-content: center; padding: 8px; gap: 10px; font-size: 16px; font-weight: 500;
+    justify-content: center; padding: 10px; gap: 10px; font-size: 18px; font-weight: 500;
+    border-top: 2px solid #ffd54f;
 }
-.playstore-icon { width: 24px; height: 24px; }
+.playstore-icon { width: 28px; height: 28px; }
 
 /* User Panel for Downloaded Image */
 .user-panel-export {
     background: #410a0a; color: #ffd54f; padding: 20px;
     display: flex; justify-content: space-between; align-items: center;
+    border-top: 2px solid #ffd54f;
 }
 .user-info-text { flex: 1; }
-.user-name-gold { font-size: 24px; font-weight: bold; margin-bottom: 8px; display: block; }
-.user-detail-row { font-size: 16px; margin-bottom: 4px; color: #ffffff; }
-.user-contact-row { font-size: 18px; font-weight: bold; margin-top: 8px; }
-.additional-text-gold { font-size: 16px; color: #ffd54f; margin-top: 10px; font-weight: bold; }
+.user-name-gold { font-size: 26px; font-weight: bold; margin-bottom: 8px; display: block; color: #ffd54f; }
+.user-detail-row { font-size: 18px; margin-bottom: 4px; color: #ffffff; }
+.user-contact-row { font-size: 20px; font-weight: bold; margin-top: 8px; color: #ffd54f; }
+.additional-text-gold { font-size: 18px; color: #ffd54f; margin-top: 10px; font-weight: bold; }
 
 /* Glowing Photo Frame */
 .photo-container-export {
-    width: 120px; height: 140px; position: relative;
-    border: 2px solid #ffd54f; border-radius: 10px;
-    box-shadow: 0 0 15px #ffd54f; background: #222; overflow: hidden;
+    width: 130px; height: 150px; position: relative;
+    border: 3px solid #ffd54f; border-radius: 12px;
+    box-shadow: 0 0 20px #ffd54f; background: #222; overflow: hidden;
+    margin-left: 15px;
 }
 .photo-img-export { width: 100%; height: 100%; object-fit: cover; }
 
@@ -87,11 +90,11 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 <div class="modal" id="userModal">
  <div class="modal-content">
    <h3 style="margin-top:0; color:#4e0f0f;">📋 तुमची माहिती भरा</h3>
-   <input id="uName" placeholder="पूर्ण नाव (उदा: वेदमूर्ती श्री संकेत...)">
+   <input id="uName" placeholder="पूर्ण नाव">
    <input id="uOffice" placeholder="व्यवसायाचे नाव">
-   <input id="uAddress" placeholder="पत्ता (गाव, ता, जि)">
+   <input id="uAddress" placeholder="पत्ता">
    <input id="uContact" placeholder="मोबाईल नंबर">
-   <input id="uExtra" placeholder="अतिरिक्त माहिती (उदा: आमच्याकडे सर्व धार्मिक विधी...)">
+   <input id="uExtra" placeholder="अतिरिक्त माहिती">
    <div style="margin:10px 0;"><small>फोटो निवडा:</small><br><input id="uPhoto" type="file" accept="image/*"></div>
    <button onclick="saveUser()" style="background:#8b0000; color:#fff; border:none; padding:14px; border-radius:8px; width:100%; font-weight:bold; cursor:pointer;">✔ सेव्ह करा</button>
  </div>
@@ -134,7 +137,7 @@ document.getElementById("uPhoto").onchange = (e)=>{
 };
 
 function saveUser(){
-  const data = { name: uName.value, office: uOffice.value, address: uAddress.value, contact: uContact.value, extra: uExtra.value, photo: userPhotoData };
+  const data = { name: uName.value, office: uOffice.value, address: uAddress.value, contact: uContact.value, extra: uExtra.value, photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo"))?.photo || "") };
   localStorage.setItem("omk_userinfo", JSON.stringify(data));
   document.getElementById("userModal").style.display="none";
   if(pendingIndex !== null) generateAndShare(pendingIndex, data);
@@ -145,18 +148,20 @@ async function generateAndShare(index, user){
   
   const renderContainer = document.getElementById("temp-render");
   renderContainer.innerHTML = `
-    <div id="export-target" style="width:600px; background:white;">
-      <div class="export-header">
+    <div id="export-target" style="width:600px; background:white; display: flex; flex-direction: column;">
+      <img src="${months[index].img}" style="width:100%; display:block;" crossOrigin="anonymous">
+      
+      <div class="export-blue-banner">
          <img src="${PS_LOGO}" class="playstore-icon">
          @Omkarmyog Avilable On Play Store...
       </div>
-      <img src="${months[index].img}" style="width:100%; display:block;" crossOrigin="anonymous">
+      
       <div class="user-panel-export">
         <div class="user-info-text">
-          <span class="user-name-gold">${user.name}</span>
-          <div class="user-detail-row">${user.office}</div>
-          <div class="user-detail-row">${user.address}</div>
-          <div class="user-contact-row">संपर्क: ${user.contact}</div>
+          <span class="user-name-gold">${user.name || 'आपले नाव'}</span>
+          <div class="user-detail-row">${user.office || ''}</div>
+          <div class="user-detail-row">${user.address || ''}</div>
+          <div class="user-contact-row">संपर्क: ${user.contact || ''}</div>
           <div class="additional-text-gold">${user.extra || ""}</div>
         </div>
         <div class="photo-container-export">
@@ -169,10 +174,14 @@ async function generateAndShare(index, user){
   setTimeout(async () => {
     const canvas = await html2canvas(document.getElementById("export-target"), { scale: 1.5, useCORS: true });
     canvas.toBlob(blob => {
-      const file = new File([blob], "OmKarmyog.png", {type: "image/png"});
-      if(navigator.canShare && navigator.canShare({files:[file]})) navigator.share({files:[file]});
-      else { const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="OmKarmyog.png"; a.click(); }
+      const file = new File([blob], "OmKarmyog_Poster.png", {type: "image/png"});
+      if(navigator.canShare && navigator.canShare({files:[file]})) {
+          navigator.share({files:[file]});
+      } else { 
+          const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="OmKarmyog_Poster.png"; a.click(); 
+      }
       btn.innerText = "माझ्या माहितीसह शेअर करा";
+      renderContainer.innerHTML = "";
     });
   }, 600);
 }

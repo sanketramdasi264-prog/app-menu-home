@@ -10,6 +10,7 @@
 <style>
 body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #f4f4f4; }
 
+/* Content Hero Card */
 .app-hero-card {
     background: #4e0f0f; color: #ffd54f; margin: 10px; padding: 20px;
     border-radius: 12px; display: flex; flex-direction: column; gap: 12px;
@@ -20,36 +21,47 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 
 .page { max-width: 480px; margin: auto; padding: 10px; }
 
+/* Monthly Cards UI */
 .month-title {
     background: #ffd54f; color: #8b0000; text-align: center; font-weight: bold;
     padding: 12px; border-radius: 10px; margin: 20px 0 8px; font-size: 18px;
 }
 .poster { background: #fff; border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.poster img.month-img { width: 100%; display: block; background: #eee; min-height: 250px; }
+.poster img.month-img { width: 100%; display: block; }
 
 .share-btn {
     width: 100%; background: #25D366; color: white; border: none; padding: 15px;
     font-weight: bold; cursor: pointer; font-size: 15px;
 }
 
-/* EXPORT PANEL DESIGN */
+/* --- DOWNLOADED IMAGE STYLES (Export) --- */
+
+/* Blue Banner positioned directly above the user panel */
 .export-blue-banner {
     background: #0000FF; color: white; display: flex; align-items: center;
-    justify-content: center; padding: 12px; gap: 10px; font-size: 18px; font-weight: bold;
+    justify-content: center; padding: 10px; gap: 10px; font-size: 18px; font-weight: 500;
+    border-top: 2px solid #ffd54f;
 }
-.user-panel-export {
-    background: #410a0a; color: #ffd54f; padding: 25px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-top: 3px solid #ffd54f;
-}
-.user-info-text { flex: 1; text-align: left; }
-.user-name-gold { font-size: 28px; font-weight: bold; margin-bottom: 8px; display: block; color: #ffd54f; }
-.user-detail-row { font-size: 18px; margin-bottom: 4px; color: #ffffff; }
-.user-contact-row { font-size: 22px; font-weight: bold; margin-top: 10px; color: #ffd54f; }
+.playstore-icon { width: 28px; height: 28px; }
 
+/* User Panel for Downloaded Image */
+.user-panel-export {
+    background: #410a0a; color: #ffd54f; padding: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 2px solid #ffd54f;
+}
+.user-info-text { flex: 1; }
+.user-name-gold { font-size: 26px; font-weight: bold; margin-bottom: 8px; display: block; color: #ffd54f; }
+.user-detail-row { font-size: 18px; margin-bottom: 4px; color: #ffffff; }
+.user-contact-row { font-size: 20px; font-weight: bold; margin-top: 8px; color: #ffd54f; }
+.additional-text-gold { font-size: 18px; color: #ffd54f; margin-top: 10px; font-weight: bold; }
+
+/* Glowing Photo Frame */
 .photo-container-export {
-    width: 140px; height: 170px; border: 3px solid #ffd54f; border-radius: 12px;
-    box-shadow: 0 0 20px #ffd54f; background: #222; overflow: hidden; margin-left: 15px;
+    width: 130px; height: 150px; position: relative;
+    border: 3px solid #ffd54f; border-radius: 12px;
+    box-shadow: 0 0 20px #ffd54f; background: #222; overflow: hidden;
+    margin-left: 15px;
 }
 .photo-img-export { width: 100%; height: 100%; object-fit: cover; }
 
@@ -89,15 +101,13 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 </div>
 
 <script>
-const PS_ICON = "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg";
-
-// UPDATED GITHUB RAW PATH
-const GITHUB_RAW = "https://raw.githubusercontent.com/sanketramdasi264-prog/Panchangmuhurt/main/";
+const SAMPLE_IMG = "https://i.imgur.com/ZcLLrkY.png";
+const PS_LOGO = "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg";
 
 const months = [
- {title:"जानेवारी २०२६ मुहूर्त", img: GITHUB_RAW + "IMG_20260113_160125.jpg"},
- {title:"फेब्रुवारी २०२६ मुहूर्त", img:"#"},
- {title:"मार्च २०२६ मुहूर्त", img:"#"}
+ {title:"जानेवारी २०२६ मुहूर्त", img:SAMPLE_IMG},
+ {title:"फेब्रुवारी २०२६ मुहूर्त", img:SAMPLE_IMG},
+ {title:"मार्च २०२६ मुहूर्त", img:SAMPLE_IMG}
 ];
 
 let userPhotoData = "";
@@ -107,7 +117,7 @@ function buildPosters(){
   document.getElementById("posters").innerHTML = months.map((m,i)=>`
     <div class="month-title">${m.title}</div>
     <div class="poster">
-      <img class="month-img" src="${m.img}" crossOrigin="anonymous" onerror="this.src='https://via.placeholder.com/500x700?text=इमेज+लोड+झाली+नाही'">
+      <img class="month-img" src="${m.img}" crossOrigin="anonymous">
       <button class="share-btn" id="btn-${i}" onclick="handleShare(${i})">माझ्या माहितीसह शेअर करा</button>
     </div>
   `).join('');
@@ -117,105 +127,64 @@ function openModal() { document.getElementById("userModal").style.display="flex"
 
 function handleShare(index){
   pendingIndex = index;
-  const saved = localStorage.getItem("omk_userinfo");
-  if(saved) generateAndShare(index, JSON.parse(saved)); else openModal();
+  const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
+  if(saved) generateAndShare(index, saved); else openModal();
 }
 
 document.getElementById("uPhoto").onchange = (e)=>{
-  const r = new FileReader(); 
-  r.onload = () => userPhotoData = r.result;
-  if(e.target.files[0]) r.readAsDataURL(e.target.files[0]);
+  const r = new FileReader(); r.onload = () => userPhotoData = r.result;
+  r.readAsDataURL(e.target.files[0]);
 };
 
 function saveUser(){
-  const saved = JSON.parse(localStorage.getItem("omk_userinfo") || "{}");
-  const data = { 
-    name: uName.value, office: uOffice.value, address: uAddress.value, 
-    contact: uContact.value, extra: uExtra.value, 
-    photo: userPhotoData || saved.photo || "" 
-  };
+  const data = { name: uName.value, office: uOffice.value, address: uAddress.value, contact: uContact.value, extra: uExtra.value, photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo"))?.photo || "") };
   localStorage.setItem("omk_userinfo", JSON.stringify(data));
   document.getElementById("userModal").style.display="none";
   if(pendingIndex !== null) generateAndShare(pendingIndex, data);
 }
 
-// Function to convert GitHub URL to Blob to avoid CORS Canvas errors
-async function getImageUrlAsBlob(url) {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return URL.createObjectURL(blob);
-}
-
 async function generateAndShare(index, user){
-  const btn = document.getElementById(`btn-${index}`);
-  btn.innerText = "⏳ तयार होत आहे...";
-  btn.disabled = true;
-
-  try {
-    // PRE-FETCH the image to avoid security crashes
-    const safeImageUrl = await getImageUrlAsBlob(months[index].img);
-    
-    const renderContainer = document.getElementById("temp-render");
-    renderContainer.innerHTML = `
-      <div id="export-target" style="width:600px; background:white; display: flex; flex-direction: column;">
-        <img src="${safeImageUrl}" style="width:100%; display:block;">
-        <div class="export-blue-banner">
-           <img src="${PS_ICON}" style="width:30px;">
-           @Omkarmyog Available On Play Store...
+  const btn = document.getElementById(`btn-${index}`); btn.innerText = "⏳ तयार होत आहे...";
+  
+  const renderContainer = document.getElementById("temp-render");
+  renderContainer.innerHTML = `
+    <div id="export-target" style="width:600px; background:white; display: flex; flex-direction: column;">
+      <img src="${months[index].img}" style="width:100%; display:block;" crossOrigin="anonymous">
+      
+      <div class="export-blue-banner">
+         <img src="${PS_LOGO}" class="playstore-icon">
+         @Omkarmyog Avilable On Play Store...
+      </div>
+      
+      <div class="user-panel-export">
+        <div class="user-info-text">
+          <span class="user-name-gold">${user.name || 'आपले नाव'}</span>
+          <div class="user-detail-row">${user.office || ''}</div>
+          <div class="user-detail-row">${user.address || ''}</div>
+          <div class="user-contact-row">संपर्क: ${user.contact || ''}</div>
+          <div class="additional-text-gold">${user.extra || ""}</div>
         </div>
-        <div class="user-panel-export">
-          <div class="user-info-text">
-            <span class="user-name-gold">${user.name || 'आपले नाव'}</span>
-            <div class="user-detail-row">${user.office || ''}</div>
-            <div class="user-detail-row">${user.address || ''}</div>
-            <div class="user-contact-row">संपर्क: ${user.contact || ''}</div>
-            ${user.extra ? `<div style="color:#ffd54f; font-weight:bold; margin-top:10px; font-size:18px;">${user.extra}</div>` : ''}
-          </div>
-          <div class="photo-container-export">
-            ${user.photo ? `<img class="photo-img-export" src="${user.photo}">` : ''}
-          </div>
+        <div class="photo-container-export">
+          ${user.photo ? `<img class="photo-img-export" src="${user.photo}">` : ''}
         </div>
       </div>
-    `;
+    </div>
+  `;
 
-    // Increased delay for the blob image to render
-    setTimeout(async () => {
-        const canvas = await html2canvas(document.getElementById("export-target"), {
-            scale: 2,
-            useCORS: true,
-            allowTaint: false
-        });
-        
-        canvas.toBlob(async (blob) => {
-          if(!blob) return;
-          const file = new File([blob], "OmKarmyog.png", {type: "image/png"});
-          
-          if(navigator.canShare && navigator.canShare({files:[file]})) {
-              try { await navigator.share({files:[file]}); } catch (e) { downloadFile(blob); }
-          } else { downloadFile(blob); }
-          
-          btn.innerText = "माझ्या माहितीसह शेअर करा";
-          btn.disabled = false;
-          renderContainer.innerHTML = "";
-          URL.revokeObjectURL(safeImageUrl); // Clean up memory
-        }, "image/png");
-    }, 1500);
-
-  } catch (err) {
-      console.error(err);
-      alert("GitHub इमेज लोड करण्यात अडचण आली. इंटरनेट तपासा.");
+  setTimeout(async () => {
+    const canvas = await html2canvas(document.getElementById("export-target"), { scale: 1.5, useCORS: true });
+    canvas.toBlob(blob => {
+      const file = new File([blob], "OmKarmyog_Poster.png", {type: "image/png"});
+      if(navigator.canShare && navigator.canShare({files:[file]})) {
+          navigator.share({files:[file]});
+      } else { 
+          const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="OmKarmyog_Poster.png"; a.click(); 
+      }
       btn.innerText = "माझ्या माहितीसह शेअर करा";
-      btn.disabled = false;
-  }
+      renderContainer.innerHTML = "";
+    });
+  }, 600);
 }
-
-function downloadFile(blob) {
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "OmKarmyog_Poster.png";
-    a.click();
-}
-
 buildPosters();
 </script>
 </body>

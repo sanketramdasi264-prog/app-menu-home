@@ -10,7 +10,7 @@
 <style>
 body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #f4f4f4; }
 
-/* Content Hero Card (App UI) */
+/* Content Hero Card */
 .app-hero-card {
     background: #4e0f0f; color: #ffd54f; margin: 10px; padding: 20px;
     border-radius: 12px; display: flex; flex-direction: column; gap: 12px;
@@ -34,17 +34,14 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
     font-weight: bold; cursor: pointer; font-size: 15px;
 }
 
-/* --- DOWNLOADED IMAGE STYLES (Export Target) --- */
-
-/* Blue Banner - Positioned just above User Panel */
+/* --- EXPORT STYLES --- */
 .export-blue-banner {
     background: #0000FF; color: white; display: flex; align-items: center;
     justify-content: center; padding: 12px; gap: 10px; font-size: 18px; font-weight: bold;
     border-top: 3px solid #ffd54f;
 }
-.playstore-icon { width: 28px; height: 28px; filter: drop-shadow(0px 0px 2px rgba(0,0,0,0.5)); }
+.playstore-icon { width: 28px; height: 28px; }
 
-/* User Panel */
 .user-panel-export {
     background: #410a0a; color: #ffd54f; padding: 25px 20px;
     display: flex; justify-content: space-between; align-items: center;
@@ -54,23 +51,19 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 .user-name-gold { font-size: 28px; font-weight: bold; margin-bottom: 8px; display: block; color: #ffd54f; }
 .user-detail-row { font-size: 18px; margin-bottom: 4px; color: #ffffff; }
 .user-contact-row { font-size: 22px; font-weight: bold; margin-top: 10px; color: #ffd54f; }
-.additional-text-gold { font-size: 18px; color: #ffd54f; margin-top: 12px; font-weight: bold; border-top: 1px solid rgba(255,213,79,0.3); padding-top: 8px; }
 
-/* Photo Frame with Glow */
 .photo-container-export {
-    width: 140px; height: 165px; position: relative;
-    border: 3px solid #ffd54f; border-radius: 12px;
-    box-shadow: 0 0 25px #ffd54f; background: #333; overflow: hidden;
-    margin-left: 15px;
+    width: 140px; height: 165px; border: 3px solid #ffd54f; border-radius: 12px;
+    box-shadow: 0 0 25px #ffd54f; background: #333; overflow: hidden; margin-left: 15px;
 }
 .photo-img-export { width: 100%; height: 100%; object-fit: cover; }
 
-/* Modal Settings */
+/* Modal */
 .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
-.modal-content { background: #fff; padding: 25px; border-radius: 15px; width: 85%; max-width: 400px; max-height: 90vh; overflow-y: auto; }
+.modal-content { background: #fff; padding: 25px; border-radius: 15px; width: 85%; max-width: 400px; }
 .modal-content input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
 
-#temp-render { position: absolute; left: -9999px; top: 0; }
+#temp-render { position: absolute; left: -9999px; top: 0; visibility: hidden; }
 </style>
 </head>
 <body>
@@ -90,34 +83,23 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 <div class="modal" id="userModal">
  <div class="modal-content">
    <h3 style="margin-top:0; color:#4e0f0f;">📋 तुमची माहिती भरा</h3>
-   <input id="uName" placeholder="पूर्ण नाव (उदा: वेदमूर्ती श्री संकेत...)">
+   <input id="uName" placeholder="पूर्ण नाव">
    <input id="uOffice" placeholder="व्यवसायाचे नाव">
    <input id="uAddress" placeholder="पत्ता">
    <input id="uContact" placeholder="मोबाईल नंबर">
-   <input id="uExtra" placeholder="अतिरिक्त माहिती (उदा: सर्व धार्मिक विधी...)">
+   <input id="uExtra" placeholder="अतिरिक्त माहिती">
    <div style="margin:10px 0;"><small>फोटो निवडा:</small><br><input id="uPhoto" type="file" accept="image/*"></div>
    <button onclick="saveUser()" style="background:#8b0000; color:#fff; border:none; padding:14px; border-radius:8px; width:100%; font-weight:bold; cursor:pointer;">✔ सेव्ह करा</button>
  </div>
 </div>
 
 <script>
-// Icon for Play Store
 const PS_LOGO = "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg";
 
-// Months Data - January uses your local path, others use placeholders (#)
 const months = [
  {title:"जानेवारी २०२६ मुहूर्त", img:"IMG_20260113_160125.jpg"},
  {title:"फेब्रुवारी २०२६ मुहूर्त", img:"#"},
- {title:"मार्च २०२६ मुहूर्त", img:"#"},
- {title:"एप्रिल २०२६ मुहूर्त", img:"#"},
- {title:"मे २०२६ मुहूर्त", img:"#"},
- {title:"जून २०२६ मुहूर्त", img:"#"},
- {title:"जुलै २०२६ मुहूर्त", img:"#"},
- {title:"ऑगस्ट २०२६ मुहूर्त", img:"#"},
- {title:"सप्टेंबर २०२६ मुहूर्त", img:"#"},
- {title:"ऑक्टोबर २०२६ मुहूर्त", img:"#"},
- {title:"नोव्हेंबर २०२६ मुहूर्त", img:"#"},
- {title:"डिसेंबर २०२६ मुहूर्त", img:"#"}
+ {title:"मार्च २०२६ मुहूर्त", img:"#"}
 ];
 
 let userPhotoData = "";
@@ -127,43 +109,31 @@ function buildPosters(){
   document.getElementById("posters").innerHTML = months.map((m,i)=>`
     <div class="month-title">${m.title}</div>
     <div class="poster">
-      <img class="month-img" src="${m.img}" alt="${m.title} इमेज उपलब्ध नाही" onerror="this.src='https://via.placeholder.com/500x700?text=Image+Coming+Soon'">
+      <img class="month-img" src="${m.img}" onerror="this.src='https://via.placeholder.com/500x700?text=Image+Coming+Soon'">
       <button class="share-btn" id="btn-${i}" onclick="handleShare(${i})">माझ्या माहितीसह शेअर करा</button>
     </div>
   `).join('');
 }
 
-function openModal() {
-  const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
-  if(saved) {
-    uName.value = saved.name || "";
-    uOffice.value = saved.office || "";
-    uAddress.value = saved.address || "";
-    uContact.value = saved.contact || "";
-    uExtra.value = saved.extra || "";
-  }
-  document.getElementById("userModal").style.display="flex"; 
-}
+function openModal() { document.getElementById("userModal").style.display="flex"; }
 
 function handleShare(index){
   pendingIndex = index;
-  const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
-  if(saved) generateAndShare(index, saved); else openModal();
+  const saved = localStorage.getItem("omk_userinfo");
+  if(saved) generateAndShare(index, JSON.parse(saved));
+  else openModal();
 }
 
 document.getElementById("uPhoto").onchange = (e)=>{
   const r = new FileReader(); r.onload = () => userPhotoData = r.result;
-  r.readAsDataURL(e.target.files[0]);
+  if(e.target.files[0]) r.readAsDataURL(e.target.files[0]);
 };
 
 function saveUser(){
   const data = { 
-    name: uName.value, 
-    office: uOffice.value, 
-    address: uAddress.value, 
-    contact: uContact.value, 
-    extra: uExtra.value, 
-    photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo"))?.photo || "") 
+    name: uName.value, office: uOffice.value, address: uAddress.value, 
+    contact: uContact.value, extra: uExtra.value, 
+    photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo") || '{}').photo || "") 
   };
   localStorage.setItem("omk_userinfo", JSON.stringify(data));
   document.getElementById("userModal").style.display="none";
@@ -171,28 +141,25 @@ function saveUser(){
 }
 
 async function generateAndShare(index, user){
-  const btn = document.getElementById(`btn-${index}`); 
-  const originalText = btn.innerText;
-  btn.innerText = "⏳ तयार होत आहे...";
+  const btn = document.getElementById(`btn-${index}`);
+  btn.innerText = "⏳ प्रक्रिया सुरू आहे...";
   btn.disabled = true;
   
   const renderContainer = document.getElementById("temp-render");
   renderContainer.innerHTML = `
-    <div id="export-target" style="width:600px; background:white; display: flex; flex-direction: column;">
-      <img src="${months[index].img}" style="width:100%; display:block;" crossOrigin="anonymous">
-      
+    <div id="export-target" style="width:600px; background:white;">
+      <img src="${months[index].img}" style="width:100%; display:block;">
       <div class="export-blue-banner">
          <img src="${PS_LOGO}" class="playstore-icon">
          @Omkarmyog Available On Play Store...
       </div>
-      
       <div class="user-panel-export">
         <div class="user-info-text">
           <span class="user-name-gold">${user.name || 'आपले नाव'}</span>
           <div class="user-detail-row">${user.office || ''}</div>
           <div class="user-detail-row">${user.address || ''}</div>
           <div class="user-contact-row">संपर्क: ${user.contact || ''}</div>
-          ${user.extra ? `<div class="additional-text-gold">${user.extra}</div>` : ''}
+          ${user.extra ? `<div class="additional-text-gold" style="color:#ffd54f; font-weight:bold; margin-top:10px;">${user.extra}</div>` : ''}
         </div>
         <div class="photo-container-export">
           ${user.photo ? `<img class="photo-img-export" src="${user.photo}">` : ''}
@@ -201,34 +168,65 @@ async function generateAndShare(index, user){
     </div>
   `;
 
+  // Give the browser time to render the HTML
   setTimeout(async () => {
     try {
-      const canvas = await html2canvas(document.getElementById("export-target"), { 
-        scale: 2, 
+      const canvas = await html2canvas(document.getElementById("export-target"), {
         useCORS: true,
-        logging: false 
+        allowTaint: true,
+        scale: 2,
+        backgroundColor: "#ffffff"
       });
-      
-      canvas.toBlob(blob => {
-        const file = new File([blob], "OmKarmyog_Muhurt.png", {type: "image/png"});
-        if(navigator.canShare && navigator.canShare({files:[file]})) {
-            navigator.share({files:[file]});
-        } else { 
-            const a = document.createElement("a"); 
-            a.href=URL.createObjectURL(blob); 
-            a.download="OmKarmyog_Muhurt.png"; 
-            a.click(); 
+
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+            alert("Image Error!");
+            btn.innerText = "माझ्या माहितीसह शेअर करा";
+            btn.disabled = false;
+            return;
         }
-        btn.innerText = originalText;
+        
+        const file = new File([blob], "OmKarmyog.png", { type: "image/png" });
+        
+        // Try Native Share First
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+                await navigator.share({
+                    files: [file],
+                    title: 'OmKarmyog Muhurt',
+                });
+            } catch (err) {
+                console.error("Share failed, falling back to download", err);
+                downloadFallback(blob);
+            }
+        } else {
+            // Fallback for browsers/WebViews that don't support file sharing
+            downloadFallback(blob);
+        }
+        
+        btn.innerText = "माझ्या माहितीसह शेअर करा";
         btn.disabled = false;
         renderContainer.innerHTML = "";
       }, "image/png");
+
     } catch (e) {
-      alert("फोटो तयार करताना एरर आली. कृपया इमेज पाथ तपासा.");
-      btn.innerText = originalText;
+      console.error(e);
+      alert("काहीतरी चूक झाली!");
+      btn.innerText = "माझ्या माहितीसह शेअर करा";
       btn.disabled = false;
     }
-  }, 800);
+  }, 1000);
+}
+
+function downloadFallback(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "OmKarmyog_Muhurt.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    alert("तुमचा फोटो डाउनलोड झाला आहे!");
 }
 
 buildPosters();

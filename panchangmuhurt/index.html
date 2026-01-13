@@ -10,7 +10,7 @@
 <style>
 body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #f4f4f4; }
 
-/* Content Hero Card */
+/* UI Header Card */
 .app-hero-card {
     background: #4e0f0f; color: #ffd54f; margin: 10px; padding: 20px;
     border-radius: 12px; display: flex; flex-direction: column; gap: 12px;
@@ -21,43 +21,36 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 
 .page { max-width: 480px; margin: auto; padding: 10px; }
 
-/* Monthly Cards UI */
 .month-title {
     background: #ffd54f; color: #8b0000; text-align: center; font-weight: bold;
     padding: 12px; border-radius: 10px; margin: 20px 0 8px; font-size: 18px;
 }
 .poster { background: #fff; border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.poster img.month-img { width: 100%; display: block; }
+.poster img.month-img { width: 100%; display: block; background: #ddd; min-height: 250px; }
 
 .share-btn {
     width: 100%; background: #25D366; color: white; border: none; padding: 15px;
     font-weight: bold; cursor: pointer; font-size: 15px;
 }
 
-/* --- DOWNLOADED IMAGE STYLES (Export) --- */
+/* --- EXPORT PANEL (Hidden from view, used for image generation) --- */
 .export-blue-banner {
     background: #0000FF; color: white; display: flex; align-items: center;
-    justify-content: center; padding: 10px; gap: 10px; font-size: 18px; font-weight: 500;
-    border-top: 2px solid #ffd54f;
+    justify-content: center; padding: 12px; gap: 10px; font-size: 18px; font-weight: bold;
 }
-.playstore-icon { width: 28px; height: 28px; }
-
 .user-panel-export {
-    background: #410a0a; color: #ffd54f; padding: 20px;
+    background: #410a0a; color: #ffd54f; padding: 25px;
     display: flex; justify-content: space-between; align-items: center;
-    border-top: 2px solid #ffd54f;
+    border-top: 3px solid #ffd54f;
 }
-.user-info-text { flex: 1; }
-.user-name-gold { font-size: 26px; font-weight: bold; margin-bottom: 8px; display: block; color: #ffd54f; }
+.user-info-text { flex: 1; text-align: left; }
+.user-name-gold { font-size: 28px; font-weight: bold; margin-bottom: 8px; display: block; color: #ffd54f; }
 .user-detail-row { font-size: 18px; margin-bottom: 4px; color: #ffffff; }
-.user-contact-row { font-size: 20px; font-weight: bold; margin-top: 8px; color: #ffd54f; }
-.additional-text-gold { font-size: 18px; color: #ffd54f; margin-top: 10px; font-weight: bold; }
+.user-contact-row { font-size: 22px; font-weight: bold; margin-top: 10px; color: #ffd54f; }
 
 .photo-container-export {
-    width: 130px; height: 150px; position: relative;
-    border: 3px solid #ffd54f; border-radius: 12px;
-    box-shadow: 0 0 20px #ffd54f; background: #222; overflow: hidden;
-    margin-left: 15px;
+    width: 140px; height: 170px; border: 3px solid #ffd54f; border-radius: 12px;
+    box-shadow: 0 0 20px #ffd54f; background: #222; overflow: hidden; margin-left: 15px;
 }
 .photo-img-export { width: 100%; height: 100%; object-fit: cover; }
 
@@ -97,23 +90,12 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 </div>
 
 <script>
-// January Image Path and PlayStore Logo
-const JAN_IMG = "IMG_20260113_160125.jpg";
-const PS_LOGO = "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg";
+const PS_ICON = "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg";
 
 const months = [
- {title:"जानेवारी २०२६ मुहूर्त", img: JAN_IMG},
+ {title:"जानेवारी २०२६ मुहूर्त", img:"IMG_20260113_160125.jpg"},
  {title:"फेब्रुवारी २०२६ मुहूर्त", img:"#"},
- {title:"मार्च २०२६ मुहूर्त", img:"#"},
- {title:"एप्रिल २०२६ मुहूर्त", img:"#"},
- {title:"मे २०२६ मुहूर्त", img:"#"},
- {title:"जून २०२६ मुहूर्त", img:"#"},
- {title:"जुलै २०२६ मुहूर्त", img:"#"},
- {title:"ऑगस्ट २०२६ मुहूर्त", img:"#"},
- {title:"सप्टेंबर २०२६ मुहूर्त", img:"#"},
- {title:"ऑक्टोबर २०२६ मुहूर्त", img:"#"},
- {title:"नोव्हेंबर २०२६ मुहूर्त", img:"#"},
- {title:"डिसेंबर २०२६ मुहूर्त", img:"#"}
+ {title:"मार्च २०२६ मुहूर्त", img:"#"}
 ];
 
 let userPhotoData = "";
@@ -123,7 +105,7 @@ function buildPosters(){
   document.getElementById("posters").innerHTML = months.map((m,i)=>`
     <div class="month-title">${m.title}</div>
     <div class="poster">
-      <img class="month-img" src="${m.img}" ${m.img !== '#' ? 'crossOrigin="anonymous"' : ''} onerror="this.src='https://via.placeholder.com/500x700?text=इमेज+उपलब्ध+नाही'">
+      <img class="month-img" src="${m.img}" onerror="this.src='https://via.placeholder.com/500x700?text=इमेज+उपलब्ध+नाही'">
       <button class="share-btn" id="btn-${i}" onclick="handleShare(${i})">माझ्या माहितीसह शेअर करा</button>
     </div>
   `).join('');
@@ -133,42 +115,48 @@ function openModal() { document.getElementById("userModal").style.display="flex"
 
 function handleShare(index){
   pendingIndex = index;
-  const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
-  if(saved) generateAndShare(index, saved); else openModal();
+  const saved = localStorage.getItem("omk_userinfo");
+  if(saved) generateAndShare(index, JSON.parse(saved)); else openModal();
 }
 
 document.getElementById("uPhoto").onchange = (e)=>{
-  const r = new FileReader(); r.onload = () => userPhotoData = r.result;
-  r.readAsDataURL(e.target.files[0]);
+  const r = new FileReader(); 
+  r.onload = () => userPhotoData = r.result;
+  if(e.target.files[0]) r.readAsDataURL(e.target.files[0]);
 };
 
 function saveUser(){
-  const data = { name: uName.value, office: uOffice.value, address: uAddress.value, contact: uContact.value, extra: uExtra.value, photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo"))?.photo || "") };
+  const saved = JSON.parse(localStorage.getItem("omk_userinfo") || "{}");
+  const data = { 
+    name: uName.value, office: uOffice.value, address: uAddress.value, 
+    contact: uContact.value, extra: uExtra.value, 
+    photo: userPhotoData || saved.photo || "" 
+  };
   localStorage.setItem("omk_userinfo", JSON.stringify(data));
   document.getElementById("userModal").style.display="none";
   if(pendingIndex !== null) generateAndShare(pendingIndex, data);
 }
 
 async function generateAndShare(index, user){
-  const btn = document.getElementById(`btn-${index}`); btn.innerText = "⏳ तयार होत आहे...";
+  const btn = document.getElementById(`btn-${index}`);
+  btn.innerText = "⏳ तयार होत आहे...";
+  btn.disabled = true;
   
   const renderContainer = document.getElementById("temp-render");
   renderContainer.innerHTML = `
     <div id="export-target" style="width:600px; background:white; display: flex; flex-direction: column;">
-      <img src="${months[index].img}" style="width:100%; display:block;" crossOrigin="anonymous">
-      
+      <img src="${months[index].img}" style="width:100%; display:block;">
       <div class="export-blue-banner">
-         <img src="${PS_LOGO}" class="playstore-icon">
+         <img src="${PS_ICON}" style="width:30px;">
          @Omkarmyog Available On Play Store...
       </div>
-      
       <div class="user-panel-export">
         <div class="user-info-text">
           <span class="user-name-gold">${user.name || 'आपले नाव'}</span>
           <div class="user-detail-row">${user.office || ''}</div>
           <div class="user-detail-row">${user.address || ''}</div>
           <div class="user-contact-row">संपर्क: ${user.contact || ''}</div>
-          <div class="additional-text-gold">${user.extra || ""}</div>
+          ${user.extra ? `<div style="color:#ffd54f; font-weight:bold; margin-top:10px; font-size:18px;">${user.extra}</div>` : ''}
         </div>
         <div class="photo-container-export">
           ${user.photo ? `<img class="photo-img-export" src="${user.photo}">` : ''}
@@ -177,34 +165,55 @@ async function generateAndShare(index, user){
     </div>
   `;
 
+  // Delay allows local image and user photo to render in the hidden div
   setTimeout(async () => {
     try {
-        const canvas = await html2canvas(document.getElementById("export-target"), { 
-            scale: 1.5, 
-            useCORS: true,
-            logging: true // This helps debug in webview console if it fails
+        const canvas = await html2canvas(document.getElementById("export-target"), {
+            scale: 2,
+            useCORS: false,
+            allowTaint: true,
+            logging: false
         });
         
-        canvas.toBlob(blob => {
-          const file = new File([blob], "OmKarmyog_Poster.png", {type: "image/png"});
+        canvas.toBlob(async (blob) => {
+          if(!blob) throw new Error("Canvas Blob Empty");
+          
+          const file = new File([blob], "OmKarmyog_Muhurt.png", {type: "image/png"});
+          
+          // Share logic with automatic download fallback
           if(navigator.canShare && navigator.canShare({files:[file]})) {
-              navigator.share({files:[file]});
+              try {
+                  await navigator.share({files:[file]});
+              } catch (shareErr) {
+                  downloadFile(blob);
+              }
           } else { 
-              const a = document.createElement("a"); 
-              a.href=URL.createObjectURL(blob); 
-              a.download="OmKarmyog_Poster.png"; 
-              a.click(); 
+              downloadFile(blob);
           }
+          
           btn.innerText = "माझ्या माहितीसह शेअर करा";
-          renderContainer.innerHTML = "";
+          btn.disabled = false;
         }, "image/png");
+
     } catch (err) {
-        console.error("Canvas capture failed:", err);
-        alert("फोटो तयार करण्यात अडचण आली. कृपया पुन्हा प्रयत्न करा.");
+        console.error(err);
+        alert("तांत्रिक अडचण आली. कृपया पुन्हा प्रयत्न करा.");
         btn.innerText = "माझ्या माहितीसह शेअर करा";
+        btn.disabled = false;
     }
-  }, 800);
+  }, 1000);
 }
+
+function downloadFile(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "OmKarmyog_Muhurt.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
 buildPosters();
 </script>
 </body>

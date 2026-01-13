@@ -27,34 +27,37 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
     padding: 12px; border-radius: 10px; margin: 20px 0 8px; font-size: 18px;
 }
 .poster { background: #fff; border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.poster img.month-img { width: 100%; display: block; min-height: 200px; background: #eee; }
+.poster img.month-img { width: 100%; display: block; }
 
 .share-btn {
     width: 100%; background: #25D366; color: white; border: none; padding: 15px;
     font-weight: bold; cursor: pointer; font-size: 15px;
 }
 
-/* --- EXPORT STYLES --- */
+/* --- DOWNLOADED IMAGE STYLES (Export) --- */
 .export-blue-banner {
     background: #0000FF; color: white; display: flex; align-items: center;
-    justify-content: center; padding: 12px; gap: 10px; font-size: 18px; font-weight: bold;
-    border-top: 3px solid #ffd54f;
+    justify-content: center; padding: 10px; gap: 10px; font-size: 18px; font-weight: 500;
+    border-top: 2px solid #ffd54f;
 }
 .playstore-icon { width: 28px; height: 28px; }
 
 .user-panel-export {
-    background: #410a0a; color: #ffd54f; padding: 25px 20px;
+    background: #410a0a; color: #ffd54f; padding: 20px;
     display: flex; justify-content: space-between; align-items: center;
     border-top: 2px solid #ffd54f;
 }
-.user-info-text { flex: 1; text-align: left; }
-.user-name-gold { font-size: 28px; font-weight: bold; margin-bottom: 8px; display: block; color: #ffd54f; }
+.user-info-text { flex: 1; }
+.user-name-gold { font-size: 26px; font-weight: bold; margin-bottom: 8px; display: block; color: #ffd54f; }
 .user-detail-row { font-size: 18px; margin-bottom: 4px; color: #ffffff; }
-.user-contact-row { font-size: 22px; font-weight: bold; margin-top: 10px; color: #ffd54f; }
+.user-contact-row { font-size: 20px; font-weight: bold; margin-top: 8px; color: #ffd54f; }
+.additional-text-gold { font-size: 18px; color: #ffd54f; margin-top: 10px; font-weight: bold; }
 
 .photo-container-export {
-    width: 140px; height: 165px; border: 3px solid #ffd54f; border-radius: 12px;
-    box-shadow: 0 0 25px #ffd54f; background: #333; overflow: hidden; margin-left: 15px;
+    width: 130px; height: 150px; position: relative;
+    border: 3px solid #ffd54f; border-radius: 12px;
+    box-shadow: 0 0 20px #ffd54f; background: #222; overflow: hidden;
+    margin-left: 15px;
 }
 .photo-img-export { width: 100%; height: 100%; object-fit: cover; }
 
@@ -63,7 +66,7 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 .modal-content { background: #fff; padding: 25px; border-radius: 15px; width: 85%; max-width: 400px; }
 .modal-content input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
 
-#temp-render { position: absolute; left: -9999px; top: 0; visibility: hidden; }
+#temp-render { position: absolute; left: -9999px; top: 0; }
 </style>
 </head>
 <body>
@@ -94,12 +97,23 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 </div>
 
 <script>
+// January Image Path and PlayStore Logo
+const JAN_IMG = "IMG_20260113_160125.jpg";
 const PS_LOGO = "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg";
 
 const months = [
- {title:"जानेवारी २०२६ मुहूर्त", img:"IMG_20260113_160125.jpg"},
+ {title:"जानेवारी २०२६ मुहूर्त", img: JAN_IMG},
  {title:"फेब्रुवारी २०२६ मुहूर्त", img:"#"},
- {title:"मार्च २०२६ मुहूर्त", img:"#"}
+ {title:"मार्च २०२६ मुहूर्त", img:"#"},
+ {title:"एप्रिल २०२६ मुहूर्त", img:"#"},
+ {title:"मे २०२६ मुहूर्त", img:"#"},
+ {title:"जून २०२६ मुहूर्त", img:"#"},
+ {title:"जुलै २०२६ मुहूर्त", img:"#"},
+ {title:"ऑगस्ट २०२६ मुहूर्त", img:"#"},
+ {title:"सप्टेंबर २०२६ मुहूर्त", img:"#"},
+ {title:"ऑक्टोबर २०२६ मुहूर्त", img:"#"},
+ {title:"नोव्हेंबर २०२६ मुहूर्त", img:"#"},
+ {title:"डिसेंबर २०२६ मुहूर्त", img:"#"}
 ];
 
 let userPhotoData = "";
@@ -109,7 +123,7 @@ function buildPosters(){
   document.getElementById("posters").innerHTML = months.map((m,i)=>`
     <div class="month-title">${m.title}</div>
     <div class="poster">
-      <img class="month-img" src="${m.img}" onerror="this.src='https://via.placeholder.com/500x700?text=Image+Coming+Soon'">
+      <img class="month-img" src="${m.img}" ${m.img !== '#' ? 'crossOrigin="anonymous"' : ''} onerror="this.src='https://via.placeholder.com/500x700?text=इमेज+उपलब्ध+नाही'">
       <button class="share-btn" id="btn-${i}" onclick="handleShare(${i})">माझ्या माहितीसह शेअर करा</button>
     </div>
   `).join('');
@@ -119,47 +133,42 @@ function openModal() { document.getElementById("userModal").style.display="flex"
 
 function handleShare(index){
   pendingIndex = index;
-  const saved = localStorage.getItem("omk_userinfo");
-  if(saved) generateAndShare(index, JSON.parse(saved));
-  else openModal();
+  const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
+  if(saved) generateAndShare(index, saved); else openModal();
 }
 
 document.getElementById("uPhoto").onchange = (e)=>{
   const r = new FileReader(); r.onload = () => userPhotoData = r.result;
-  if(e.target.files[0]) r.readAsDataURL(e.target.files[0]);
+  r.readAsDataURL(e.target.files[0]);
 };
 
 function saveUser(){
-  const data = { 
-    name: uName.value, office: uOffice.value, address: uAddress.value, 
-    contact: uContact.value, extra: uExtra.value, 
-    photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo") || '{}').photo || "") 
-  };
+  const data = { name: uName.value, office: uOffice.value, address: uAddress.value, contact: uContact.value, extra: uExtra.value, photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo"))?.photo || "") };
   localStorage.setItem("omk_userinfo", JSON.stringify(data));
   document.getElementById("userModal").style.display="none";
   if(pendingIndex !== null) generateAndShare(pendingIndex, data);
 }
 
 async function generateAndShare(index, user){
-  const btn = document.getElementById(`btn-${index}`);
-  btn.innerText = "⏳ प्रक्रिया सुरू आहे...";
-  btn.disabled = true;
+  const btn = document.getElementById(`btn-${index}`); btn.innerText = "⏳ तयार होत आहे...";
   
   const renderContainer = document.getElementById("temp-render");
   renderContainer.innerHTML = `
-    <div id="export-target" style="width:600px; background:white;">
-      <img src="${months[index].img}" style="width:100%; display:block;">
+    <div id="export-target" style="width:600px; background:white; display: flex; flex-direction: column;">
+      <img src="${months[index].img}" style="width:100%; display:block;" crossOrigin="anonymous">
+      
       <div class="export-blue-banner">
          <img src="${PS_LOGO}" class="playstore-icon">
          @Omkarmyog Available On Play Store...
       </div>
+      
       <div class="user-panel-export">
         <div class="user-info-text">
           <span class="user-name-gold">${user.name || 'आपले नाव'}</span>
           <div class="user-detail-row">${user.office || ''}</div>
           <div class="user-detail-row">${user.address || ''}</div>
           <div class="user-contact-row">संपर्क: ${user.contact || ''}</div>
-          ${user.extra ? `<div class="additional-text-gold" style="color:#ffd54f; font-weight:bold; margin-top:10px;">${user.extra}</div>` : ''}
+          <div class="additional-text-gold">${user.extra || ""}</div>
         </div>
         <div class="photo-container-export">
           ${user.photo ? `<img class="photo-img-export" src="${user.photo}">` : ''}
@@ -168,67 +177,34 @@ async function generateAndShare(index, user){
     </div>
   `;
 
-  // Give the browser time to render the HTML
   setTimeout(async () => {
     try {
-      const canvas = await html2canvas(document.getElementById("export-target"), {
-        useCORS: true,
-        allowTaint: true,
-        scale: 2,
-        backgroundColor: "#ffffff"
-      });
-
-      canvas.toBlob(async (blob) => {
-        if (!blob) {
-            alert("Image Error!");
-            btn.innerText = "माझ्या माहितीसह शेअर करा";
-            btn.disabled = false;
-            return;
-        }
+        const canvas = await html2canvas(document.getElementById("export-target"), { 
+            scale: 1.5, 
+            useCORS: true,
+            logging: true // This helps debug in webview console if it fails
+        });
         
-        const file = new File([blob], "OmKarmyog.png", { type: "image/png" });
-        
-        // Try Native Share First
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            try {
-                await navigator.share({
-                    files: [file],
-                    title: 'OmKarmyog Muhurt',
-                });
-            } catch (err) {
-                console.error("Share failed, falling back to download", err);
-                downloadFallback(blob);
-            }
-        } else {
-            // Fallback for browsers/WebViews that don't support file sharing
-            downloadFallback(blob);
-        }
-        
+        canvas.toBlob(blob => {
+          const file = new File([blob], "OmKarmyog_Poster.png", {type: "image/png"});
+          if(navigator.canShare && navigator.canShare({files:[file]})) {
+              navigator.share({files:[file]});
+          } else { 
+              const a = document.createElement("a"); 
+              a.href=URL.createObjectURL(blob); 
+              a.download="OmKarmyog_Poster.png"; 
+              a.click(); 
+          }
+          btn.innerText = "माझ्या माहितीसह शेअर करा";
+          renderContainer.innerHTML = "";
+        }, "image/png");
+    } catch (err) {
+        console.error("Canvas capture failed:", err);
+        alert("फोटो तयार करण्यात अडचण आली. कृपया पुन्हा प्रयत्न करा.");
         btn.innerText = "माझ्या माहितीसह शेअर करा";
-        btn.disabled = false;
-        renderContainer.innerHTML = "";
-      }, "image/png");
-
-    } catch (e) {
-      console.error(e);
-      alert("काहीतरी चूक झाली!");
-      btn.innerText = "माझ्या माहितीसह शेअर करा";
-      btn.disabled = false;
     }
-  }, 1000);
+  }, 800);
 }
-
-function downloadFallback(blob) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "OmKarmyog_Muhurt.png";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    alert("तुमचा फोटो डाउनलोड झाला आहे!");
-}
-
 buildPosters();
 </script>
 </body>

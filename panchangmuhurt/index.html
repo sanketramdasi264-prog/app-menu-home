@@ -39,10 +39,9 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 /* Blue Banner positioned directly above the user panel */
 .export-blue-banner {
     background: #0000FF; color: white; display: flex; align-items: center;
-    justify-content: center; padding: 10px; gap: 10px; font-size: 18px; font-weight: 500;
+    justify-content: center; padding: 15px; font-size: 18px; font-weight: 500;
     border-top: 2px solid #ffd54f;
 }
-.playstore-icon { width: 28px; height: 28px; }
 
 /* User Panel for Downloaded Image */
 .user-panel-export {
@@ -69,6 +68,8 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
 .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
 .modal-content { background: #fff; padding: 25px; border-radius: 15px; width: 85%; max-width: 400px; }
 .modal-content input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+.modal-btn { background: #8b0000; color: #fff; border: none; padding: 14px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
+.modal-btn-cancel { background: #666; margin-top: 5px; }
 
 #temp-render { position: absolute; left: -9999px; top: 0; }
 </style>
@@ -96,55 +97,115 @@ body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #
    <input id="uContact" placeholder="मोबाईल नंबर">
    <input id="uExtra" placeholder="अतिरिक्त माहिती">
    <div style="margin:10px 0;"><small>फोटो निवडा:</small><br><input id="uPhoto" type="file" accept="image/*"></div>
-   <button onclick="saveUser()" style="background:#8b0000; color:#fff; border:none; padding:14px; border-radius:8px; width:100%; font-weight:bold; cursor:pointer;">✔ सेव्ह करा</button>
+   <button onclick="saveUser()" class="modal-btn">✔ सेव्ह करा</button>
+   <button onclick="closeModal()" class="modal-btn modal-btn-cancel">रद्द करा</button>
  </div>
 </div>
 
 <script>
-const SAMPLE_IMG = "https://i.imgur.com/ZcLLrkY.png";
-const PS_LOGO = "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg";
-
 const months = [
- {title:"जानेवारी २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"फेब्रुवारी २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"मार्च २०२६ मुहूर्त", img:SAMPLE_IMG}
+ {title:"जानेवारी २०२६ मुहूर्त", img:"https://raw.githubusercontent.com/sanketramdasi264-prog/app-menu-home/main/panchangmuhurt/IMG_20260113_160125.jpg"},
+ {title:"फेब्रुवारी २०२६ मुहूर्त", img:"#"},
+ {title:"मार्च २०२६ मुहूर्त", img:"#"}
 ];
+
+// Store user data in memory (not localStorage)
+let userData = {
+  name: '',
+  office: '',
+  address: '',
+  contact: '',
+  extra: '',
+  photo: ''
+};
 
 let userPhotoData = "";
 let pendingIndex = null;
 
 function buildPosters(){
-  document.getElementById("posters").innerHTML = months.map((m,i)=>`
-    <div class="month-title">${m.title}</div>
-    <div class="poster">
-      <img class="month-img" src="${m.img}" crossOrigin="anonymous">
-      <button class="share-btn" id="btn-${i}" onclick="handleShare(${i})">माझ्या माहितीसह शेअर करा</button>
-    </div>
-  `).join('');
+  document.getElementById("posters").innerHTML = months.map((m,i)=>{
+    if(m.img === "#") {
+      return `
+        <div class="month-title">${m.title}</div>
+        <div class="poster" style="background:#e0e0e0; padding:40px; text-align:center; color:#666;">
+          <p style="margin:0; font-size:16px; font-weight:bold;">लवकरच उपलब्ध होईल...</p>
+        </div>
+      `;
+    }
+    return `
+      <div class="month-title">${m.title}</div>
+      <div class="poster">
+        <img class="month-img" src="${m.img}" crossOrigin="anonymous">
+        <button class="share-btn" id="btn-${i}" onclick="handleShare(${i})">माझ्या माहितीसह शेअर करा</button>
+      </div>
+    `;
+  }).join('');
 }
 
-function openModal() { document.getElementById("userModal").style.display="flex"; }
+function openModal() { 
+  // Pre-fill with existing data
+  document.getElementById("uName").value = userData.name || '';
+  document.getElementById("uOffice").value = userData.office || '';
+  document.getElementById("uAddress").value = userData.address || '';
+  document.getElementById("uContact").value = userData.contact || '';
+  document.getElementById("uExtra").value = userData.extra || '';
+  
+  document.getElementById("userModal").style.display="flex"; 
+}
+
+function closeModal() {
+  document.getElementById("userModal").style.display="none";
+  pendingIndex = null;
+}
 
 function handleShare(index){
+  if(months[index].img === "#") {
+    alert("ही मुहूर्त माहिती अद्याप उपलब्ध नाही");
+    return;
+  }
   pendingIndex = index;
-  const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
-  if(saved) generateAndShare(index, saved); else openModal();
+  if(userData.name || userData.contact) {
+    generateAndShare(index, userData);
+  } else {
+    openModal();
+  }
 }
 
 document.getElementById("uPhoto").onchange = (e)=>{
-  const r = new FileReader(); r.onload = () => userPhotoData = r.result;
-  r.readAsDataURL(e.target.files[0]);
+  if(e.target.files && e.target.files[0]) {
+    const r = new FileReader(); 
+    r.onload = () => userPhotoData = r.result;
+    r.readAsDataURL(e.target.files[0]);
+  }
 };
 
 function saveUser(){
-  const data = { name: uName.value, office: uOffice.value, address: uAddress.value, contact: uContact.value, extra: uExtra.value, photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo"))?.photo || "") };
-  localStorage.setItem("omk_userinfo", JSON.stringify(data));
-  document.getElementById("userModal").style.display="none";
-  if(pendingIndex !== null) generateAndShare(pendingIndex, data);
+  const nameEl = document.getElementById("uName");
+  const officeEl = document.getElementById("uOffice");
+  const addressEl = document.getElementById("uAddress");
+  const contactEl = document.getElementById("uContact");
+  const extraEl = document.getElementById("uExtra");
+  
+  userData = { 
+    name: nameEl.value, 
+    office: officeEl.value, 
+    address: addressEl.value, 
+    contact: contactEl.value, 
+    extra: extraEl.value, 
+    photo: userPhotoData || userData.photo
+  };
+  
+  closeModal();
+  
+  if(pendingIndex !== null) {
+    generateAndShare(pendingIndex, userData);
+  }
 }
 
 async function generateAndShare(index, user){
-  const btn = document.getElementById(`btn-${index}`); btn.innerText = "⏳ तयार होत आहे...";
+  const btn = document.getElementById(`btn-${index}`); 
+  btn.innerText = "⏳ तयार होत आहे...";
+  btn.disabled = true;
   
   const renderContainer = document.getElementById("temp-render");
   renderContainer.innerHTML = `
@@ -152,17 +213,16 @@ async function generateAndShare(index, user){
       <img src="${months[index].img}" style="width:100%; display:block;" crossOrigin="anonymous">
       
       <div class="export-blue-banner">
-         <img src="${PS_LOGO}" class="playstore-icon">
-         @Omkarmyog Avilable On Play Store...
+         @Omkarmyog Available On Play Store...
       </div>
       
       <div class="user-panel-export">
         <div class="user-info-text">
           <span class="user-name-gold">${user.name || 'आपले नाव'}</span>
-          <div class="user-detail-row">${user.office || ''}</div>
-          <div class="user-detail-row">${user.address || ''}</div>
-          <div class="user-contact-row">संपर्क: ${user.contact || ''}</div>
-          <div class="additional-text-gold">${user.extra || ""}</div>
+          ${user.office ? `<div class="user-detail-row">${user.office}</div>` : ''}
+          ${user.address ? `<div class="user-detail-row">${user.address}</div>` : ''}
+          ${user.contact ? `<div class="user-contact-row">संपर्क: ${user.contact}</div>` : ''}
+          ${user.extra ? `<div class="additional-text-gold">${user.extra}</div>` : ''}
         </div>
         <div class="photo-container-export">
           ${user.photo ? `<img class="photo-img-export" src="${user.photo}">` : ''}
@@ -172,19 +232,51 @@ async function generateAndShare(index, user){
   `;
 
   setTimeout(async () => {
-    const canvas = await html2canvas(document.getElementById("export-target"), { scale: 1.5, useCORS: true });
-    canvas.toBlob(blob => {
-      const file = new File([blob], "OmKarmyog_Poster.png", {type: "image/png"});
-      if(navigator.canShare && navigator.canShare({files:[file]})) {
-          navigator.share({files:[file]});
-      } else { 
-          const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="OmKarmyog_Poster.png"; a.click(); 
-      }
+    try {
+      const canvas = await html2canvas(document.getElementById("export-target"), { 
+        scale: 1.5, 
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff'
+      });
+      
+      canvas.toBlob(blob => {
+        if(!blob) {
+          alert("पोस्टर तयार करताना त्रुटी झाली");
+          btn.innerText = "माझ्या माहितीसह शेअर करा";
+          btn.disabled = false;
+          return;
+        }
+        
+        const file = new File([blob], "OmKarmyog_Poster.png", {type: "image/png"});
+        
+        if(navigator.canShare && navigator.canShare({files:[file]})) {
+          navigator.share({files:[file]}).catch(err => {
+            console.log("Share cancelled or failed:", err);
+          });
+        } else { 
+          const a = document.createElement("a"); 
+          a.href = URL.createObjectURL(blob); 
+          a.download = "OmKarmyog_Poster.png"; 
+          a.click();
+          URL.revokeObjectURL(a.href);
+        }
+        
+        btn.innerText = "माझ्या माहितीसह शेअर करा";
+        btn.disabled = false;
+        renderContainer.innerHTML = "";
+      }, "image/png");
+    } catch(error) {
+      console.error("Error generating poster:", error);
+      alert("पोस्टर तयार करताना त्रुटी झाली");
       btn.innerText = "माझ्या माहितीसह शेअर करा";
+      btn.disabled = false;
       renderContainer.innerHTML = "";
-    });
+    }
   }, 600);
 }
+
+// Initialize
 buildPosters();
 </script>
 </body>

@@ -2,89 +2,140 @@
 <html lang="mr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>OmKarmyog – Monthly Muhurt Share</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-body{ margin:0; font-family:'Noto Sans Devanagari',sans-serif; background:#f4f4f4; color:#333; }
-
-/* HEADER STYLES */
-.main-header {
-  background: #4e0f0f; /* Dark Red Maroon */
-  color: #ffd54f;      /* Gold text */
-  padding: 12px 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-.header-title { font-size: 20px; font-weight: bold; margin: 0; }
-.edit-profile-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid #ffd54f;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
+body { 
+    margin: 0; 
+    font-family: 'Noto Sans Devanagari', sans-serif; 
+    background: #f4f4f4; 
+    color: #333; 
 }
 
-.page{ max-width:480px; margin:auto; padding:10px; }
+/* REPLACED HEADER WITH A CONTENT CARD */
+.app-hero-card {
+    background: #4e0f0f; /* Dark Red Maroon */
+    color: #ffd54f;      /* Gold text */
+    margin: 10px;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    border: 1px solid #ffd54f;
+}
+
+.hero-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hero-title { 
+    font-size: 24px; 
+    font-weight: bold; 
+    margin: 0; 
+}
+
+.hero-edit-btn {
+    background: #ffd54f;
+    color: #4e0f0f;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.page { 
+    max-width: 480px; 
+    margin: auto; 
+    padding: 10px; 
+}
 
 /* MONTH CARD STYLES */
-.month-title{
-  background:#ffd54f;
-  color:#8b0000;
-  text-align:center;
-  font-weight:bold;
-  padding:10px;
-  border-radius:8px;
-  margin:15px 0 6px;
-  font-size:16px;
-}
-.poster{
-  background:#fff;
-  border-radius:8px;
-  overflow:hidden;
-  box-shadow:0 4px 12px rgba(0,0,0,.12);
-  margin-bottom:12px;
-}
-.poster img.month-img{ width:100%; display:block; }
-.share-btn{
-  width:100%;
-  background:#25D366;
-  color:white;
-  border:none;
-  padding:14px;
-  font-weight:bold;
-  cursor:pointer;
-  font-size:14px;
+.month-title {
+    background: #ffd54f;
+    color: #8b0000;
+    text-align: center;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 20px 0 8px;
+    font-size: 18px;
+    border: 1px solid #e0c060;
 }
 
-/* FINAL IMAGE USER BAR (The Exported Section) */
-.user-bar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px;
-  background:#4e0f0f;
-  color:white;
-  border-top: 3px solid #ffd54f;
+.poster {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
 }
-.user-text{ font-size:14px; line-height:1.5; }
-.user-text b{ color:#ffd54f; font-size: 18px; display: block; margin-bottom: 3px; }
-.user-photo{ width:85px; height:105px; object-fit:cover; border-radius:6px; border:2px solid #ffd54f; }
 
-/* MODAL STYLES */
-.modal{ position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:99; }
-.modal-content{ background:#fff; padding:20px; border-radius:12px; width:90%; max-width:400px; }
-.modal-content input{ width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:5px; box-sizing: border-box; }
-.save-btn{ background:#8b0000; color:#fff; border:none; padding:12px; border-radius:6px; width:100%; font-weight:bold; cursor:pointer; }
+.poster img.month-img { 
+    width: 100%; 
+    display: block; 
+}
+
+.share-btn {
+    width: 100%;
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* EXPORT USER BAR (ON DOWNLOADED IMAGE) */
+.user-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #4e0f0f;
+    color: white;
+    border-top: 4px solid #ffd54f;
+}
+
+.user-text { font-size: 14px; line-height: 1.5; }
+.user-text b { color: #ffd54f; font-size: 19px; display: block; margin-bottom: 4px; }
+.user-photo { width: 90px; height: 110px; object-fit: cover; border-radius: 8px; border: 2px solid #ffd54f; background: #fff;}
+
+/* MODAL */
+.modal { 
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0,0,0,0.85); 
+    display: none; 
+    align-items: center; 
+    justify-content: center; 
+    z-index: 2000; 
+}
+
+.modal-content { 
+    background: #fff; 
+    padding: 25px; 
+    border-radius: 15px; 
+    width: 85%; 
+    max-width: 400px; 
+}
+
+.modal-content input {
+    width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box;
+}
 
 #temp-render { position: absolute; left: -9999px; top: 0; }
 </style>
@@ -92,13 +143,16 @@ body{ margin:0; font-family:'Noto Sans Devanagari',sans-serif; background:#f4f4f
 
 <body>
 
-<header class="main-header">
-    <div class="header-title">ॐ कर्मयोग</div>
-    <button class="edit-profile-btn" onclick="openModal()">माहिती बदला</button>
-</header>
-
 <div class="page">
-  <div id="posters"></div>
+    <div class="app-hero-card">
+        <div class="hero-flex">
+            <h1 class="hero-title">पंचांग मुहूर्त २०२६...</h1>
+            <button class="hero-edit-btn" onclick="openModal()">माहिती बदला</button>
+        </div>
+        <p style="margin:0; font-size:13px; opacity:0.9;">आपले मुहूर्त फोटो तयार करा आणि शेअर करा.</p>
+    </div>
+
+    <div id="posters"></div>
 </div>
 
 <div id="temp-render"></div>
@@ -106,21 +160,20 @@ body{ margin:0; font-family:'Noto Sans Devanagari',sans-serif; background:#f4f4f
 <div class="modal" id="userModal">
  <div class="modal-content">
    <h3 style="margin-top:0; color:#4e0f0f;">📋 तुमची माहिती भरा</h3>
-   <input id="uName" placeholder="तुमचे नाव">
-   <input id="uOffice" placeholder="व्यवसायाचे नाव">
+   <input id="uName" placeholder="पूर्ण नाव">
+   <input id="uOffice" placeholder="कार्यालय / व्यवसाय">
    <input id="uAddress" placeholder="पत्ता">
    <input id="uContact" placeholder="मोबाईल नंबर">
-   <div style="margin:10px 0;">
-     <small>तुमचा फोटो निवडा:</small><br>
-     <input id="uPhoto" type="file" accept="image/*" style="border:none; padding:5px 0;">
+   <div style="margin:15px 0;">
+     <small>तुमचा फोटो अपलोड करा:</small><br>
+     <input id="uPhoto" type="file" accept="image/*" style="border:none; padding:10px 0;">
    </div>
-   <button class="save-btn" onclick="saveUser()">✔ सेव्ह करा</button>
+   <button onclick="saveUser()" style="background:#8b0000; color:#fff; border:none; padding:14px; border-radius:8px; width:100%; font-weight:bold; cursor:pointer; font-size:16px;">✔ जतन करा</button>
  </div>
 </div>
 
 <script>
 const SAMPLE_IMG = "https://i.imgur.com/ZcLLrkY.png";
-
 const months = [
  {title:"जानेवारी २०२६ मुहूर्त", img:SAMPLE_IMG},
  {title:"फेब्रुवारी २०२६ मुहूर्त", img:SAMPLE_IMG},
@@ -137,7 +190,6 @@ const months = [
 ];
 
 const postersDiv = document.getElementById("posters");
-const modal = document.getElementById("userModal");
 let userPhotoData = "";
 let pendingIndex = null;
 
@@ -150,7 +202,7 @@ function buildPosters(){
       <div class="poster">
         <img class="month-img" src="${m.img}" crossOrigin="anonymous">
         <button class="share-btn" id="btn-${i}" onclick="handleShare(${i})">
-          📤 माझ्या माहितीसह शेअर करा
+           माझ्या माहितीसह शेअर करा
         </button>
       </div>
     `;
@@ -160,23 +212,20 @@ function buildPosters(){
 
 function openModal() {
   const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
-  if(saved) {
-    document.getElementById("uName").value = saved.name || "";
-    document.getElementById("uOffice").value = saved.office || "";
-    document.getElementById("uAddress").value = saved.address || "";
-    document.getElementById("uContact").value = saved.contact || "";
+  if(saved){
+    uName.value = saved.name || "";
+    uOffice.value = saved.office || "";
+    uAddress.value = saved.address || "";
+    uContact.value = saved.contact || "";
   }
-  modal.style.display="flex";
+  document.getElementById("userModal").style.display="flex";
 }
 
 function handleShare(index){
   pendingIndex = index;
   const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
-  if(saved){
-    generateAndShare(index, saved);
-  } else {
-    modal.style.display="flex";
-  }
+  if(saved) generateAndShare(index, saved);
+  else openModal();
 }
 
 document.getElementById("uPhoto").onchange = (e)=>{
@@ -189,66 +238,52 @@ document.getElementById("uPhoto").onchange = (e)=>{
 
 function saveUser(){
   const data = {
-    name: document.getElementById("uName").value.trim(),
-    office: document.getElementById("uOffice").value.trim(),
-    address: document.getElementById("uAddress").value.trim(),
-    contact: document.getElementById("uContact").value.trim(),
+    name: uName.value, 
+    office: uOffice.value, 
+    address: uAddress.value, 
+    contact: uContact.value, 
     photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo"))?.photo || "")
   };
   localStorage.setItem("omk_userinfo", JSON.stringify(data));
-  modal.style.display="none";
+  document.getElementById("userModal").style.display="none";
   if(pendingIndex !== null) generateAndShare(pendingIndex, data);
 }
 
 async function generateAndShare(index, user){
   const btn = document.getElementById(`btn-${index}`);
-  const originalText = btn.innerText;
-  btn.innerText = "⏳ फोटो तयार होत आहे...";
-  btn.disabled = true;
-
+  btn.innerText = "⏳ तयार होत आहे...";
+  
   const renderContainer = document.getElementById("temp-render");
   renderContainer.innerHTML = `
-    <div id="export-target" style="width:500px; background:white; font-family:'Noto Sans Devanagari',sans-serif;">
+    <div id="export-target" style="width:500px; background:white;">
       <img src="${months[index].img}" style="width:100%; display:block;" crossOrigin="anonymous">
       <div class="user-bar">
         <div class="user-text">
-          <b>${user.name || 'आपले नाव'}</b>
+          <b>${user.name}</b>
           ${user.office ? user.office + '<br>' : ''}
           ${user.address ? user.address + '<br>' : ''}
-          ${user.contact ? 'संपर्क: ' + user.contact : ''}
+          संपर्क: ${user.contact}
         </div>
         ${user.photo ? `<img class="user-photo" src="${user.photo}">` : ''}
       </div>
     </div>
   `;
 
-  // Wait for photo rendering
   setTimeout(async () => {
-    try {
-      const canvas = await html2canvas(document.getElementById("export-target"), {
-        scale: 2,
-        useCORS: true
-      });
-
-      canvas.toBlob(blob => {
-        const file = new File([blob], "OmKarmyog.png", {type: "image/png"});
-        if(navigator.canShare && navigator.canShare({files: [file]})){
-          navigator.share({ files: [file], title: "OmKarmyog Muhurt" });
-        } else {
-          const link = document.createElement("a");
-          link.href = URL.createObjectURL(blob);
-          link.download = "OmKarmyog_Muhurt.png";
-          link.click();
-        }
-        btn.innerText = originalText;
-        btn.disabled = false;
-        renderContainer.innerHTML = "";
-      }, "image/png");
-    } catch(e) {
-      alert("काहीतरी तांत्रिक अडचण आली.");
-      btn.innerText = originalText;
-      btn.disabled = false;
-    }
+    const canvas = await html2canvas(document.getElementById("export-target"), { scale: 2, useCORS: true });
+    canvas.toBlob(blob => {
+      const file = new File([blob], "OmKarmyog.png", {type: "image/png"});
+      if(navigator.canShare && navigator.canShare({files: [file]})) {
+          navigator.share({ files: [file] });
+      } else {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "OmKarmyog.png";
+        link.click();
+      }
+      btn.innerText = "📤 माझ्या माहितीसह शेअर करा";
+      renderContainer.innerHTML = "";
+    });
   }, 600);
 }
 

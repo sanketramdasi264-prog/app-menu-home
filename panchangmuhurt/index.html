@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OmKarmyog – Monthly Muhurt Share</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-red: #8b0000;
+            --saffron: #ff9933;
+            --gold: #ffd54f;
+            --whatsapp: #25D366;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            background: #f8f1e7;
+            color: #333;
+        }
+
+        .page { max-width: 500px; margin: auto; padding: 15px; }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 10px;
+            background: var(--primary-red);
+            color: white;
+            border-radius: 0 0 15px 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Profile Controls */
+        .profile-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+        .edit-btn {
+            background: none;
+            border: 1px solid var(--primary-red);
+            color: var(--primary-red);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Month Cards */
+        .month-title {
+            background: var(--gold);
+            color: var(--primary-red);
+            text-align: center;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 8px 8px 0 0;
+            font-size: 18px;
+            border: 1px solid #e0c060;
+        }
+
+        .poster-card {
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .month-img { width: 100%; display: block; }
+
+        .share-btn {
+            width: 100%;
+            background: var(--whatsapp);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .share-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* User Footer on Image */
+        .user-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: var(--primary-red);
+            color: white;
+            border-top: 3px solid var(--gold);
+        }
+        .user-text { font-size: 14px; line-height: 1.5; }
+        .user-text b { color: var(--gold); font-size: 16px; }
+        .user-photo {
+            width: 70px; height: 90px;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+            border-radius: 4px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: none; align-items: center; justify-content: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background: #fff; padding: 20px;
+            border-radius: 12px; width: 90%; max-width: 400px;
+        }
+        .modal-content input {
+            width: 100%; padding: 10px; margin: 10px 0;
+            border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;
+        }
+        .save-btn {
+            background: var(--primary-red); color: #fff;
+            border: none; padding: 12px; border-radius: 6px;
+            width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
+
+        /* Hidden rendering area */
+        #render-zone { position: absolute; left: -9999px; top: 0; }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2 style="margin:0">पंचांग मुहूर्त</h2>
+</div>
+
+<div class="page">
+    <div class="profile-actions">
+        <button class="edit-btn" onclick="openModal()">⚙ माहिती बदला</button>
+    </div>
+    <div id="posters-container"></div>
+</div>
+
+<div id="render-zone"></div>
+
+<div class="modal" id="userModal">
+    <div class="modal-content">
+        <h3 style="margin-top:0; color:var(--primary-red)">📋 तुमची माहिती भरा</h3>
+        <input id="uName" placeholder="पूर्ण नाव">
+        <input id="uOffice" placeholder="व्यवसायाचे नाव">
+        <input id="uAddress" placeholder="पत्ता">
+        <input id="uContact" placeholder="मोबाईल नंबर">
+        <p style="font-size:12px; margin:5px 0">तुमचा फोटो निवडा:</p>
+        <input id="uPhoto" type="file" accept="image/*">
+        <button class="save-btn" onclick="saveUser()">✔ माहिती जतन करा</button>
+    </div>
+</div>
+
+<script>
+    const SAMPLE_IMG = "https://i.imgur.com/ZcLLrkY.png";
+    const months = [
+        "जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", 
+        "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"
+    ];
+
+    let userPhotoData = "";
+
+    // 1. Initial Build
+    function init() {
+        const container = document.getElementById("posters-container");
+        months.forEach((month, i) => {
+            const div = document.createElement("div");
+            div.className = "month-group";
+            div.innerHTML = `
+                <div class="month-title">${month} २०२४ मुहूर्त</div>
+                <div class="poster-card">
+                    <img class="month-img" src="${SAMPLE_IMG}" crossOrigin="anonymous">
+                    <button class="share-btn" id="btn-${i}" onclick="handleShare(${i})">
+                        📤 फोटो तयार करा आणि शेअर करा
+                    </button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // 2. Handle Share Flow
+    function handleShare(index) {
+        const saved = localStorage.getItem("omk_userinfo");
+        if (!saved) {
+            openModal(index);
+        } else {
+            generateImage(index, JSON.parse(saved));
+        }
+    }
+
+    // 3. Modal Controls
+    function openModal() {
+        const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
+        if (saved) {
+            document.getElementById("uName").value = saved.name;
+            document.getElementById("uOffice").value = saved.office;
+            document.getElementById("uAddress").value = saved.address;
+            document.getElementById("uContact").value = saved.contact;
+        }
+        document.getElementById("userModal").style.display = "flex";
+    }
+
+    // Handle Photo Upload
+    document.getElementById("uPhoto").onchange = function(e) {
+        const reader = new FileReader();
+        reader.onload = () => userPhotoData = reader.result;
+        reader.readAsDataURL(e.target.files[0]);
+    };
+
+    function saveUser() {
+        const info = {
+            name: document.getElementById("uName").value,
+            office: document.getElementById("uOffice").value,
+            address: document.getElementById("uAddress").value,
+            contact: document.getElementById("uContact").value,
+            photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo"))?.photo || "")
+        };
+        localStorage.setItem("omk_userinfo", JSON.stringify(info));
+        document.getElementById("userModal").style.display = "none";
+    }
+
+    // 4. Image Generation
+    async function generateImage(index, user) {
+        const btn = document.getElementById(`btn-${index}`);
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = "⏳ फोटो तयार होत आहे...";
+
+        const renderZone = document.getElementById("render-zone");
+        renderZone.innerHTML = `
+            <div id="final-poster" style="width: 500px; background: white;">
+                <img src="${SAMPLE_IMG}" style="width:100%" crossOrigin="anonymous">
+                <div class="user-bar">
+                    <div class="user-text">
+                        <b>${user.name}</b><br>
+                        ${user.office}<br>
+                        ${user.address}<br>
+                        📞 ${user.contact}
+                    </div>
+                    ${user.photo ? `<img src="${user.photo}" class="user-photo">` : ''}
+                </div>
+            </div>
+        `;
+
+        try {
+            const canvas = await html2canvas(document.getElementById("final-poster"), {
+                scale: 2,
+                useCORS: true,
+                logging: false
+            });
+
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], `Muhurt_${months[index]}.png`, { type: "image/png" });
+                
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        title: 'OmKarmyog Muhurt',
+                        files: [file]
+                    });
+                } else {
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `Muhurt_${months[index]}.png`;
+                    link.click();
+                }
+                
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                renderZone.innerHTML = "";
+            });
+        } catch (err) {
+            alert("फोटो तयार करताना त्रुटी आली. कृपया पुन्हा प्रयत्न करा.");
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>

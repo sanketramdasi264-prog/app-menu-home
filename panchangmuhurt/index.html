@@ -8,150 +8,77 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-body { 
-    margin: 0; 
-    font-family: 'Noto Sans Devanagari', sans-serif; 
-    background: #f4f4f4; 
-    color: #333; 
-}
+body { margin: 0; font-family: 'Noto Sans Devanagari', sans-serif; background: #f4f4f4; }
 
-/* REPLACED HEADER WITH A CONTENT CARD */
+/* Content Hero Card */
 .app-hero-card {
-    background: #4e0f0f; /* Dark Red Maroon */
-    color: #ffd54f;      /* Gold text */
-    margin: 10px;
-    padding: 20px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    background: #4e0f0f; color: #ffd54f; margin: 10px; padding: 20px;
+    border-radius: 12px; display: flex; flex-direction: column; gap: 12px;
     border: 1px solid #ffd54f;
 }
+.hero-flex { display: flex; justify-content: space-between; align-items: center; }
+.hero-edit-btn { background: #ffd54f; color: #4e0f0f; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-.hero-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+.page { max-width: 480px; margin: auto; padding: 10px; }
 
-.hero-title { 
-    font-size: 24px; 
-    font-weight: bold; 
-    margin: 0; 
-}
-
-.hero-edit-btn {
-    background: #ffd54f;
-    color: #4e0f0f;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.page { 
-    max-width: 480px; 
-    margin: auto; 
-    padding: 10px; 
-}
-
-/* MONTH CARD STYLES */
+/* Monthly Cards UI */
 .month-title {
-    background: #ffd54f;
-    color: #8b0000;
-    text-align: center;
-    font-weight: bold;
-    padding: 12px;
-    border-radius: 10px;
-    margin: 20px 0 8px;
-    font-size: 18px;
-    border: 1px solid #e0c060;
+    background: #ffd54f; color: #8b0000; text-align: center; font-weight: bold;
+    padding: 12px; border-radius: 10px; margin: 20px 0 8px; font-size: 18px;
 }
-
-.poster {
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    margin-bottom: 15px;
-}
-
-.poster img.month-img { 
-    width: 100%; 
-    display: block; 
-}
+.poster { background: #fff; border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.poster img.month-img { width: 100%; display: block; }
 
 .share-btn {
-    width: 100%;
-    background: #25D366;
-    color: white;
-    border: none;
-    padding: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    width: 100%; background: #25D366; color: white; border: none; padding: 15px;
+    font-weight: bold; cursor: pointer; font-size: 15px;
 }
 
-/* EXPORT USER BAR (ON DOWNLOADED IMAGE) */
-.user-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background: #4e0f0f;
-    color: white;
-    border-top: 4px solid #ffd54f;
-}
+/* --- DOWNLOADED IMAGE STYLES (Export) --- */
 
-.user-text { font-size: 14px; line-height: 1.5; }
-.user-text b { color: #ffd54f; font-size: 19px; display: block; margin-bottom: 4px; }
-.user-photo { width: 90px; height: 110px; object-fit: cover; border-radius: 8px; border: 2px solid #ffd54f; background: #fff;}
-
-/* MODAL */
-.modal { 
-    position: fixed; 
-    inset: 0; 
-    background: rgba(0,0,0,0.85); 
-    display: none; 
-    align-items: center; 
-    justify-content: center; 
-    z-index: 2000; 
+/* Blue Header for Downloaded Image */
+.export-header {
+    background: #0000FF; color: white; display: flex; align-items: center;
+    justify-content: center; padding: 8px; gap: 10px; font-size: 16px; font-weight: 500;
 }
+.playstore-icon { width: 24px; height: 24px; }
 
-.modal-content { 
-    background: #fff; 
-    padding: 25px; 
-    border-radius: 15px; 
-    width: 85%; 
-    max-width: 400px; 
+/* User Panel for Downloaded Image */
+.user-panel-export {
+    background: #410a0a; color: #ffd54f; padding: 20px;
+    display: flex; justify-content: space-between; align-items: center;
 }
+.user-info-text { flex: 1; }
+.user-name-gold { font-size: 24px; font-weight: bold; margin-bottom: 8px; display: block; }
+.user-detail-row { font-size: 16px; margin-bottom: 4px; color: #ffffff; }
+.user-contact-row { font-size: 18px; font-weight: bold; margin-top: 8px; }
+.additional-text-gold { font-size: 16px; color: #ffd54f; margin-top: 10px; font-weight: bold; }
 
-.modal-content input {
-    width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box;
+/* Glowing Photo Frame */
+.photo-container-export {
+    width: 120px; height: 140px; position: relative;
+    border: 2px solid #ffd54f; border-radius: 10px;
+    box-shadow: 0 0 15px #ffd54f; background: #222; overflow: hidden;
 }
+.photo-img-export { width: 100%; height: 100%; object-fit: cover; }
+
+/* Modal */
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
+.modal-content { background: #fff; padding: 25px; border-radius: 15px; width: 85%; max-width: 400px; }
+.modal-content input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
 
 #temp-render { position: absolute; left: -9999px; top: 0; }
 </style>
 </head>
-
 <body>
 
 <div class="page">
     <div class="app-hero-card">
         <div class="hero-flex">
-            <h1 class="hero-title">पंचांग मुहूर्त २०२६...</h1>
+            <h1 style="margin:0">ॐ कर्मयोग</h1>
             <button class="hero-edit-btn" onclick="openModal()">माहिती बदला</button>
         </div>
-        <p style="margin:0; font-size:13px; opacity:0.9;">आपले मुहूर्त फोटो तयार करा आणि शेअर करा.</p>
     </div>
-
     <div id="posters"></div>
 </div>
 
@@ -160,135 +87,96 @@ body {
 <div class="modal" id="userModal">
  <div class="modal-content">
    <h3 style="margin-top:0; color:#4e0f0f;">📋 तुमची माहिती भरा</h3>
-   <input id="uName" placeholder="पूर्ण नाव">
-   <input id="uOffice" placeholder="कार्यालय / व्यवसाय">
-   <input id="uAddress" placeholder="पत्ता">
+   <input id="uName" placeholder="पूर्ण नाव (उदा: वेदमूर्ती श्री संकेत...)">
+   <input id="uOffice" placeholder="व्यवसायाचे नाव">
+   <input id="uAddress" placeholder="पत्ता (गाव, ता, जि)">
    <input id="uContact" placeholder="मोबाईल नंबर">
-   <div style="margin:15px 0;">
-     <small>तुमचा फोटो अपलोड करा:</small><br>
-     <input id="uPhoto" type="file" accept="image/*" style="border:none; padding:10px 0;">
-   </div>
-   <button onclick="saveUser()" style="background:#8b0000; color:#fff; border:none; padding:14px; border-radius:8px; width:100%; font-weight:bold; cursor:pointer; font-size:16px;">✔ जतन करा</button>
+   <input id="uExtra" placeholder="अतिरिक्त माहिती (उदा: आमच्याकडे सर्व धार्मिक विधी...)">
+   <div style="margin:10px 0;"><small>फोटो निवडा:</small><br><input id="uPhoto" type="file" accept="image/*"></div>
+   <button onclick="saveUser()" style="background:#8b0000; color:#fff; border:none; padding:14px; border-radius:8px; width:100%; font-weight:bold; cursor:pointer;">✔ सेव्ह करा</button>
  </div>
 </div>
 
 <script>
 const SAMPLE_IMG = "https://i.imgur.com/ZcLLrkY.png";
+const PS_LOGO = "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg";
+
 const months = [
  {title:"जानेवारी २०२६ मुहूर्त", img:SAMPLE_IMG},
  {title:"फेब्रुवारी २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"मार्च २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"एप्रिल २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"मे २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"जून २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"जुलै २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"ऑगस्ट २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"सप्टेंबर २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"ऑक्टोबर २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"नोव्हेंबर २०२६ मुहूर्त", img:SAMPLE_IMG},
- {title:"डिसेंबर २०२६ मुहूर्त", img:SAMPLE_IMG}
+ {title:"मार्च २०२६ मुहूर्त", img:SAMPLE_IMG}
 ];
 
-const postersDiv = document.getElementById("posters");
 let userPhotoData = "";
 let pendingIndex = null;
 
 function buildPosters(){
-  postersDiv.innerHTML="";
-  months.forEach((m,i)=>{
-    let div=document.createElement("div");
-    div.innerHTML=`
-      <div class="month-title">${m.title}</div>
-      <div class="poster">
-        <img class="month-img" src="${m.img}" crossOrigin="anonymous">
-        <button class="share-btn" id="btn-${i}" onclick="handleShare(${i})">
-           माझ्या माहितीसह शेअर करा
-        </button>
-      </div>
-    `;
-    postersDiv.appendChild(div);
-  });
+  document.getElementById("posters").innerHTML = months.map((m,i)=>`
+    <div class="month-title">${m.title}</div>
+    <div class="poster">
+      <img class="month-img" src="${m.img}" crossOrigin="anonymous">
+      <button class="share-btn" id="btn-${i}" onclick="handleShare(${i})">माझ्या माहितीसह शेअर करा</button>
+    </div>
+  `).join('');
 }
 
-function openModal() {
-  const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
-  if(saved){
-    uName.value = saved.name || "";
-    uOffice.value = saved.office || "";
-    uAddress.value = saved.address || "";
-    uContact.value = saved.contact || "";
-  }
-  document.getElementById("userModal").style.display="flex";
-}
+function openModal() { document.getElementById("userModal").style.display="flex"; }
 
 function handleShare(index){
   pendingIndex = index;
   const saved = JSON.parse(localStorage.getItem("omk_userinfo"));
-  if(saved) generateAndShare(index, saved);
-  else openModal();
+  if(saved) generateAndShare(index, saved); else openModal();
 }
 
 document.getElementById("uPhoto").onchange = (e)=>{
-  const f = e.target.files[0];
-  if(!f) return;
-  const r = new FileReader();
-  r.onload = () => userPhotoData = r.result;
-  r.readAsDataURL(f);
+  const r = new FileReader(); r.onload = () => userPhotoData = r.result;
+  r.readAsDataURL(e.target.files[0]);
 };
 
 function saveUser(){
-  const data = {
-    name: uName.value, 
-    office: uOffice.value, 
-    address: uAddress.value, 
-    contact: uContact.value, 
-    photo: userPhotoData || (JSON.parse(localStorage.getItem("omk_userinfo"))?.photo || "")
-  };
+  const data = { name: uName.value, office: uOffice.value, address: uAddress.value, contact: uContact.value, extra: uExtra.value, photo: userPhotoData };
   localStorage.setItem("omk_userinfo", JSON.stringify(data));
   document.getElementById("userModal").style.display="none";
   if(pendingIndex !== null) generateAndShare(pendingIndex, data);
 }
 
 async function generateAndShare(index, user){
-  const btn = document.getElementById(`btn-${index}`);
-  btn.innerText = "⏳ तयार होत आहे...";
+  const btn = document.getElementById(`btn-${index}`); btn.innerText = "⏳ तयार होत आहे...";
   
   const renderContainer = document.getElementById("temp-render");
   renderContainer.innerHTML = `
-    <div id="export-target" style="width:500px; background:white;">
+    <div id="export-target" style="width:600px; background:white;">
+      <div class="export-header">
+         <img src="${PS_LOGO}" class="playstore-icon">
+         @Omkarmyog Avilable On Play Store...
+      </div>
       <img src="${months[index].img}" style="width:100%; display:block;" crossOrigin="anonymous">
-      <div class="user-bar">
-        <div class="user-text">
-          <b>${user.name}</b>
-          ${user.office ? user.office + '<br>' : ''}
-          ${user.address ? user.address + '<br>' : ''}
-          संपर्क: ${user.contact}
+      <div class="user-panel-export">
+        <div class="user-info-text">
+          <span class="user-name-gold">${user.name}</span>
+          <div class="user-detail-row">${user.office}</div>
+          <div class="user-detail-row">${user.address}</div>
+          <div class="user-contact-row">संपर्क: ${user.contact}</div>
+          <div class="additional-text-gold">${user.extra || ""}</div>
         </div>
-        ${user.photo ? `<img class="user-photo" src="${user.photo}">` : ''}
+        <div class="photo-container-export">
+          ${user.photo ? `<img class="photo-img-export" src="${user.photo}">` : ''}
+        </div>
       </div>
     </div>
   `;
 
   setTimeout(async () => {
-    const canvas = await html2canvas(document.getElementById("export-target"), { scale: 2, useCORS: true });
+    const canvas = await html2canvas(document.getElementById("export-target"), { scale: 1.5, useCORS: true });
     canvas.toBlob(blob => {
       const file = new File([blob], "OmKarmyog.png", {type: "image/png"});
-      if(navigator.canShare && navigator.canShare({files: [file]})) {
-          navigator.share({ files: [file] });
-      } else {
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "OmKarmyog.png";
-        link.click();
-      }
-      btn.innerText = "📤 माझ्या माहितीसह शेअर करा";
-      renderContainer.innerHTML = "";
+      if(navigator.canShare && navigator.canShare({files:[file]})) navigator.share({files:[file]});
+      else { const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="OmKarmyog.png"; a.click(); }
+      btn.innerText = "माझ्या माहितीसह शेअर करा";
     });
   }, 600);
 }
-
 buildPosters();
 </script>
-
 </body>
 </html>

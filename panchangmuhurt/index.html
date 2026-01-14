@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>पंचांग मुहूर्त संग्रह</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #120101;
+      --crimson: #800000;
+      --gold: #D4AF37;
+      --gold-light: #FFD700;
+      --ivory: #FFFFF0;
+      --glass: rgba(255, 255, 255, 0.05);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Anek Devanagari", sans-serif;
+      background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at top, #3d0000 0%, #120101 100%);
+      background-attachment: fixed;
+      color: var(--ivory);
+      padding: 20px 15px;
+      line-height: 1.6;
+    }
+
+    .container { max-width: 800px; margin: 0 auto; }
+
+    /* Header Section */
+    .header-box {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(145deg, #960000, #5c0000);
+      border-radius: 20px;
+      margin-bottom: 25px;
+      border: 2px solid var(--gold);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .header-box h1 {
+      font-size: 28px;
+      color: var(--gold-light);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      margin-bottom: 15px;
+    }
+
+    /* Search Bar */
+    #searchBar {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 50px;
+      border: 1px solid var(--gold);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 16px;
+      outline: none;
+      font-family: inherit;
+    }
+    #searchBar::placeholder { color: rgba(255,255,255,0.5); }
+
+    /* Main Button Style */
+    .main-btn {
+      display: block; /* Makes the anchor tag fill the width */
+      background: var(--glass);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 15px;
+      margin-bottom: 20px;
+      text-decoration: none; /* Removes underline */
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 20px 25px;
+      background: rgba(128, 0, 0, 0.4);
+    }
+
+    .main-btn h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--gold-light);
+      margin: 0;
+    }
+
+    /* Hover Effects */
+    .main-btn:hover {
+      background: rgba(128, 0, 0, 0.7);
+      transform: translateY(-3px); /* Slight lift effect */
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+      border-color: var(--gold);
+    }
+
+    /* Arrow icon for main buttons */
+    .main-btn::after {
+      content: '→';
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      font-size: 24px;
+      transition: right 0.3s ease;
+    }
+
+    .main-btn:hover::after {
+      right: 15px; /* Moves arrow slightly right on hover */
+    }
+
+    /* Empty search result */
+    #noResults {
+      text-align: center;
+      padding: 20px;
+      display: none;
+      color: var(--gold);
+    }
+
+    @media (max-width: 600px) {
+      .header-box h1 { font-size: 22px; }
+      .main-btn h2 { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header-box">
+    <h1>पंचांग मुहूर्त संग्रह </h1>
+    <input type="text" id="searchBar" placeholder="येथे शोधा..." onkeyup="searchFunction()">
+  </div>
+
+  <div id="noResults">कोणतेही निकाल सापडले नाहीत.</div>
+
+  <a href="#" class="main-btn">
+    <h2>संक्षिप्त मुहूर्त संग्रह</h2>
+  </a>
+  
+<a href="#" class="main-btn">
+    <h2>विवाह मुहूर्त</h2>
+  </a>
+  
+  <a href="#" class="main-btn">
+    <h2>उपनयन मुहुर्त</h2>
+  </a>
+
+<a href="#" class="main-btn">
+    <h2>विवाह मुहूर्त</h2>
+  </a>
+  
+<a href="#" class="main-btn">
+    <h2>विवाह मुहूर्त</h2>
+  </a>
+  
+<a href="#" class="main-btn">
+    <h2>विवाह मुहूर्त</h2>
+  </a>
+  
+<a href="#" class="main-btn">
+    <h2>विवाह मुहूर्त</h2>
+  </a>
+  
+<a href="#" class="main-btn">
+    <h2>विवाह मुहूर्त</h2>
+  </a>
+  
+  <a href="#" class="main-btn">
+    <h2>विवाह मुहूर्त</h2>
+  </a>
+
+</div>
+
+<script>
+  // Live Search Function for Main Buttons
+  function searchFunction() {
+    let input = document.getElementById('searchBar').value.toLowerCase();
+    let buttons = document.getElementsByClassName('main-btn');
+    let foundTotal = 0;
+
+    for (let i = 0; i < buttons.length; i++) {
+      let text = buttons[i].innerText.toLowerCase();
+      if (text.includes(input)) {
+        buttons[i].style.display = "block";
+        foundTotal++;
+      } else {
+        buttons[i].style.display = "none";
+      }
+    }
+
+    document.getElementById('noResults').style.display = (foundTotal === 0 && input !== "") ? "block" : "none";
+  }
+</script>
+
+</body>
+</html>

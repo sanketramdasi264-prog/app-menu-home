@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<title>पारंपरिक गुणमिलन</title>
+<style>
+body{font-family:sans-serif;background:#f4f6ff;padding:15px;}
+select,button{padding:6px;font-size:16px;margin:4px;}
+#result{margin-top:15px;font-size:18px;font-weight:bold;}
+</style>
+</head>
+<body>
+
+<h2>पारंपरिक गुणमिलन</h2>
+
+<div>
+मुलाची राशी:
+<select id="boyRashi" onchange="loadNak('boy')"></select>
+
+मुलीची राशी:
+<select id="girlRashi" onchange="loadNak('girl')"></select>
+</div>
+
+<div>
+मुलाचे नक्षत्र:
+<select id="boyNak"></select>
+
+मुलीचे नक्षत्र:
+<select id="girlNak"></select>
+</div>
+
+<button onclick="calc()">गुणमिलन काढा</button>
+
+<div id="result"></div>
+
+<script>
+
+// --------------------
+// Rashi → Nakshatra Map
+// --------------------
+const rashiMap = {
+"मेष":[["अश्विनी",4],["भरणी",4],["कृत्तिका",1]],
+"वृषभ":[["कृत्तिका",3],["रोहिणी",4],["मृगशीर्ष",2]],
+"मिथुन":[["मृगशीर्ष",2],["आर्द्रा",4],["पुनर्वसू",3]],
+"कर्क":[["पुनर्वसू",1],["पुष्य",4],["आश्लेषा",4]],
+"सिंह":[["मघा",4],["पूर्वा फाल्गुनी",4],["उत्तर फाल्गुनी",1]],
+"कन्या":[["उत्तर फाल्गुनी",3],["हस्त",4],["चित्रा",2]],
+"तुळ":[["चित्रा",2],["स्वाती",4],["विशाखा",3]],
+"वृश्चिक":[["विशाखा",1],["अनुराधा",4],["ज्येष्ठा",4]],
+"धनु":[["मूळ",4],["पूर्वाषाढा",4],["उत्तराषाढा",1]],
+"मकर":[["उत्तराषाढा",3],["श्रवण",4],["धनिष्ठा",2]],
+"कुंभ":[["धनिष्ठा",2],["शततारका",4],["पूर्वाभाद्रपदा",3]],
+"मीन":[["पूर्वाभाद्रपदा",1],["उत्तराभाद्रपदा",4],["रेवती",4]]
+};
+
+// --------------------
+// Populate Rashi
+// --------------------
+const rashis = Object.keys(rashiMap);
+rashis.forEach(r=>{
+ boyRashi.innerHTML += `<option>${r}</option>`;
+ girlRashi.innerHTML += `<option>${r}</option>`;
+});
+loadNak('boy'); loadNak('girl');
+
+function loadNak(type){
+ let r = document.getElementById(type+"Rashi").value;
+ let sel = document.getElementById(type+"Nak");
+ sel.innerHTML="";
+ rashiMap[r].forEach(n=>{
+   for(let i=1;i<=n[1];i++){
+     sel.innerHTML += `<option>${n[0]}-${i}</option>`;
+   }
+ });
+}
+
+// --------------------
+// LOAD DATA MATRIX FILE
+// --------------------
+
+// This will hold full 27x27 data
+let gunaMatrix = {};
+
+// Load external JSON data
+fetch("gunmilan_data.json")
+.then(r=>r.json())
+.then(d=>{ gunaMatrix=d; })
+.catch(()=>{ 
+ document.getElementById("result").innerHTML=
+ "❌ gunmilan_data.json फाईल सापडली नाही.<br>Data file टाका.";
+});
+
+// --------------------
+// Calculate
+// --------------------
+function calc(){
+ if(Object.keys(gunaMatrix).length==0){
+   result.innerHTML="❌ Data matrix loaded नाही";
+   return;
+ }
+
+ let b = boyNak.value;
+ let g = girlNak.value;
+
+ let key = b+"_"+g;
+ let out = gunaMatrix[key];
+
+ if(!out){
+   result.innerHTML="डेटा उपलब्ध नाही";
+   return;
+ }
+
+ result.innerHTML = 
+ "एकूण गुण : "+out.score+
+ "<br>दोष : "+out.dosha;
+}
+
+</script>
+</body>
+</html>

@@ -5,98 +5,138 @@
 <title>अचूक गुण मिलान</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-:root{
- --primary:#bf360c;
- --bg1:#fff3e0;
- --bg2:#ffe0b2;
-}
 body{
- font-family:'Noto Sans Devanagari',sans-serif;
- background:linear-gradient(135deg,var(--bg1),var(--bg2));
- margin:0; padding:15px;
+    font-family:'Noto Sans Devanagari',sans-serif;
+    background:linear-gradient(135deg,#fff3e0,#ffe0b2);
+    margin:0;
+    padding:20px;
 }
-.container{max-width:520px;margin:auto;}
-.card{
- background:#fff;
- border-radius:15px;
- padding:20px;
- box-shadow:0 8px 20px rgba(0,0,0,0.15);
+.container{
+    max-width:520px;
+    margin:auto;
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
 }
-h2{text-align:center;color:var(--primary);}
-label{font-weight:600;margin-top:10px;display:block;}
-
-select,button{
- width:100%;padding:10px;margin-top:5px;
- border-radius:8px;border:1px solid #ccc;font-size:16px;
+h2{
+    text-align:center;
+    color:#bf360c;
+    margin-bottom:20px;
 }
-
-.rashiLetters{
- margin-top:5px;
- background:#fff8e1;
- border:1px solid #ffd54f;
- padding:8px;
- border-radius:8px;
- font-size:14px;
- color:#444;
+.section{
+    margin-bottom:15px;
 }
-
+label{
+    font-weight:600;
+    display:block;
+    margin-bottom:5px;
+}
+select{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:16px;
+}
+.inline-info{
+    font-size:14px;
+    color:#555;
+    margin-top:4px;
+}
 button{
- background:var(--primary);
- color:#fff;font-weight:700;border:none;
- margin-top:15px;
- cursor:pointer;
+    width:100%;
+    background:#bf360c;
+    color:#fff;
+    border:none;
+    padding:14px;
+    font-size:17px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
 }
-
-.result{text-align:center;margin-top:15px;}
-.score{font-size:36px;color:var(--primary);font-weight:700;}
-.dosha{color:#d32f2f;font-weight:600;}
+button:hover{background:#a83208;}
+.result{
+    margin-top:20px;
+    text-align:center;
+}
+.score{
+    font-size:40px;
+    font-weight:bold;
+    color:#bf360c;
+}
+.dosha{
+    margin-top:8px;
+    font-size:18px;
+    color:#c62828;
+}
+.error{
+    color:red;
+    font-weight:bold;
+}
 </style>
 </head>
-
 <body>
+
 <div class="container">
-<div class="card">
 
 <h2>अचूक गुण मिलान</h2>
 
 <!-- Groom -->
+<div class="section">
 <label>मुलाची रास</label>
-<select id="boyRashi" onchange="loadNak('boy');showRashiLetters('boy')">
-<option value="">-- रास निवडा --</option>
-</select>
-<div class="rashiLetters" id="boyRashiLetters"></div>
+<select id="boyRashi" onchange="onRashiChange('boy')"></select>
+<div class="inline-info" id="boyRashiLetters"></div>
+</div>
 
+<div class="section">
 <label>मुलाचे नक्षत्र-चरण</label>
-<select id="boyNak">
-<option value="">-- नक्षत्र-चरण निवडा --</option>
-</select>
+<select id="boyNak"></select>
+</div>
 
 <hr>
 
 <!-- Bride -->
+<div class="section">
 <label>मुलीची रास</label>
-<select id="girlRashi" onchange="loadNak('girl');showRashiLetters('girl')">
-<option value="">-- रास निवडा --</option>
-</select>
-<div class="rashiLetters" id="girlRashiLetters"></div>
+<select id="girlRashi" onchange="onRashiChange('girl')"></select>
+<div class="inline-info" id="girlRashiLetters"></div>
+</div>
 
+<div class="section">
 <label>मुलीचे नक्षत्र-चरण</label>
-<select id="girlNak">
-<option value="">-- नक्षत्र-चरण निवडा --</option>
-</select>
+<select id="girlNak"></select>
+</div>
 
-<button onclick="calc()">गुण तपासा</button>
+<button onclick="calcMatch()">गुण तपासा</button>
 
 <div class="result" id="result"></div>
 
 </div>
-</div>
 
 <script>
-// ------------------ RASHI → NAKSHATRA MAP ------------------
+
+// ---------------- RASHI DATA ----------------
+
+const rashiLetters = {
+ "मेष":"चु चे चो ला लि लू ले लो आ",
+ "वृषभ":"इ उ ए ओ वा वि वु वे वो",
+ "मिथुन":"का कि कु घ ङ छ के को हा",
+ "कर्क":"हि हु हे हो डा डि डु डे डो",
+ "सिंह":"मा मि मु मे मो टा टि टु टे",
+ "कन्या":"टो पा पि पु ष ण ठ पे पो",
+ "तुला":"रा रि रु रे रो ता ति तु ते",
+ "वृश्चिक":"तो ना नि नु ने नो या यि यु",
+ "धनु":"ये यो भा भि भू धा फा ढा भे",
+ "मकर":"भो जा जि जु जे जो खा खि खु",
+ "कुंभ":"गा गि गु गे गो सा सि सु से",
+ "मीन":"सो दा दि दु दे दो चा चि चु"
+};
+
+// Rashi → Nakshatra + charan count
 const rashiMap = {
  "मेष":[["अश्विनी",4],["भरणी",4],["कृतिका",1]],
  "वृषभ":[["कृतिका",3],["रोहिणी",4],["मृगशिरा",2]],
@@ -108,30 +148,14 @@ const rashiMap = {
  "वृश्चिक":[["विशाखा",1],["अनुराधा",4],["ज्येष्ठा",4]],
  "धनु":[["मूळ",4],["पूर्वाषाढा",4],["उत्तराषाढा",1]],
  "मकर":[["उत्तराषाढा",3],["श्रवण",4],["धनिष्ठा",2]],
- "कुंभ":[["धनिष्ठा",2],["शतभिषा",4],["पूर्वाभाद्रपदा",3]],
- "मीन":[["पूर्वाभाद्रपदा",1],["उत्तराभाद्रपदा",4],["रेवती",4]]
+ "कुंभ":[["धनिष्ठा",2],["शतभिषा",4],["पूर्वा भाद्रपदा",3]],
+ "मीन":[["पूर्वा भाद्रपदा",1],["उत्तरा भाद्रपदा",4],["रेवती",4]]
 };
 
-// ------------------ RASHI LETTERS ------------------
-const rashiLettersMap = {
- "मेष":"चु चे चो ला लि लू ले लो आ",
- "वृषभ":"इ उ ए ओ वा वि वु वे वो",
- "मिथुन":"का कि कु घ ङ छ के को",
- "कर्क":"हि हु हे हो डा डि डु डे डो",
- "सिंह":"मा मि मु मे मो टा टि टु टे",
- "कन्या":"टो पा पि पु ष ण ठ पे पो",
- "तुला":"रा रि रु रे रो ता ति तु ते",
- "वृश्चिक":"तो ना नि नु ने नो या यि यु",
- "धनु":"ये यो भा भि भू धा फा ढा भे",
- "मकर":"भो जा जि जू जे जो खा खि खू खे",
- "कुंभ":"गु गे गो सा सि सू से सो दा",
- "मीन":"दि दु थ झ ञ दे दो चा चि"
-};
-
-// ------------------ CHARAN LETTERS ------------------
+// Charan letters for Nakshatras (only needed for display)
 const charanLetters = {
  "अश्विनी":["चु","चे","चो","ला"],
- "भरणी":["लि","लू","ले","लो"],
+ "भरणी":["ली","लू","ले","लो"],
  "कृतिका":["आ","इ","उ","ए"],
  "रोहिणी":["ओ","वा","वि","वु"],
  "मृगशिरा":["वे","वो","का","कि"],
@@ -153,74 +177,77 @@ const charanLetters = {
  "उत्तराषाढा":["भे","भो","जा","जि"],
  "श्रवण":["जु","जे","जो","खा"],
  "धनिष्ठा":["खि","खु","खे","खो"],
- "शतभिषा":["गु","गे","गो","सा"],
- "पूर्वाभाद्रपदा":["सि","सु","से","सो"],
- "उत्तराभाद्रपदा":["दा","दि","दु","दे"],
- "रेवती":["दो","चा","चि","चु"]
+ "शतभिषा":["गा","गि","गु","गे"],
+ "पूर्वा भाद्रपदा":["गो","सा","सि","सु"],
+ "उत्तरा भाद्रपदा":["से","सो","दा","दि"],
+ "रेवती":["दु","दे","दो","चा"]
 };
 
-// ------------------ INIT RASHI ------------------
+// ---------------- INIT ----------------
+
 const boyRashi = document.getElementById("boyRashi");
 const girlRashi = document.getElementById("girlRashi");
 
 Object.keys(rashiMap).forEach(r=>{
- boyRashi.innerHTML += `<option>${r}</option>`;
- girlRashi.innerHTML += `<option>${r}</option>`;
+ boyRashi.innerHTML += `<option value="${r}">${r}</option>`;
+ girlRashi.innerHTML += `<option value="${r}">${r}</option>`;
 });
 
-// ------------------ SHOW RASHI LETTERS ------------------
-function showRashiLetters(type){
- let r = document.getElementById(type+"Rashi").value;
+onRashiChange('boy');
+onRashiChange('girl');
+
+// ---------------- FUNCTIONS ----------------
+
+function onRashiChange(type){
+ let rashi = document.getElementById(type+"Rashi").value;
  document.getElementById(type+"RashiLetters").innerText =
-   r ? "राशी अक्षरे : "+rashiLettersMap[r] : "";
+   "राशी अक्षरे : "+ rashiLetters[rashi];
+
+ loadNak(type);
 }
 
-// ------------------ LOAD NAKSHATRA ------------------
 function loadNak(type){
  let rashi = document.getElementById(type+"Rashi").value;
  let sel = document.getElementById(type+"Nak");
- sel.innerHTML = `<option value="">-- नक्षत्र-चरण निवडा --</option>`;
- if(!rashi) return;
+ sel.innerHTML = "";
 
  rashiMap[rashi].forEach(n=>{
-   let name = n[0], count = n[1];
+   let name=n[0], count=n[1];
    for(let i=1;i<=count;i++){
      let letter = charanLetters[name][i-1];
-     sel.innerHTML += `<option value="${name}-${i}">${name}-${i} (${letter})</option>`;
+     sel.innerHTML += 
+      `<option value="${name}-${i}">${name}-${i} (${letter})</option>`;
    }
  });
 }
 
-// ------------------ LOAD JSON ------------------
-let gunData = {};
-fetch("gunmilan_data.json")
-.then(r=>r.json())
-.then(d=>{ gunData = d; });
+// ---------------- LOAD JSON ----------------
 
-// ------------------ CALCULATE ------------------
-function calc(){
+let gunData = {};
+
+fetch("./gunmilan_data.json")
+.then(r=>r.json())
+.then(data=>{ gunData=data; })
+.catch(()=>{ console.log("JSON load error"); });
+
+// ---------------- CALCULATE ----------------
+
+function calcMatch(){
  let b = document.getElementById("boyNak").value;
  let g = document.getElementById("girlNak").value;
+ let key = b+"_"+g;
+
+ let res = gunData[key];
  let out = document.getElementById("result");
 
- if(!b || !g){
-   alert("नक्षत्र-चरण निवडा");
-   return;
- }
-
- // JSON KEY FORMAT = "अश्विनी-1_कृतिका-3"
- let key = b+"_"+g;
- let res = gunData[key];
-
  if(res){
-   out.innerHTML =
-     `<div class='score'>${res.score} / 36</div>
-      <div class='dosha'>दोष : ${res.dosha}</div>`;
- } else {
-   out.innerHTML = `<div class='dosha'>डेटा उपलब्ध नाही</div>`;
+   out.innerHTML = `<div class='score'>${res.score} गुण</div>
+                    <div class='dosha'>दोष : ${res.dosha || "दोष नाही"}</div>`;
+ }else{
+   out.innerHTML = `<div class='error'>डेटा उपलब्ध नाही</div>`;
  }
 }
-</script>
 
+</script>
 </body>
 </html>

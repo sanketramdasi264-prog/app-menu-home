@@ -7,38 +7,37 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
- --primary:#bf360c;
- --bg1:#fff3e0;
- --bg2:#ffe0b2;
-}
+:root{ --primary:#bf360c; --soft:#fff8e1; }
 body{
  font-family:'Noto Sans Devanagari',sans-serif;
- background:linear-gradient(135deg,var(--bg1),var(--bg2));
- margin:0; padding:15px;
+ background:linear-gradient(135deg,#fff3e0,#ffe0b2);
+ margin:0;padding:15px;
 }
 .container{max-width:520px;margin:auto;}
 .card{
- background:#fff;
- border-radius:15px;
- padding:20px;
+ background:#fff;border-radius:16px;padding:20px;
  box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
 h2{text-align:center;color:var(--primary);}
-label{font-weight:600;margin-top:10px;display:block;}
+label{font-weight:600;display:block;margin-top:12px;}
 select,button{
  width:100%;padding:10px;margin-top:5px;
  border-radius:8px;border:1px solid #ccc;font-size:16px;
 }
 button{
- background:var(--primary);color:#fff;font-weight:700;border:none;
- margin-top:15px;
+ background:var(--primary);color:#fff;font-weight:700;border:none;margin-top:15px;
 }
-.rashiLetters{
- font-size:14px;color:#555;margin-top:3px;
+.rashiBox{
+ background:var(--soft);
+ border:1px solid #ffd180;
+ border-radius:8px;
+ padding:6px 10px;
+ margin-top:6px;
+ font-size:14px;
+ color:#444;
 }
 .result{text-align:center;margin-top:15px;}
-.score{font-size:38px;color:var(--primary);font-weight:700;}
+.score{font-size:40px;color:var(--primary);font-weight:700;}
 .dosha{color:#d32f2f;font-weight:600;}
 </style>
 </head>
@@ -49,24 +48,22 @@ button{
 
 <h2>अचूक गुण मिलान</h2>
 
-<!-- Groom -->
 <label>मुलाची रास</label>
 <select id="boyRashi" onchange="loadNak('boy');showRashiLetters('boy')">
 <option value="">-- रास निवडा --</option>
 </select>
-<div class="rashiLetters" id="boyRashiLetters"></div>
+<div class="rashiBox" id="boyRashiLetters"></div>
 
 <label>मुलाचे नक्षत्र-चरण</label>
 <select id="boyNak"></select>
 
 <hr>
 
-<!-- Bride -->
 <label>मुलीची रास</label>
 <select id="girlRashi" onchange="loadNak('girl');showRashiLetters('girl')">
 <option value="">-- रास निवडा --</option>
 </select>
-<div class="rashiLetters" id="girlRashiLetters"></div>
+<div class="rashiBox" id="girlRashiLetters"></div>
 
 <label>मुलीचे नक्षत्र-चरण</label>
 <select id="girlNak"></select>
@@ -79,7 +76,7 @@ button{
 </div>
 
 <script>
-// ===== RASHI → NAKSHATRA + CHARAN =====
+// ===== RASHI MAP =====
 const rashiMap = {
  "मेष":[["अश्विनी",4],["भरणी",4],["कृत्तिका",1]],
  "वृषभ":[["कृत्तिका",3],["रोहिणी",4],["मृगशिरा",2]],
@@ -96,7 +93,7 @@ const rashiMap = {
 };
 
 // ===== RASHI अक्षरे =====
-const rashiLettersMap = {
+const rashiLettersMap={
  "मेष":"चु चे चो ला लि लू ले लो आ",
  "वृषभ":"इ उ ए ओ वा वि वु वे वो",
  "मिथुन":"का कि कु घ ङ छ के को",
@@ -111,8 +108,8 @@ const rashiLettersMap = {
  "मीन":"दि दु थ झ ञ दे दो चा चि"
 };
 
-// ===== NAKSHATRA CHARAN अक्षरे =====
-const charanLetters = {
+// ===== CHARAN अक्षरे =====
+const charanLetters={
  "अश्विनी":["चु","चे","चो","ला"],
  "भरणी":["लि","लू","ले","लो"],
  "कृत्तिका":["आ","इ","उ","ए"],
@@ -142,7 +139,7 @@ const charanLetters = {
  "रेवती":["दो","चा","चि","चु"]
 };
 
-// ===== Fill Rashi dropdowns =====
+// ===== Fill Rashi =====
 const boyRashi=document.getElementById("boyRashi");
 const girlRashi=document.getElementById("girlRashi");
 Object.keys(rashiMap).forEach(r=>{
@@ -150,33 +147,32 @@ Object.keys(rashiMap).forEach(r=>{
  girlRashi.innerHTML+=`<option>${r}</option>`;
 });
 
-// ===== Show Rashi Letters =====
 function showRashiLetters(type){
  let r=document.getElementById(type+"Rashi").value;
- document.getElementById(type+"RashiLetters").innerText =
+ document.getElementById(type+"RashiLetters").innerText=
  r ? "राशी अक्षरे : "+rashiLettersMap[r] : "";
 }
 
-// ===== Load Nakshatra + charan =====
 function loadNak(type){
- let rashi=document.getElementById(type+"Rashi").value;
+ let r=document.getElementById(type+"Rashi").value;
  let sel=document.getElementById(type+"Nak");
  sel.innerHTML="<option value=''>-- नक्षत्र-चरण निवडा --</option>";
- if(!rashi) return;
+ if(!r) return;
 
- rashiMap[rashi].forEach(n=>{
+ rashiMap[r].forEach(n=>{
    let name=n[0], count=n[1];
    for(let i=1;i<=count;i++){
-     let letter = charanLetters[name][i-1];
-     let val = `${name}-${i}`;
-     sel.innerHTML += `<option value="${val}">${name}-${i} (${letter})</option>`;
+     let letter=charanLetters[name][i-1];
+     sel.innerHTML+=`<option value="${name}-${i}">${name}-${i} (${letter})</option>`;
    }
  });
 }
 
 // ===== Load JSON =====
 let gunData={};
-fetch("gunmilan_data.json").then(r=>r.json()).then(d=>gunData=d);
+fetch("gunmilan_data.json")
+ .then(r=>r.json())
+ .then(d=>gunData=d);
 
 // ===== Calculate =====
 function calc(){
@@ -192,7 +188,7 @@ function calc(){
  if(res){
    out.innerHTML=`<div class='score'>${res.score} / 36</div>
                   <div class='dosha'>दोष : ${res.dosha||"दोष नाही"}</div>`;
- } else {
+ }else{
    out.innerHTML="<div class='dosha'>डेटा उपलब्ध नाही</div>";
  }
 }

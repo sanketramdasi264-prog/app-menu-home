@@ -4,103 +4,67 @@
 <meta charset="UTF-8">
 <title>अचूक गुण मिलान</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
- --primary:#c0392b;
- --bg:#fff3e0;
+ --primary:#bf360c;
+ --bg1:#fff3e0;
+ --bg2:#ffe0b2;
 }
 body{
- margin:0;
  font-family:'Noto Sans Devanagari',sans-serif;
- background:linear-gradient(#fff8e1,#ffe0b2);
+ background:linear-gradient(135deg,var(--bg1),var(--bg2));
+ margin:0; padding:15px;
 }
-.container{
- max-width:520px;
- margin:auto;
- padding:20px;
-}
+.container{max-width:520px;margin:auto;}
 .card{
  background:#fff;
  border-radius:15px;
  padding:20px;
- box-shadow:0 4px 12px rgba(0,0,0,0.15);
+ box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
-h2{
- text-align:center;
- color:var(--primary);
- margin-top:0;
-}
-label{
- font-weight:600;
-}
-select{
- width:100%;
- padding:10px;
- margin-top:5px;
- margin-bottom:8px;
- border-radius:8px;
- border:1px solid #ccc;
- font-size:16px;
- background:#f5f5f5;
-}
-.rashi-letters{
- background:#fff8e1;
- padding:8px;
- border-radius:8px;
- font-size:14px;
- margin-bottom:10px;
- border:1px solid #ffd54f;
+h2{text-align:center;color:var(--primary);}
+label{font-weight:600;margin-top:10px;display:block;}
+select,button{
+ width:100%;padding:10px;margin-top:5px;
+ border-radius:8px;border:1px solid #ccc;font-size:16px;
 }
 button{
- width:100%;
- background:var(--primary);
- color:#fff;
- border:none;
- padding:14px;
- font-size:17px;
- border-radius:10px;
- cursor:pointer;
-}
-button:hover{background:#a93226;}
-.result{
- text-align:center;
+ background:var(--primary);color:#fff;font-weight:700;border:none;
  margin-top:15px;
- font-size:18px;
- font-weight:600;
 }
-.score{
- font-size:32px;
- color:var(--primary);
+.rashiLetters{
+ font-size:14px;color:#555;margin-top:3px;
 }
-.dosha{
- color:#d84315;
-}
+.result{text-align:center;margin-top:15px;}
+.score{font-size:38px;color:var(--primary);font-weight:700;}
+.dosha{color:#d32f2f;font-weight:600;}
 </style>
 </head>
-<body>
 
+<body>
 <div class="container">
 <div class="card">
 
 <h2>अचूक गुण मिलान</h2>
 
-<!-- Groom -->
 <label>मुलाची रास</label>
-<select id="boyRashi" onchange="updateNak('boy')"></select>
-<div id="boyRashiLetters" class="rashi-letters"></div>
+<select id="boyRashi" onchange="loadNak('boy');showRashiLetters('boy')">
+<option value="">-- रास निवडा --</option>
+</select>
+<div class="rashiLetters" id="boyRashiLetters"></div>
 
 <label>मुलाचे नक्षत्र-चरण</label>
 <select id="boyNak"></select>
 
 <hr>
 
-<!-- Bride -->
 <label>मुलीची रास</label>
-<select id="girlRashi" onchange="updateNak('girl')"></select>
-<div id="girlRashiLetters" class="rashi-letters"></div>
+<select id="girlRashi" onchange="loadNak('girl');showRashiLetters('girl')">
+<option value="">-- रास निवडा --</option>
+</select>
+<div class="rashiLetters" id="girlRashiLetters"></div>
 
 <label>मुलीचे नक्षत्र-चरण</label>
 <select id="girlNak"></select>
@@ -113,161 +77,119 @@ button:hover{background:#a93226;}
 </div>
 
 <script>
-
-// --- Rashi data EXACT matching JSON ---
-const rashiData = {
- "मेष":{
-   letters:"चु चे चो ला लि लू ले लो आ",
-   nak:[
-     ["अश्विनी",4],
-     ["भरणी",4],
-     ["कृतिका",1]
-   ]
- },
- "वृषभ":{
-   letters:"इ उ ए ओ वा वि वु वे वो",
-   nak:[
-     ["कृतिका",3],
-     ["रोहिणी",4],
-     ["मृगशीर्ष",2]
-   ]
- },
- "मिथुन":{
-   letters:"का कि कु घ ङ छ के को हा",
-   nak:[
-     ["मृगशीर्ष",2],
-     ["आर्द्रा",4],
-     ["पुनर्वसू",3]
-   ]
- },
- "कर्क":{
-   letters:"हि हु हे हो डा डि डु डे डो",
-   nak:[
-     ["पुनर्वसू",1],
-     ["पुष्य",4],
-     ["आश्लेषा",4]
-   ]
- },
- "सिंह":{
-   letters:"मा मि मु मे मो टा टि टु टे",
-   nak:[
-     ["मघा",4],
-     ["पूर्वाफाल्गुनी",4],
-     ["उत्तराफाल्गुनी",1]
-   ]
- },
- "कन्या":{
-   letters:"टो पा पि पु ष ण ठ पे पो",
-   nak:[
-     ["उत्तराफाल्गुनी",3],
-     ["हस्त",4],
-     ["चित्रा",2]
-   ]
- },
- "तुला":{
-   letters:"रा रि रु रे रो ता ति तु ते",
-   nak:[
-     ["चित्रा",2],
-     ["स्वाती",4],
-     ["विशाखा",3]
-   ]
- },
- "वृश्चिक":{
-   letters:"तो ना नि नु ने नो या यि यु",
-   nak:[
-     ["विशाखा",1],
-     ["अनुराधा",4],
-     ["ज्येष्ठा",4]
-   ]
- },
- "धनु":{
-   letters:"ये यो भा भि भू धा फा ढा भे",
-   nak:[
-     ["मूळ",4],
-     ["पूर्वाषाढा",4],
-     ["उत्तराषाढा",1]
-   ]
- },
- "मकर":{
-   letters:"भो जा जि खि खु खे खो गा गि",
-   nak:[
-     ["उत्तराषाढा",3],
-     ["श्रवण",4],
-     ["धनिष्ठा",2]
-   ]
- },
- "कुंभ":{
-   letters:"गु गे गो सा सि सु से सो दा",
-   nak:[
-     ["धनिष्ठा",2],
-     ["शततारका",4],
-     ["पूर्वाभाद्रपदा",3]
-   ]
- },
- "मीन":{
-   letters:"दि दु थ झ ञ दे दो चा चि",
-   nak:[
-     ["पूर्वाभाद्रपदा",1],
-     ["उत्तराभाद्रपदा",4],
-     ["रेवती",4]
-   ]
- }
+// ===== RASHI → NAKSHATRA + CHARAN =====
+const rashiMap = {
+ "मेष":[["अश्विनी",4],["भरणी",4],["कृत्तिका",1]],
+ "वृषभ":[["कृत्तिका",3],["रोहिणी",4],["मृगशीर्ष",2]],
+ "मिथुन":[["मृगशीर्ष",2],["आर्द्रा",4],["पुनर्वसू",3]],
+ "कर्क":[["पुनर्वसू",1],["पुष्य",4],["आश्लेषा",4]],
+ "सिंह":[["मघा",4],["पूर्वा फाल्गुनी",4],["उत्तर फाल्गुनी",1]],
+ "कन्या":[["उत्तर फाल्गुनी",3],["हस्त",4],["चित्रा",2]],
+ "तुला":[["चित्रा",2],["स्वाती",4],["विशाखा",3]],
+ "वृश्चिक":[["विशाखा",1],["अनुराधा",4],["ज्येष्ठा",4]],
+ "धनु":[["मूळ",4],["पूर्वाषाढा",4],["उत्तराषाढा",1]],
+ "मकर":[["उत्तराषाढा",3],["श्रवण",4],["धनिष्ठा",2]],
+ "कुंभ":[["धनिष्ठा",2],["शततारका",4],["पूर्वाभाद्रपदा",3]],
+ "मीन":[["पूर्वाभाद्रपदा",1],["उत्तराभाद्रपदा",4],["रेवती",4]]
 };
 
-// --- Fill Rashi dropdowns ---
-const rashis = Object.keys(rashiData);
-const boyR = document.getElementById("boyRashi");
-const girlR = document.getElementById("girlRashi");
+// ===== RASHI अक्षरे =====
+const rashiLettersMap = {
+ "मेष":"चु चे चो ला लि लू ले लो आ",
+ "वृषभ":"इ उ ए ओ वा वि वु वे वो",
+ "मिथुन":"का कि कु घ ङ छ के को",
+ "कर्क":"हि हु हे हो डा डि डु डे डो",
+ "सिंह":"मा मि मु मे मो टा टि टु टे",
+ "कन्या":"टो पा पि पु ष ण ठ पे पो",
+ "तुला":"रा रि रु रे रो ता ति तु ते",
+ "वृश्चिक":"तो ना नि नु ने नो या यि यु",
+ "धनु":"ये यो भा भि भू धा फा ढा भे",
+ "मकर":"भो जा जि जू जे जो खा खि खू खे",
+ "कुंभ":"गु गे गो सा सि सू से सो दा",
+ "मीन":"दि दु थ झ ञ दे दो चा चि"
+};
 
-rashis.forEach(r=>{
- boyR.innerHTML += `<option>${r}</option>`;
- girlR.innerHTML += `<option>${r}</option>`;
+// ===== CHARAN LETTERS =====
+const charanLetters = {
+ "अश्विनी":["चु","चे","चो","ला"],
+ "भरणी":["लि","लू","ले","लो"],
+ "कृत्तिका":["आ","इ","उ","ए"],
+ "रोहिणी":["ओ","वा","वि","वु"],
+ "मृगशीर्ष":["वे","वो","का","कि"],
+ "आर्द्रा":["कु","घ","ङ","छ"],
+ "पुनर्वसू":["के","को","हा","हि"],
+ "पुष्य":["हु","हे","हो","डा"],
+ "आश्लेषा":["डि","डु","डे","डो"],
+ "मघा":["मा","मि","मु","मे"],
+ "पूर्वा फाल्गुनी":["मो","टा","टि","टु"],
+ "उत्तर फाल्गुनी":["टे","टो","पा","पि"],
+ "हस्त":["पु","ष","ण","ठ"],
+ "चित्रा":["पे","पो","रा","रि"],
+ "स्वाती":["रु","रे","रो","ता"],
+ "विशाखा":["ति","तु","ते","तो"],
+ "अनुराधा":["ना","नि","नु","ने"],
+ "ज्येष्ठा":["नो","या","यि","यु"],
+ "मूळ":["ये","यो","भा","भि"],
+ "पूर्वाषाढा":["भू","धा","फा","ढा"],
+ "उत्तराषाढा":["भे","भो","जा","जि"],
+ "श्रवण":["जु","जे","जो","खा"],
+ "धनिष्ठा":["खि","खु","खे","खो"],
+ "शततारका":["गु","गे","गो","सा"],
+ "पूर्वाभाद्रपदा":["सि","सु","से","सो"],
+ "उत्तराभाद्रपदा":["दा","दि","दु","दे"],
+ "रेवती":["दो","चा","चि","चु"]
+};
+
+// ===== बाकी JS unchanged =====
+const boyRashi=document.getElementById("boyRashi");
+const girlRashi=document.getElementById("girlRashi");
+Object.keys(rashiMap).forEach(r=>{
+ boyRashi.innerHTML+=`<option>${r}</option>`;
+ girlRashi.innerHTML+=`<option>${r}</option>`;
 });
 
-// --- Update Nak + Letters ---
-function updateNak(type){
- let rashi = document.getElementById(type+"Rashi").value;
- let letterBox = document.getElementById(type+"RashiLetters");
- let nakBox = document.getElementById(type+"Nak");
- 
- letterBox.innerText = "राशी अक्षरे : " + rashiData[rashi].letters;
- nakBox.innerHTML = "";
+function showRashiLetters(type){
+ let r=document.getElementById(type+"Rashi").value;
+ document.getElementById(type+"RashiLetters").innerText =
+ r ? "राशी अक्षरे : "+rashiLettersMap[r] : "";
+}
 
- rashiData[rashi].nak.forEach(n=>{
-   let name = n[0];
-   let count = n[1];
+function loadNak(type){
+ let rashi=document.getElementById(type+"Rashi").value;
+ let sel=document.getElementById(type+"Nak");
+ sel.innerHTML="<option value=''>-- नक्षत्र-चरण निवडा --</option>";
+ if(!rashi) return;
+
+ rashiMap[rashi].forEach(n=>{
+   let name=n[0], count=n[1];
    for(let i=1;i<=count;i++){
-     nakBox.innerHTML += `<option>${name}-${i}</option>`;
+     let letter = charanLetters[name][i-1];
+     let val = `${name}-${i}`;
+     sel.innerHTML += `<option value="${val}">${name}-${i} (${letter})</option>`;
    }
  });
 }
 
-// --- Initial load ---
-updateNak("boy");
-updateNak("girl");
+let gunData={};
+fetch("gunmilan_data.json").then(r=>r.json()).then(d=>gunData=d);
 
-// --- Load JSON Data ---
-let gunData = {};
-fetch("gunmilan_data.json")
-.then(r=>r.json())
-.then(data=>{ gunData=data; });
-
-// --- Calculate ---
 function calc(){
- let b = document.getElementById("boyNak").value;
- let g = document.getElementById("girlNak").value;
- let key = b+"_"+g;
- let res = gunData[key];
- let out = document.getElementById("result");
+ let b=document.getElementById("boyNak").value;
+ let g=document.getElementById("girlNak").value;
+ let out=document.getElementById("result");
+
+ if(!b||!g){ alert("नक्षत्र निवडा"); return; }
+
+ let key=b+"_"+g;
+ let res=gunData[key];
 
  if(res){
-   out.innerHTML = `<div class='score'>${res.score} गुण</div>
-                    <div class='dosha'>दोष : ${res.dosha}</div>`;
- }else{
-   out.innerHTML = "<span style='color:red'>डेटा उपलब्ध नाही</span>";
+   out.innerHTML=`<div class='score'>${res.score} / 36</div>
+                  <div class='dosha'>दोष : ${res.dosha||"दोष नाही"}</div>`;
+ } else {
+   out.innerHTML="<div class='dosha'>डेटा उपलब्ध नाही</div>";
  }
 }
-
 </script>
 </body>
 </html>

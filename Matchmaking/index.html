@@ -139,7 +139,7 @@ to{opacity:1;transform:translateY(0)}
 .details-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:20px;
+gap:15px;
 margin-bottom:20px;
 }
 .detail-card{
@@ -147,25 +147,64 @@ background:rgba(42,15,15,.95);
 border-radius:12px;
 padding:18px;
 border:1px solid rgba(191,54,12,.3);
+text-align:center;
 }
 .detail-card h3{
 color:#ffccbc;
 font-size:16px;
-margin-bottom:12px;
+margin-bottom:10px;
 display:flex;
 align-items:center;
+justify-content:center;
 gap:8px;
 }
-.detail-item{
-display:flex;
-justify-content:space-between;
-padding:8px 0;
-border-bottom:1px solid rgba(191,54,12,.2);
-font-size:14px;
+.name-box{
+font-size:22px;
+font-weight:700;
+color:#ff6f00;
+padding:12px;
+background:rgba(61,22,22,.6);
+border-radius:8px;
+border:2px solid rgba(216,67,21,.4);
 }
-.detail-item:last-child{border-bottom:none}
-.detail-label{color:#e0e0e0;font-weight:600}
-.detail-value{color:#ffccbc}
+.combined-details{
+background:rgba(42,15,15,.95);
+border-radius:12px;
+padding:20px;
+border:1px solid rgba(191,54,12,.3);
+margin-bottom:20px;
+}
+.detail-row{
+display:flex;
+align-items:center;
+padding:12px 0;
+border-bottom:1px solid rgba(191,54,12,.2);
+}
+.detail-row:last-child{border-bottom:none}
+.detail-label-main{
+flex:0 0 100px;
+font-weight:700;
+color:#ffccbc;
+font-size:15px;
+}
+.detail-values{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:space-around;
+font-size:15px;
+color:#e0e0e0;
+}
+.detail-values span{
+flex:1;
+text-align:center;
+}
+.vs{
+color:#ff6f00;
+font-weight:700;
+font-size:18px;
+flex:0 0 40px;
+}
 .score-card{
 background:linear-gradient(135deg,rgba(46,125,50,.2),rgba(102,187,106,.15));
 border:1px solid rgba(102,187,106,.3);
@@ -274,74 +313,77 @@ border:1px solid rgba(191,54,12,.3);
 <div class="result-section" id="resultSection">
 <div class="details-grid">
 <div class="detail-card">
-<h3><span class="person-icon">👨</span> वराचा तपशील</h3>
-<div class="detail-item">
-<span class="detail-label">अक्षर</span>
-<span class="detail-value" id="boyLetter">--</span>
-</div>
-<div class="detail-item">
-<span class="detail-label">नक्षत्र</span>
-<span class="detail-value" id="boyNakshatra">--</span>
-</div>
-<div class="detail-item">
-<span class="detail-label">चरण</span>
-<span class="detail-value" id="boyCharan">--</span>
-</div>
-<div class="detail-item">
-<span class="detail-label">नाडी</span>
-<span class="detail-value" id="boyNadi">--</span>
-</div>
-<div class="detail-item">
-<span class="detail-label">योनी</span>
-<span class="detail-value" id="boyYoni">--</span>
-</div>
-<div class="detail-item">
-<span class="detail-label">गण</span>
-<span class="detail-value" id="boyGan">--</span>
-</div>
-<div class="detail-item">
-<span class="detail-label">राशी</span>
-<span class="detail-value" id="boyRashiDetail">--</span>
-</div>
-<div class="detail-item">
-<span class="detail-label">वर्ग</span>
-<span class="detail-value" id="boyVarg">--</span>
-</div>
+<h3><span class="person-icon">👨</span> वर</h3>
+<div class="name-box" id="boyNameBox">--</div>
 </div>
 
 <div class="detail-card">
-<h3><span class="person-icon">👩</span> वधूचा तपशील</h3>
-<div class="detail-item">
-<span class="detail-label">अक्षर</span>
-<span class="detail-value" id="girlLetter">--</span>
+<h3><span class="person-icon">👩</span> वधू</h3>
+<div class="name-box" id="girlNameBox">--</div>
 </div>
-<div class="detail-item">
-<span class="detail-label">नक्षत्र</span>
-<span class="detail-value" id="girlNakshatra">--</span>
 </div>
-<div class="detail-item">
-<span class="detail-label">चरण</span>
-<span class="detail-value" id="girlCharan">--</span>
+
+<div class="combined-details">
+<div class="detail-row">
+<div class="detail-label-main">नक्षत्र</div>
+<div class="detail-values">
+<span id="boyNakshatra">--</span>
+<span class="vs">⚡</span>
+<span id="girlNakshatra">--</span>
 </div>
-<div class="detail-item">
-<span class="detail-label">नाडी</span>
-<span class="detail-value" id="girlNadi">--</span>
 </div>
-<div class="detail-item">
-<span class="detail-label">योनी</span>
-<span class="detail-value" id="girlYoni">--</span>
+
+<div class="detail-row">
+<div class="detail-label-main">चरण</div>
+<div class="detail-values">
+<span id="boyCharan">--</span>
+<span class="vs">⚡</span>
+<span id="girlCharan">--</span>
 </div>
-<div class="detail-item">
-<span class="detail-label">गण</span>
-<span class="detail-value" id="girlGan">--</span>
 </div>
-<div class="detail-item">
-<span class="detail-label">राशी</span>
-<span class="detail-value" id="girlRashiDetail">--</span>
+
+<div class="detail-row">
+<div class="detail-label-main">नाडी</div>
+<div class="detail-values">
+<span id="boyNadi">--</span>
+<span class="vs">⚡</span>
+<span id="girlNadi">--</span>
 </div>
-<div class="detail-item">
-<span class="detail-label">वर्ग</span>
-<span class="detail-value" id="girlVarg">--</span>
+</div>
+
+<div class="detail-row">
+<div class="detail-label-main">योनी</div>
+<div class="detail-values">
+<span id="boyYoni">--</span>
+<span class="vs">⚡</span>
+<span id="girlYoni">--</span>
+</div>
+</div>
+
+<div class="detail-row">
+<div class="detail-label-main">गण</div>
+<div class="detail-values">
+<span id="boyGan">--</span>
+<span class="vs">⚡</span>
+<span id="girlGan">--</span>
+</div>
+</div>
+
+<div class="detail-row">
+<div class="detail-label-main">राशी</div>
+<div class="detail-values">
+<span id="boyRashiDetail">--</span>
+<span class="vs">⚡</span>
+<span id="girlRashiDetail">--</span>
+</div>
+</div>
+
+<div class="detail-row">
+<div class="detail-label-main">वर्ग</div>
+<div class="detail-values">
+<span id="boyVarg">--</span>
+<span class="vs">⚡</span>
+<span id="girlVarg">--</span>
 </div>
 </div>
 </div>

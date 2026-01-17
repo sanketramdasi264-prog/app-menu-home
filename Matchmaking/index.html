@@ -75,7 +75,13 @@ box-shadow:0 3px 8px rgba(191,54,12,.4);
 }
 .form-group{margin-bottom:15px}
 label{display:block;font-weight:600;color:#fff;margin-bottom:6px;font-size:14px}
-select{
+.optional-tag{
+color:#ffa726;
+font-size:12px;
+font-weight:400;
+margin-left:5px;
+}
+input,select{
 width:100%;
 padding:12px 14px;
 border:2px solid rgba(191,54,12,.3);
@@ -84,15 +90,16 @@ font-size:15px;
 font-family:inherit;
 background:rgba(61,22,22,.6);
 color:#fff;
-cursor:pointer;
 transition:all .2s;
 }
-select:focus{
+input::placeholder{color:#bdbdbd}
+input:focus,select:focus{
 outline:none;
 border-color:#d84315;
 box-shadow:0 0 0 3px rgba(216,67,21,.2);
 background:rgba(61,22,22,.9);
 }
+select{cursor:pointer}
 select option{background:#2a0f0f;color:#fff}
 .divider{
 height:2px;
@@ -159,13 +166,17 @@ justify-content:center;
 gap:8px;
 }
 .name-box{
-font-size:22px;
+font-size:20px;
 font-weight:700;
 color:#ff6f00;
 padding:12px;
 background:rgba(61,22,22,.6);
 border-radius:8px;
 border:2px solid rgba(216,67,21,.4);
+min-height:50px;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 .combined-details{
 background:rgba(42,15,15,.95);
@@ -272,6 +283,10 @@ border:1px solid rgba(191,54,12,.3);
 <span>वराची माहिती</span>
 </div>
 <div class="form-group">
+<label>नाव<span class="optional-tag">(पर्यायी)</span></label>
+<input type="text" id="boyName" placeholder="वराचे नाव प्रविष्ट करा" oninput="autoFillFromName('boy')">
+</div>
+<div class="form-group">
 <label>राशी निवडा</label>
 <select id="boyRashi" onchange="loadNak('boy')">
 <option value="">-- राशी निवडा --</option>
@@ -291,6 +306,10 @@ border:1px solid rgba(191,54,12,.3);
 <div class="person-title">
 <div class="person-icon">👩</div>
 <span>वधूची माहिती</span>
+</div>
+<div class="form-group">
+<label>नाव<span class="optional-tag">(पर्यायी)</span></label>
+<input type="text" id="girlName" placeholder="वधूचे नाव प्रविष्ट करा" oninput="autoFillFromName('girl')">
 </div>
 <div class="form-group">
 <label>राशी निवडा</label>
@@ -411,6 +430,25 @@ const charanLetters={अश्विनी:[`चु`,`चे`,`चो`,`ला`]
 
 const nakDetails={अश्विनी:{नाडी:`आदी`,योनी:`अश्व`,गण:`देव`,वर्ग:`चतुष्पद`},भरणी:{नाडी:`आदी`,योनी:`गज`,गण:`मनुष्य`,वर्ग:`मनुष्य`},कृत्तिका:{नाडी:`आदी`,योनी:`मेष`,गण:`राक्षस`,वर्ग:`चतुष्पद`},रोहिणी:{नाडी:`मध्य`,योनी:`सर्प`,गण:`मनुष्य`,वर्ग:`चतुष्पद`},मृगशीर्ष:{नाडी:`आदी`,योनी:`सर्प`,गण:`देव`,वर्ग:`चतुष्पद`},आर्द्रा:{नाडी:`मध्य`,योनी:`कुत्ता`,गण:`मनुष्य`,वर्ग:`मनुष्य`},पुनर्वसू:{नाडी:`आदी`,योनी:`मार्जार`,गण:`देव`,वर्ग:`चतुष्पद`},पुष्य:{नाडी:`अंत्य`,योनी:`मेष`,गण:`देव`,वर्ग:`चतुष्पद`},आश्लेषा:{नाडी:`मध्य`,योनी:`मार्जार`,गण:`राक्षस`,वर्ग:`जलचर`},मघा:{नाडी:`आदी`,योनी:`मूषक`,गण:`राक्षस`,वर्ग:`मनुष्य`},[`पूर्वा फाल्गुनी`]:{नाडी:`अंत्य`,योनी:`मूषक`,गण:`मनुष्य`,वर्ग:`मनुष्य`},[`उत्तर फाल्गुनी`]:{नाडी:`मध्य`,योनी:`गौ`,गण:`मनुष्य`,वर्ग:`मनुष्य`},हस्त:{नाडी:`आदी`,योनी:`महिष`,गण:`देव`,वर्ग:`चतुष्पद`},चित्रा:{नाडी:`अंत्य`,योनी:`व्याघ्र`,गण:`राक्षस`,वर्ग:`जलचर`},स्वाती:{नाडी:`मध्य`,योनी:`महिष`,गण:`देव`,वर्ग:`चतुष्पद`},विशाखा:{नाडी:`आदी`,योनी:`व्याघ्र`,गण:`राक्षस`,वर्ग:`चतुष्पद`},अनुराधा:{नाडी:`अंत्य`,योनी:`हरिण`,गण:`देव`,वर्ग:`मनुष्य`},ज्येष्ठा:{नाडी:`मध्य`,योनी:`हरिण`,गण:`राक्षस`,वर्ग:`जलचर`},मूळ:{नाडी:`आदी`,योनी:`कुत्ता`,गण:`राक्षस`,वर्ग:`जलचर`},पूर्वाषाढा:{नाडी:`अंत्य`,योनी:`वानर`,गण:`मनुष्य`,वर्ग:`मनुष्य`},उत्तराषाढा:{नाडी:`मध्य`,योनी:`नकुल`,गण:`मनुष्य`,वर्ग:`मनुष्य`},श्रवण:{नाडी:`आदी`,योनी:`वानर`,गण:`देव`,वर्ग:`चतुष्पद`},धनिष्ठा:{नाडी:`अंत्य`,योनी:`सिंह`,गण:`राक्षस`,वर्ग:`जलचर`},शततारका:{नाडी:`मध्य`,योनी:`अश्व`,गण:`राक्षस`,वर्ग:`चतुष्पद`},पूर्वाभाद्रपदा:{नाडी:`आदी`,योनी:`सिंह`,गण:`मनुष्य`,वर्ग:`मनुष्य`},उत्तराभाद्रपदा:{नाडी:`अंत्य`,योनी:`गौ`,गण:`मनुष्य`,वर्ग:`मनुष्य`},रेवती:{नाडी:`मध्य`,योनी:`गज`,गण:`देव`,वर्ग:`जलचर`}};
 
+// Create letter to nakshatra mapping
+const letterToNakshatra = {};
+Object.keys(charanLetters).forEach(nak => {
+charanLetters[nak].forEach((letter, idx) => {
+letterToNakshatra[letter.toLowerCase()] = {
+nakshatra: nak,
+charan: idx + 1
+};
+});
+});
+
+// Create nakshatra to rashi mapping
+const nakshatraToRashi = {};
+Object.keys(rashiMap).forEach(rashi => {
+rashiMap[rashi].forEach(([nak]) => {
+nakshatraToRashi[nak] = rashi;
+});
+});
+
 const boyRashi=document.getElementById(`boyRashi`);
 const girlRashi=document.getElementById(`girlRashi`);
 
@@ -418,6 +456,30 @@ Object.keys(rashiMap).forEach(r=>{
 boyRashi.innerHTML+=`<option value="${r}">${r}</option>`;
 girlRashi.innerHTML+=`<option value="${r}">${r}</option>`;
 });
+
+function autoFillFromName(type) {
+const nameInput = document.getElementById(type + 'Name');
+const name = nameInput.value.trim();
+if (!name) return;
+
+const firstLetter = name.charAt(0).toLowerCase();
+const match = letterToNakshatra[firstLetter];
+
+if (match) {
+const rashi = nakshatraToRashi[match.nakshatra];
+if (rashi) {
+document.getElementById(type + 'Rashi').value = rashi;
+loadNak(type);
+setTimeout(() => {
+const nakSelect = document.getElementById(type + 'Nak');
+const value = `${match.nakshatra}-${match.charan}`;
+if ([...nakSelect.options].some(opt => opt.value === value)) {
+nakSelect.value = value;
+}
+}, 100);
+}
+}
+}
 
 function loadNak(t){
 const r=document.getElementById(t+`Rashi`).value;
@@ -444,6 +506,8 @@ const b=document.getElementById(`boyNak`).value;
 const g=document.getElementById(`girlNak`).value;
 const bR=document.getElementById(`boyRashi`).value;
 const gR=document.getElementById(`girlRashi`).value;
+const bName=document.getElementById(`boyName`).value.trim();
+const gName=document.getElementById(`girlName`).value.trim();
 
 if(!b||!g){alert(`कृपया दोन्ही नक्षत्र निवडा`);return}
 
@@ -456,8 +520,8 @@ const gLetter=charanLetters[gNak][parseInt(gChar)-1];
 const bDetails=nakDetails[bNak];
 const gDetails=nakDetails[gNak];
 
-document.getElementById(`boyNameBox`).textContent=bLetter;
-document.getElementById(`girlNameBox`).textContent=gLetter;
+document.getElementById(`boyNameBox`).textContent = bName || bLetter;
+document.getElementById(`girlNameBox`).textContent = gName || gLetter;
 
 document.getElementById(`boyNakshatra`).textContent=bNak;
 document.getElementById(`boyCharan`).textContent=bChar;

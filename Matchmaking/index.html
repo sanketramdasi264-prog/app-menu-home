@@ -64,13 +64,13 @@ align-items:center;
 gap:8px;
 }
 .person-icon{
-width:26px;height:26px;
+width:28px;height:28px;
 background:linear-gradient(135deg,#d84315,#bf360c);
 border-radius:50%;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:13px;
+font-size:14px;
 box-shadow:0 3px 8px rgba(191,54,12,.4);
 }
 .form-group{margin-bottom:15px}
@@ -152,33 +152,31 @@ margin-bottom:20px;
 .detail-card{
 background:rgba(42,15,15,.95);
 border-radius:12px;
-padding:15px 12px;
+padding:18px;
 border:1px solid rgba(191,54,12,.3);
 text-align:center;
 }
 .detail-card h3{
 color:#ffccbc;
-font-size:15px;
-margin-bottom:8px;
+font-size:16px;
+margin-bottom:10px;
 display:flex;
 align-items:center;
 justify-content:center;
-gap:6px;
+gap:8px;
 }
 .name-box{
-font-size:18px;
+font-size:20px;
 font-weight:700;
 color:#ff6f00;
-padding:10px 8px;
+padding:12px;
 background:rgba(61,22,22,.6);
 border-radius:8px;
 border:2px solid rgba(216,67,21,.4);
-min-height:45px;
+min-height:50px;
 display:flex;
 align-items:center;
 justify-content:center;
-word-break:break-word;
-text-align:center;
 }
 .combined-details{
 background:rgba(42,15,15,.95);
@@ -268,10 +266,6 @@ border:1px solid rgba(191,54,12,.3);
 .details-grid{grid-template-columns:1fr;gap:15px}
 .header h1{font-size:24px}
 .card{padding:18px}
-.name-box{font-size:16px;padding:8px 6px;min-height:40px}
-.detail-card h3{font-size:14px}
-.detail-label-main{flex:0 0 80px;font-size:14px}
-.detail-values{font-size:14px}
 }
 </style>
 </head>
@@ -332,6 +326,10 @@ border:1px solid rgba(191,54,12,.3);
 </div>
 
 <button class="btn" onclick="calc()">गुण तपासा</button>
+
+<div class="info-box">
+ℹ️ <strong>सूचना:</strong> 18 किंवा त्यापेक्षा जास्त गुण असल्यास विवाह शुभ मानला जातो.
+</div>
 </div>
 
 <div class="result-section" id="resultSection">
@@ -418,6 +416,9 @@ border:1px solid rgba(191,54,12,.3);
 <div class="score-total">/ 36</div>
 </div>
 <div class="compatibility-level" id="compatLevel">--</div>
+<div class="dosha-info">
+<strong>दोष:</strong> <span id="doshaText">--</span>
+</div>
 </div>
 </div>
 </div>
@@ -543,8 +544,10 @@ const res=gunData[key];
 
 if(res){
 const score=res.score;
+const dosha=res.dosha||`दोष नाही`;
 
 document.getElementById(`scoreNum`).textContent=score;
+document.getElementById(`doshaText`).textContent=dosha;
 
 let lvl=``,cls=``;
 if(score>=28){lvl=`उत्तम जोडी ✨`;cls=`excellent`}

@@ -308,6 +308,9 @@ border:1px solid rgba(191,54,12,.3);
 
 <button class="btn" onclick="calc()">गुण तपासा</button>
 
+<div class="info-box">
+ℹ️ <strong>सूचना:</strong> 18 किंवा त्यापेक्षा जास्त गुण असल्यास विवाह शुभ मानला जातो.
+</div>
 </div>
 
 <div class="result-section" id="resultSection">
@@ -453,7 +456,9 @@ const gLetter=charanLetters[gNak][parseInt(gChar)-1];
 const bDetails=nakDetails[bNak];
 const gDetails=nakDetails[gNak];
 
-document.getElementById(`boyLetter`).textContent=bLetter;
+document.getElementById(`boyNameBox`).textContent=bLetter;
+document.getElementById(`girlNameBox`).textContent=gLetter;
+
 document.getElementById(`boyNakshatra`).textContent=bNak;
 document.getElementById(`boyCharan`).textContent=bChar;
 document.getElementById(`boyNadi`).textContent=bDetails.नाडी;
@@ -462,7 +467,6 @@ document.getElementById(`boyGan`).textContent=bDetails.गण;
 document.getElementById(`boyRashiDetail`).textContent=bR;
 document.getElementById(`boyVarg`).textContent=bDetails.वर्ग;
 
-document.getElementById(`girlLetter`).textContent=gLetter;
 document.getElementById(`girlNakshatra`).textContent=gNak;
 document.getElementById(`girlCharan`).textContent=gChar;
 document.getElementById(`girlNadi`).textContent=gDetails.नाडी;

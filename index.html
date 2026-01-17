@@ -7,10 +7,12 @@
 
     <style>
         :root {
-            --primary-red: #8B0000;
+            --bg-dark: #1a0000; 
+            --card-maroon: #8B0000; 
             --gold: #ffd700;
-            --card-bg: linear-gradient(145deg, #9b0000, #7a0000);
-            --glass: rgba(255, 255, 255, 0.12);
+            --text-white: #ffffff;
+            --text-muted: #ffdddd;
+            --icon-bg: rgba(0, 0, 0, 0.4); 
         }
 
         * {
@@ -18,289 +20,610 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         body {
-            /* System fonts load instantly and look native on Android/iOS */
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: radial-gradient(circle at top, #3d0c0c, #1a0000);
-            color: #fff;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-white);
             min-height: 100vh;
-            padding-bottom: 30px;
+            padding: 10px 0 20px 0;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* HEADER SECTION */
         .header-container {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 25px 16px;
-            position: relative;
-            max-width: 500px;
-            margin: 0 auto;
+            justify-content: space-between;
+            padding: 15px 12px;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            gap: 10px;
         }
 
         .header-logo {
-            width: 200px;
-            height: auto; /* Prevents layout shift */
+            width: clamp(150px, 40vw, 200px);
+            height: auto;
             background: #fff;
-            padding: 10px;
-            border-radius: 18px;
-            border: 3px solid var(--gold);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            padding: 8px;
+            border-radius: 15px;
+            border: 2px solid var(--gold);
+            object-fit: contain;
+            pointer-events: none;
         }
 
-        /* SHARE BUTTON */
-        .share-btn {
-            position: absolute;
-            right: 16px;
-            background: var(--glass);
+        .header-icon-btn {
+            width: clamp(44px, 12vw, 52px);
+            height: clamp(44px, 12vw, 52px);
+            background: var(--icon-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--gold);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            width: 45px;
-            height: 45px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            text-decoration: none;
+            flex-shrink: 0;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .header-icon-btn:active {
+            transform: scale(0.88);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        /* GRID SYSTEM - Fully Responsive */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+            gap: clamp(12px, 3vw, 15px);
+            padding: 0 clamp(12px, 4vw, 16px);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        @media (min-width: 360px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* CARD STYLING */
+        .card {
+            background: var(--card-maroon);
+            border-radius: clamp(15px, 4vw, 20px);
+            min-height: clamp(105px, 28vw, 120px);
+            padding: clamp(12px, 3.5vw, 15px);
+            text-decoration: none;
+            color: var(--text-white);
+            display: flex;
+            align-items: center; 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            pointer-events: auto;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .card:active {
+            transform: scale(0.94);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.7);
+        }
+
+        .card:active::before {
+            opacity: 1;
+        }
+
+        /* Hide URL preview on long press */
+        .card::after {
+            content: attr(href);
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .icon-box {
+            min-width: clamp(48px, 13vw, 55px);
+            width: clamp(48px, 13vw, 55px);
+            height: clamp(48px, 13vw, 55px);
+            background: var(--icon-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: clamp(10px, 3vw, 15px);
+            flex-shrink: 0;
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-size: clamp(18px, 5vw, 21px);
+            font-weight: 800;
+            color: var(--gold);
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .card-subtitle {
+            font-size: clamp(12px, 3.5vw, 14px); 
+            font-weight: 400;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-top: 2px;
+        }
+
+        .custom-svg {
+            width: clamp(28px, 8vw, 32px);
+            height: clamp(28px, 8vw, 32px);
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 2.2; 
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        
+        .fill-gold { 
+            fill: var(--gold);
+            stroke: none;
+        }
+
+        /* INFO MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #2a0000 0%, #1a0000 100%);
+            border-radius: 25px;
+            padding: 30px 25px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid var(--gold);
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.3);
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--gold);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.1s;
-        }
-
-        .share-btn:active {
-            transform: scale(0.9);
-            background: rgba(255, 215, 0, 0.2);
-        }
-
-        /* GRID SYSTEM */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            padding: 0 16px;
-            max-width: 500px;
-            margin: auto;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 22px 12px;
-            text-decoration: none;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-            transition: transform 0.1s ease;
-            will-change: transform; /* Performance hint */
-        }
-
-        .card:active {
-            transform: scale(0.96);
-        }
-
-        .icon-box {
-            background: var(--glass);
-            width: 52px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 18px;
-            margin-bottom: 12px;
             color: var(--gold);
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            font-size: 24px;
+            line-height: 1;
+            transition: all 0.2s ease;
         }
 
-        .card-title {
-            font-size: 19px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 4px;
+        .modal-close:active {
+            transform: scale(0.9);
+            background: rgba(0, 0, 0, 0.8);
         }
 
-        .card-subtitle {
-            font-size: 12px;
+        .developer-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: block;
+            border: 3px solid var(--gold);
+            object-fit: cover;
+            background: var(--icon-bg);
+        }
+
+        .developer-info h2 {
+            color: var(--gold);
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .developer-info h3 {
+            color: var(--text-muted);
+            font-size: 16px;
+            text-align: center;
             font-weight: 400;
-            color: #ffcccc;
-            opacity: 0.9;
+            margin-bottom: 20px;
         }
 
-        /* Universal SVG Styles */
-        .icon-svg {
-            width: 24px;
-            height: 24px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+        .info-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border-left: 3px solid var(--gold);
         }
 
-        .custom-svg {
-            width: 30px;
-            height: 30px;
-            fill: none;
-            stroke: var(--gold);
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+        .info-section h4 {
+            color: var(--gold);
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
-        .fill-gold { fill: var(--gold); }
+
+        .info-section p {
+            color: var(--text-white);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+
+
+        /* Prevent text selection and callouts */
+        img {
+            pointer-events: none;
+            -webkit-user-drag: none;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Performance optimization */
+        .card, .header-icon-btn {
+            will-change: transform;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="header-container">
-    <img src="1000894316-removebg-preview.webp" class="header-logo" alt="Karmyog Logo" loading="eager">
-    
-    <div class="share-btn" onclick="shareApp()" aria-label="Share">
-        <svg class="icon-svg" viewBox="0 0 24 24">
+    <button class="header-icon-btn" onclick="openInfoModal()" aria-label="माहिती">
+        <svg style="width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2.5" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+    </button>
+
+    <img src="1000894316-removebg-preview.webp" class="header-logo" alt="Karmyog Logo" draggable="false">
+
+    <button class="header-icon-btn" onclick="shareApp()" aria-label="शेअर करा">
+        <svg style="width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2.5" viewBox="0 0 24 24">
             <circle cx="18" cy="5" r="3"></circle>
             <circle cx="6" cy="12" r="3"></circle>
             <circle cx="18" cy="19" r="3"></circle>
             <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
             <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
         </svg>
-    </div>
+    </button>
 </div>
 
 <div class="grid">
     
-    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/arati/" class="card">
+    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/arati/" class="card" draggable="false">
         <div class="icon-box">
             <svg class="custom-svg" viewBox="0 0 24 24">
                 <path class="fill-gold" d="M12 2c0 2-2 3.5-2 5.5s1.5 3 2 3.5 2-1.5 2-3.5S12 4 12 2z"/>
-                <path d="M5 12c0 5 3 9 7 9s7-4 7-9H5z" opacity="0.8"/>
+                <path d="M5 12c0 5 3 9 7 9s7-4 7-9H5z" style="opacity:0.8;stroke:var(--gold);fill:var(--gold)"/>
             </svg>
         </div>
-        <div class="card-title">आरती संग्रह</div>
-        <div class="card-subtitle">नवीन आरती उपलब्ध</div>
-    </a>
-
-    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/stotra/" class="card">
-        <div class="icon-box">
-            <svg class="icon-svg" viewBox="0 0 24 24">
-                <path d="M8 2h11v20H8z" />
-                <path d="M19 22H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h3" />
-                <path d="M8 6h4" />
-                <path d="M8 10h8" />
-                <path d="M8 14h8" />
-                <path d="M8 18h4" />
-            </svg>
+        <div class="card-content">
+            <div class="card-title">आरती</div>
+            <div class="card-subtitle">आरती संग्रह</div>
         </div>
-        <div class="card-title">स्तोत्र संग्रह</div>
-        <div class="card-subtitle">सर्व स्तोत्रे व अष्टके</div>
     </a>
 
-    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/bhajan/" class="card">
+    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/stotra/" class="card" draggable="false">
         <div class="icon-box">
             <svg class="custom-svg" viewBox="0 0 24 24">
-                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
-                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                <path d="M12 2v2" />
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5V5A2.5 2.5 0 0 1 6.5 2.5H20v14.5"/>
+                <path d="M8 7h8M8 11h8"/>
             </svg>
         </div>
-        <div class="card-title">भजनावली</div>
-        <div class="card-subtitle">भजने व अभंग</div>
+        <div class="card-content">
+            <div class="card-title">स्तोत्र</div>
+            <div class="card-subtitle">स्तोत्र व अष्टके</div>
+        </div>
     </a>
 
-    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/pooja/" class="card">
-        <div class="icon-box">
-            <svg class="icon-svg" viewBox="0 0 24 24">
-                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.243-2.188.7-3.125A3.99 3.99 0 0 0 8.5 14.5Z" />
-            </svg>
-        </div>
-        <div class="card-title">कर्मकांड</div>
-        <div class="card-subtitle">पूजन, हवन, आवाहन</div>
-    </a>
-
-    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/panchangmuhurt/" class="card">
-        <div class="icon-box">
-            <svg class="icon-svg" viewBox="0 0 24 24">
-                <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-                <path d="M8 14h.01" />
-                <path d="M12 14h.01" />
-                <path d="M16 14h.01" />
-                <path d="M8 18h.01" />
-                <path d="M12 18h.01" />
-                <path d="M16 18h.01" />
-            </svg>
-        </div>
-        <div class="card-title">पंचांग मुहूर्त</div>
-        <div class="card-subtitle">विवाह मुहूर्त इत्यादी...</div>
-    </a>
-
-    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/list/" class="card">
-        <div class="icon-box">
-            <svg class="icon-svg" viewBox="0 0 24 24">
-                <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                <path d="M12 11h4" />
-                <path d="M12 16h4" />
-                <path d="M8 11h.01" />
-                <path d="M8 16h.01" />
-            </svg>
-        </div>
-        <div class="card-title">साहित्य यादी</div>
-        <div class="card-subtitle">पूजा साहित्य</div>
-    </a>
-
-    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/kundali/" class="card">
-        <div class="icon-box">
-            <svg class="icon-svg" viewBox="0 0 24 24">
-                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-                <line x1="10" y1="9" x2="8" y2="9" />
-            </svg>
-        </div>
-        <div class="card-title">जन्म कुंडली</div>
-        <div class="card-subtitle">PDF तयार करा</div>
-    </a>
-  
-    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/caunter/" class="card">
+    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/bhajan/" class="card" draggable="false">
         <div class="icon-box">
             <svg class="custom-svg" viewBox="0 0 24 24">
-                <circle cx="12" cy="5" r="2" />
-                <circle cx="16" cy="7" r="2" />
-                <circle cx="18" cy="11" r="2" />
-                <circle cx="16" cy="15" r="2" />
-                <circle cx="12" cy="17" r="2" />
-                <circle cx="8" cy="15" r="2" />
-                <circle cx="6" cy="11" r="2" />
-                <circle cx="8" cy="7" r="2" />
-                <path d="M12 19v3M10 22h4" />
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
             </svg>
         </div>
-        <div class="card-title">जप काउंटर</div>
-        <div class="card-subtitle">जप, माला मोजणे</div>
+        <div class="card-content">
+            <div class="card-title">भजनावली</div>
+            <div class="card-subtitle">भजने व अभंग</div>
+        </div>
+    </a>
+
+    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/pooja/" class="card" draggable="false">
+        <div class="icon-box">
+            <svg class="custom-svg" viewBox="0 0 24 24">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.243-2.188.7-3.125"/>
+            </svg>
+        </div>
+        <div class="card-content">
+            <div class="card-title">कर्मकांड</div>
+            <div class="card-subtitle">पूजन, हवन विधी</div>
+        </div>
+    </a>
+
+    <a href="#" class="card" draggable="false">
+        <div class="icon-box">
+            <svg class="custom-svg" viewBox="0 0 24 24">
+                <rect width="18" height="18" x="3" y="4" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+        </div>
+        <div class="card-content">
+            <div class="card-title">पंचांग</div>
+            <div class="card-subtitle">मुहूर्त व तिथी</div>
+        </div>
+    </a>
+
+    <a href="#" class="card" draggable="false">
+        <div class="icon-box">
+            <svg class="custom-svg" viewBox="0 0 24 24">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+        </div>
+        <div class="card-content">
+            <div class="card-title">गुण मिलन</div>
+            <div class="card-subtitle">विवाह उपयुक्तता</div>
+        </div>
+    </a>
+
+    <a href="#" class="card" draggable="false">
+        <div class="icon-box">
+            <svg class="custom-svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+            </svg>
+        </div>
+        <div class="card-content">
+            <div class="card-title">नित्यकर्म</div>
+            <div class="card-subtitle">दैनिक पूजा विधी</div>
+        </div>
+    </a>
+
+    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/list/" class="card" draggable="false">
+        <div class="icon-box">
+            <svg class="custom-svg" viewBox="0 0 24 24">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                <rect x="8" y="2" width="8" height="4" rx="1"/>
+                <path d="M9 12h6M9 16h6"/>
+            </svg>
+        </div>
+        <div class="card-content">
+            <div class="card-title">साहित्य</div>
+            <div class="card-subtitle">पूजा साहित्य</div>
+        </div>
+    </a>
+
+    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/kundali/" class="card" draggable="false">
+        <div class="icon-box">
+            <svg class="custom-svg" viewBox="0 0 24 24">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14 2 14 8 20 8"/>
+            </svg>
+        </div>
+        <div class="card-content">
+            <div class="card-title">कुंडली</div>
+            <div class="card-subtitle">PDF तयार करा</div>
+        </div>
+    </a>
+
+    <a href="https://sanketramdasi264-prog.github.io/app-menu-home/caunter/" class="card" draggable="false">
+        <div class="icon-box">
+            <svg class="custom-svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="5" r="2"/>
+                <circle cx="16" cy="7" r="2"/>
+                <circle cx="18" cy="11" r="2"/>
+                <circle cx="16" cy="15" r="2"/>
+                <circle cx="12" cy="17" r="2"/>
+                <circle cx="8" cy="15" r="2"/>
+                <circle cx="6" cy="11" r="2"/>
+                <circle cx="8" cy="7" r="2"/>
+                <path d="M12 19v3"/>
+            </svg>
+        </div>
+        <div class="card-content">
+            <div class="card-title">जप</div>
+            <div class="card-subtitle">माला मोजणी</div>
+        </div>
     </a>
 
 </div>
 
+<!-- Developer Info Modal -->
+<div class="modal-overlay" id="infoModal" onclick="closeInfoModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-close" onclick="closeInfoModal()">&times;</div>
+        
+        <img src="https://via.placeholder.com/120" alt="Developer Photo" class="developer-photo">
+        
+        <div class="developer-info">
+            <h2>संकेत रामदासी</h2>
+            <h3>सॉफ्टवेअर डेव्हलपर</h3>
+            
+            <div class="info-section">
+                <h4>📧 संपर्क</h4>
+                <p>developer@karmyog.com<br>+91 98765 43210</p>
+            </div>
+            
+            <div class="info-section">
+                <h4>🎯 आमच्याबद्दल</h4>
+                <p>कर्मयोग हे एक धार्मिक अॅप आहे जे तुम्हाला आरती, स्तोत्र, भजन आणि इतर धार्मिक साहित्य प्रदान करते.</p>
+            </div>
+            
+            <div class="info-section">
+                <h4>📱 आवृत्ती</h4>
+                <p>v1.0.0 (Build 2025)</p>
+            </div>
+            
+            <div class="info-section">
+                <h4>💝 आभार</h4>
+                <p>कर्मयोग वापरल्याबद्दल धन्यवाद. तुमचा फीडबॅक आम्हाला पाठवा!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
-    // Share Functionality (No external dependencies needed)
+    // Share App Function with Play Store Link
     function shareApp() {
+        const playstoreLink = '#'; // आपली Play Store लिंक येथे भरा
+        
+        const shareText = `🕉️ कर्मयोग 🕉️
+
+धार्मिक साहित्य आणि पूजा विधी आता तुमच्या मोबाईलवर!
+
+✨ आरती संग्रह
+📿 स्तोत्र व अष्टके  
+🙏 भजनावली
+🔱 कर्मकांड विधी
+📅 पंचांग
+💍 गुण मिलन
+⏰ नित्यकर्म
+📚 पूजा साहित्य
+
+आजच डाउनलोड करा आणि तुमच्या धार्मिक जीवनाला समृद्ध करा!
+
+📲 Play Store: ${playstoreLink}`;
+
         if (navigator.share) {
-            navigator.share({
-                title: 'कर्मयोग',
-                text: 'भक्तिमार्ग आणि कर्मकांडासाठी उत्तम ॲप. आत्ताच डाऊनलोड करा!',
-                url: window.location.href,
-            }).catch(console.error);
+            navigator.share({ 
+                title: '🕉️ कर्मयोग - धार्मिक अॅप',
+                text: shareText,
+                url: playstoreLink
+            }).catch(err => {
+                if (err.name !== 'AbortError') {
+                    console.error('Share failed:', err);
+                }
+            });
         } else {
-            alert("तुमच्या ब्राउझरमध्ये शेअर पर्याय उपलब्ध नाही. लिंक कॉपी करा.");
+            // Fallback for browsers that don't support Web Share API
+            const tempInput = document.createElement('textarea');
+            tempInput.value = shareText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('लिंक कॉपी केली! आता तुम्ही ती शेअर करू शकता.');
         }
+    }
+
+    // Open Info Modal
+    function openInfoModal() {
+        document.getElementById('infoModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Close Info Modal
+    function closeInfoModal(event) {
+        if (!event || event.target.id === 'infoModal' || event.target.classList.contains('modal-close')) {
+            document.getElementById('infoModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Prevent context menu on long press
+    document.addEventListener('contextmenu', function(e) {
+        if (e.target.tagName === 'A' || e.target.closest('a')) {
+            e.preventDefault();
+        }
+    });
+
+    // Prevent drag on all links
+    document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('dragstart', e => e.preventDefault());
+    });
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeInfoModal();
+        }
+    });
+
+    // Lazy load optimization
+    if ('loading' in HTMLImageElement.prototype) {
+        const images = document.querySelectorAll('img[loading="lazy"]');
+        images.forEach(img => {
+            img.src = img.dataset.src;
+        });
     }
 </script>
 

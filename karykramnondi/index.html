@@ -2,29 +2,62 @@
 <html lang="mr">
 <head>
 <meta charset="UTF-8">
-<title>पूजा रजिस्टर</title>
+<title>कार्यक्रम नोंद</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 body{font-family:Poppins;margin:0;background:#f7f2ed;color:#2b0000;}
-header{background:linear-gradient(135deg,#5a0000,#8b0000);color:#ffd700;padding:15px;text-align:center;font-size:20px;font-weight:600;}
+
+/* Custom Header (Appilix-safe) */
+.app-header{
+ background:linear-gradient(135deg,#5a0000,#8b0000);
+ color:#ffd700;
+ padding:15px;
+ text-align:center;
+ font-size:20px;
+ font-weight:600;
+}
+
 .tabs{display:flex;}
 .tabs button{flex:1;padding:12px;border:none;background:#fff;color:#5a0000;font-weight:500;}
 .tabs button.active{background:#ffd700;}
+
 .container{padding:12px;padding-bottom:80px;}
-.card{background:#fff;border-radius:10px;padding:12px;margin:10px 0;box-shadow:0 2px 6px rgba(0,0,0,0.1);border-left:4px solid #8b0000;}
 
-input,textarea{width:100%;padding:9px;margin:5px 0;border-radius:6px;border:1px solid #ccc;font-size:14px;box-sizing:border-box;}
+.card{
+ background:#fff;border-radius:10px;padding:12px;margin:10px 0;
+ box-shadow:0 2px 6px rgba(0,0,0,0.1);
+ border-left:4px solid #8b0000;
+}
 
-.primary-btn{background:linear-gradient(135deg,#8b0000,#5a0000);color:#ffd700;border:none;padding:11px;width:100%;border-radius:8px;font-size:15px;}
+input,textarea{
+ width:100%;padding:9px;margin:5px 0;
+ border-radius:6px;border:1px solid #ccc;
+ font-size:14px;box-sizing:border-box;
+}
 
-.fab{position:fixed;bottom:18px;right:18px;background:linear-gradient(135deg,#8b0000,#5a0000);color:#ffd700;width:52px;height:52px;border-radius:50%;font-size:26px;border:none;}
+.primary-btn{
+ background:linear-gradient(135deg,#8b0000,#5a0000);
+ color:#ffd700;border:none;padding:11px;
+ width:100%;border-radius:8px;font-size:15px;
+}
+
+.fab{
+ position:fixed;bottom:18px;right:18px;
+ background:linear-gradient(135deg,#8b0000,#5a0000);
+ color:#ffd700;width:52px;height:52px;
+ border-radius:50%;font-size:26px;border:none;
+}
 
 .date-wrap{position:relative;}
-.date-placeholder{position:absolute;left:12px;top:10px;color:#888;pointer-events:none;font-size:14px;}
+.date-placeholder{
+ position:absolute;left:12px;top:10px;
+ color:#888;pointer-events:none;font-size:14px;
+}
 
+/* Reminder */
 .reminder-head{
  background:#fff;border:1px solid #8b0000;
  padding:10px;border-radius:8px;margin-top:8px;
@@ -32,7 +65,8 @@ input,textarea{width:100%;padding:9px;margin:5px 0;border-radius:6px;border:1px 
 }
 .reminder-body{display:none;margin-top:10px;}
 .rem-section{
- border:1px solid #ddd;border-radius:8px;padding:10px;margin:8px 0;
+ border:1px solid #ddd;border-radius:8px;
+ padding:10px;margin:8px 0;
  display:flex;align-items:center;gap:10px;
 }
 .rem-left{flex:1;}
@@ -40,6 +74,7 @@ input,textarea{width:100%;padding:9px;margin:5px 0;border-radius:6px;border:1px 
 .rem-right input{background:#eee;border:1px solid #ccc;padding:6px;border-radius:6px;}
 .tickbox{width:22px;height:22px;}
 
+/* Suggestion */
 .suggest-box{
  background:#fff;border:1px solid #ccc;border-radius:6px;
  display:none;position:absolute;width:100%;z-index:50;
@@ -48,6 +83,7 @@ input,textarea{width:100%;padding:9px;margin:5px 0;border-radius:6px;border:1px 
 .suggest-item{padding:6px;cursor:pointer;}
 .suggest-item:hover{background:#ffe9a3;}
 
+/* Toast */
 #toast{
  visibility:hidden;min-width:200px;background:#333;color:#fff;
  text-align:center;border-radius:6px;padding:10px;
@@ -58,7 +94,8 @@ input,textarea{width:100%;padding:9px;margin:5px 0;border-radius:6px;border:1px 
 </head>
 <body>
 
-<header>पूजा रजिस्टर ✍️</header>
+<!-- Custom Header -->
+<div class="app-header">🪔 कार्यक्रम नोंद</div>
 
 <div class="tabs">
 <button id="tabNondi" class="active" onclick="showTab('list')">नोंदी</button>
@@ -69,6 +106,15 @@ input,textarea{width:100%;padding:9px;margin:5px 0;border-radius:6px;border:1px 
 
 <!-- LIST -->
 <div id="listTab"></div>
+
+<!-- EMPTY STATE -->
+<div id="emptyState" style="display:none;text-align:center;margin-top:80px;">
+  <h3>📖 अजून कोणतीही नोंद नाही</h3>
+  <p>पहिली पूजा नोंद करा</p>
+  <button onclick="newEntry()" class="primary-btn" style="width:70%;margin:auto;">
+    ➕ पहिली पूजा नोंद करा
+  </button>
+</div>
 
 <!-- REPORT -->
 <div id="reportTab" style="display:none;" class="card">
@@ -144,8 +190,10 @@ input,textarea{width:100%;padding:9px;margin:5px 0;border-radius:6px;border:1px 
 
 </div>
 
+<!-- FAB -->
 <button class="fab" id="fabBtn" onclick="newEntry()">+</button>
 
+<!-- Toast -->
 <div id="toast"></div>
 
 <script>
@@ -164,12 +212,22 @@ function showTab(tab){
  listTab.style.display="none";
  reportTab.style.display="none";
  addTab.style.display="none";
+ emptyState.style.display="none";
  fabBtn.style.display="block";
+
  tabNondi.classList.remove("active");
  tabReport.classList.remove("active");
 
- if(tab=="list"){listTab.style.display="block";tabNondi.classList.add("active");renderList();}
- if(tab=="report"){reportTab.style.display="block";tabReport.classList.add("active");generateCurrentMonth();}
+ if(tab=="list"){
+   listTab.style.display="block";   // <-- ही line missing होती
+   tabNondi.classList.add("active");
+   renderList();
+ }
+ if(tab=="report"){
+   reportTab.style.display="block";
+   tabReport.classList.add("active");
+   generateCurrentMonth();
+ }
 }
 
 /* New Entry */
@@ -177,6 +235,7 @@ function newEntry(){
  addTab.style.display="block";
  listTab.style.display="none";
  reportTab.style.display="none";
+ emptyState.style.display="none";
  fabBtn.style.display="none";
 }
 
@@ -184,7 +243,7 @@ function newEntry(){
 date.onchange=()=>datePh.style.display=date.value?"none":"block";
 time.onchange=()=>timePh.style.display=time.value?"none":"block";
 
-/* Reminder Expand */
+/* Reminder expand */
 let remExpanded=false;
 function toggleReminder(){
  remExpanded=!remExpanded;
@@ -201,7 +260,7 @@ function collectReminderData(){
  remData.value=JSON.stringify(rem);
 }
 
-/* Save recent names */
+/* Recent store */
 function saveRecent(key,name){
  let arr=JSON.parse(localStorage.getItem(key)||"[]");
  arr=arr.filter(n=>n!=name);
@@ -210,7 +269,7 @@ function saveRecent(key,name){
  localStorage.setItem(key,JSON.stringify(arr));
 }
 
-/* Show suggestions */
+/* Suggest */
 function showRecent(key,boxId,inputId){
  let arr=JSON.parse(localStorage.getItem(key)||"[]");
  let box=document.getElementById(boxId);
@@ -229,7 +288,6 @@ function showRecent(key,boxId,inputId){
  box.style.display="block";
 }
 
-/* Attach suggestion events */
 pooja.onfocus=()=>showRecent("recentPooja","poojaSuggest","pooja");
 yajman.onfocus=()=>showRecent("recentYajman","yajmanSuggest","yajman");
 pooja.onblur=()=>setTimeout(()=>poojaSuggest.style.display="none",200);
@@ -237,9 +295,9 @@ yajman.onblur=()=>setTimeout(()=>yajmanSuggest.style.display="none",200);
 
 /* SAVE */
 function saveEntry(){
-
  [pooja,date,yajman].forEach(f=>f.style.border="1px solid #ccc");
  let valid=true;
+
  if(pooja.value.trim()==""){pooja.style.border="2px solid red";valid=false;}
  if(date.value.trim()==""){date.style.border="2px solid red";valid=false;}
  if(yajman.value.trim()==""){yajman.style.border="2px solid red";valid=false;}
@@ -263,7 +321,6 @@ function saveEntry(){
 
  data.push(entry);
  localStorage.setItem("rojnishiData",JSON.stringify(data));
-
  saveRecent("recentPooja",entry.pooja);
  saveRecent("recentYajman",entry.yajman);
 
@@ -271,9 +328,17 @@ function saveEntry(){
  showTab('list');
 }
 
-/* LIST */
+/* LIST with Empty State */
 function renderList(){
  listTab.innerHTML="";
+ if(data.length==0){
+   emptyState.style.display="block";
+   fabBtn.style.display="none";
+   return;
+ }
+ emptyState.style.display="none";
+ fabBtn.style.display="block";
+
  data.forEach(e=>{
   let d=new Date(e.date);
   let fd=("0"+d.getDate()).slice(-2)+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+d.getFullYear().toString().slice(-2);
@@ -313,7 +378,7 @@ function generateMonthReport(){
  topYajman.innerHTML = topName ? `${topName} (₹ ${topVal})` : "—";
 }
 
-/* Start */
+/* START */
 showTab('list');
 </script>
 

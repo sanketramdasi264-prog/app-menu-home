@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<title>पूजा रजिस्टर</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+body{font-family:Poppins;margin:0;background:#f7f2ed;color:#2b0000;}
+header{background:linear-gradient(135deg,#5a0000,#8b0000);color:#ffd700;padding:15px;text-align:center;font-size:20px;font-weight:600;}
+.tabs{display:flex;}
+.tabs button{flex:1;padding:12px;border:none;background:#fff;color:#5a0000;font-weight:500;}
+.tabs button.active{background:#ffd700;}
+.container{padding:12px;padding-bottom:80px;}
+.card{background:#fff;border-radius:10px;padding:12px;margin:10px 0;box-shadow:0 2px 6px rgba(0,0,0,0.1);border-left:4px solid #8b0000;}
+
+input,textarea{width:100%;padding:9px;margin:5px 0;border-radius:6px;border:1px solid #ccc;font-size:14px;box-sizing:border-box;}
+
+.primary-btn{background:linear-gradient(135deg,#8b0000,#5a0000);color:#ffd700;border:none;padding:11px;width:100%;border-radius:8px;font-size:15px;}
+
+.fab{position:fixed;bottom:18px;right:18px;background:linear-gradient(135deg,#8b0000,#5a0000);color:#ffd700;width:52px;height:52px;border-radius:50%;font-size:26px;border:none;}
+
+.date-wrap{position:relative;}
+.date-placeholder{position:absolute;left:12px;top:10px;color:#888;pointer-events:none;font-size:14px;}
+
+.reminder-head{
+ background:#fff;border:1px solid #8b0000;
+ padding:10px;border-radius:8px;margin-top:8px;
+ display:flex;justify-content:space-between;cursor:pointer;
+}
+.reminder-body{display:none;margin-top:10px;}
+.rem-section{
+ border:1px solid #ddd;border-radius:8px;padding:10px;margin:8px 0;
+ display:flex;align-items:center;gap:10px;
+}
+.rem-left{flex:1;}
+.rem-right{display:flex;gap:6px;align-items:center;}
+.rem-right input{background:#eee;border:1px solid #ccc;padding:6px;border-radius:6px;}
+.tickbox{width:22px;height:22px;}
+
+.suggest-box{
+ background:#fff;border:1px solid #ccc;border-radius:6px;
+ display:none;position:absolute;width:100%;z-index:50;
+ max-height:120px;overflow:auto;
+}
+.suggest-item{padding:6px;cursor:pointer;}
+.suggest-item:hover{background:#ffe9a3;}
+
+#toast{
+ visibility:hidden;min-width:200px;background:#333;color:#fff;
+ text-align:center;border-radius:6px;padding:10px;
+ position:fixed;left:50%;bottom:30px;transform:translateX(-50%);
+ font-size:14px;z-index:1000;
+}
+</style>
+</head>
+<body>
+
+<header>पूजा रजिस्टर ✍️</header>
+
+<div class="tabs">
+<button id="tabNondi" class="active" onclick="showTab('list')">नोंदी</button>
+<button id="tabReport" onclick="showTab('report')">रिपोर्ट</button>
+</div>
+
+<div class="container">
+
+<!-- LIST -->
+<div id="listTab"></div>
+
+<!-- REPORT -->
+<div id="reportTab" style="display:none;" class="card">
+<h3>Month Wise Report</h3>
+<input type="month" id="monthPick" onchange="generateMonthReport()">
+<h4 id="monthResult"></h4>
+<h4>🏆 Top Yajman</h4>
+<h4 id="topYajman"></h4>
+</div>
+
+<!-- ADD -->
+<div id="addTab" style="display:none;" class="card">
+<h3>नवीन पूजा</h3>
+
+<div style="position:relative;">
+<input id="pooja" placeholder="पूजा नाव *">
+<div id="poojaSuggest" class="suggest-box"></div>
+</div>
+
+<div class="date-wrap">
+  <input type="date" id="date">
+  <span class="date-placeholder" id="datePh">तारीख निवडा *</span>
+</div>
+
+<div class="date-wrap">
+  <input type="time" id="time">
+  <span class="date-placeholder" id="timePh">वेळ (optional)</span>
+</div>
+
+<div style="position:relative;">
+<input id="yajman" placeholder="यजमान नाव *">
+<div id="yajmanSuggest" class="suggest-box"></div>
+</div>
+
+<input id="dakshina" placeholder="दक्षिणा (optional)">
+<textarea id="notes" placeholder="नोंदी (optional)"></textarea>
+
+<!-- Reminder -->
+<div class="reminder-head" onclick="toggleReminder()">
+ 🔔 Reminder सेट करा <span id="remArrow">▼</span>
+</div>
+
+<div class="reminder-body" id="reminderBody">
+  <div class="rem-section">
+    <div class="rem-left">त्याच दिवशी</div>
+    <div class="rem-right">
+      <input type="time" id="sameTime">
+      <input type="checkbox" id="sameDay" class="tickbox">
+    </div>
+  </div>
+
+  <div class="rem-section">
+    <div class="rem-left">एक दिवस आधी</div>
+    <div class="rem-right">
+      <input type="time" id="beforeTime">
+      <input type="checkbox" id="beforeDay" class="tickbox">
+    </div>
+  </div>
+
+  <div class="rem-section">
+    <div class="rem-left">Custom Date-Time</div>
+    <div class="rem-right">
+      <input type="datetime-local" id="customDateTime">
+      <input type="checkbox" id="customRem" class="tickbox">
+    </div>
+  </div>
+</div>
+
+<input type="hidden" id="remData">
+<br>
+<button class="primary-btn" onclick="saveEntry()">Save</button>
+</div>
+
+</div>
+
+<button class="fab" id="fabBtn" onclick="newEntry()">+</button>
+
+<div id="toast"></div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("rojnishiData")||"[]");
+
+/* Toast */
+function showToast(msg){
+ let t=document.getElementById("toast");
+ t.innerText=msg;
+ t.style.visibility="visible";
+ setTimeout(()=>t.style.visibility="hidden",2000);
+}
+
+/* Tabs */
+function showTab(tab){
+ listTab.style.display="none";
+ reportTab.style.display="none";
+ addTab.style.display="none";
+ fabBtn.style.display="block";
+ tabNondi.classList.remove("active");
+ tabReport.classList.remove("active");
+
+ if(tab=="list"){listTab.style.display="block";tabNondi.classList.add("active");renderList();}
+ if(tab=="report"){reportTab.style.display="block";tabReport.classList.add("active");generateCurrentMonth();}
+}
+
+/* New Entry */
+function newEntry(){
+ addTab.style.display="block";
+ listTab.style.display="none";
+ reportTab.style.display="none";
+ fabBtn.style.display="none";
+}
+
+/* Placeholder hide */
+date.onchange=()=>datePh.style.display=date.value?"none":"block";
+time.onchange=()=>timePh.style.display=time.value?"none":"block";
+
+/* Reminder Expand */
+let remExpanded=false;
+function toggleReminder(){
+ remExpanded=!remExpanded;
+ reminderBody.style.display=remExpanded?"block":"none";
+ remArrow.innerText=remExpanded?"▲":"▼";
+}
+
+/* Collect Reminder */
+function collectReminderData(){
+ let rem=[];
+ if(sameDay.checked) rem.push({type:"same",time:sameTime.value});
+ if(beforeDay.checked) rem.push({type:"before",time:beforeTime.value});
+ if(customRem.checked) rem.push({type:"custom",datetime:customDateTime.value});
+ remData.value=JSON.stringify(rem);
+}
+
+/* Save recent names */
+function saveRecent(key,name){
+ let arr=JSON.parse(localStorage.getItem(key)||"[]");
+ arr=arr.filter(n=>n!=name);
+ arr.unshift(name);
+ if(arr.length>5) arr.pop();
+ localStorage.setItem(key,JSON.stringify(arr));
+}
+
+/* Show suggestions */
+function showRecent(key,boxId,inputId){
+ let arr=JSON.parse(localStorage.getItem(key)||"[]");
+ let box=document.getElementById(boxId);
+ box.innerHTML="";
+ if(arr.length==0){box.style.display="none";return;}
+ arr.slice(0,3).forEach(n=>{
+  let div=document.createElement("div");
+  div.className="suggest-item";
+  div.innerText=n;
+  div.onclick=()=>{
+    document.getElementById(inputId).value=n;
+    box.style.display="none";
+  };
+  box.appendChild(div);
+ });
+ box.style.display="block";
+}
+
+/* Attach suggestion events */
+pooja.onfocus=()=>showRecent("recentPooja","poojaSuggest","pooja");
+yajman.onfocus=()=>showRecent("recentYajman","yajmanSuggest","yajman");
+pooja.onblur=()=>setTimeout(()=>poojaSuggest.style.display="none",200);
+yajman.onblur=()=>setTimeout(()=>yajmanSuggest.style.display="none",200);
+
+/* SAVE */
+function saveEntry(){
+
+ [pooja,date,yajman].forEach(f=>f.style.border="1px solid #ccc");
+ let valid=true;
+ if(pooja.value.trim()==""){pooja.style.border="2px solid red";valid=false;}
+ if(date.value.trim()==""){date.style.border="2px solid red";valid=false;}
+ if(yajman.value.trim()==""){yajman.style.border="2px solid red";valid=false;}
+
+ if(!valid){
+   showToast("⚠️ पूजा नाव, तारीख, यजमान नाव आवश्यक आहे");
+   return;
+ }
+
+ collectReminderData();
+
+ let entry={
+  pooja:pooja.value.trim(),
+  date:date.value,
+  time:time.value.trim(),
+  yajman:yajman.value.trim(),
+  dakshina:Number(dakshina.value||0),
+  notes:notes.value,
+  remData:remData.value
+ };
+
+ data.push(entry);
+ localStorage.setItem("rojnishiData",JSON.stringify(data));
+
+ saveRecent("recentPooja",entry.pooja);
+ saveRecent("recentYajman",entry.yajman);
+
+ showToast("✔️ Saved Successfully");
+ showTab('list');
+}
+
+/* LIST */
+function renderList(){
+ listTab.innerHTML="";
+ data.forEach(e=>{
+  let d=new Date(e.date);
+  let fd=("0"+d.getDate()).slice(-2)+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+d.getFullYear().toString().slice(-2);
+  let div=document.createElement("div");
+  div.className="card";
+  div.innerHTML=`<b>${e.pooja}</b><br>👤 ${e.yajman}<br>📅 ${fd} ${e.time||""}<br>💰 ₹ ${e.dakshina}`;
+  listTab.appendChild(div);
+ });
+}
+
+/* REPORT */
+function generateCurrentMonth(){
+ let now=new Date();
+ monthPick.value=now.toISOString().slice(0,7);
+ generateMonthReport();
+}
+
+function generateMonthReport(){
+ let monthVal=monthPick.value;
+ let totalDak=0,count=0;
+ let yajTotals={};
+
+ data.forEach(e=>{
+  if(e.date.startsWith(monthVal)){
+   totalDak+=e.dakshina;
+   count++;
+   yajTotals[e.yajman]=(yajTotals[e.yajman]||0)+e.dakshina;
+  }
+ });
+
+ monthResult.innerHTML=`एकूण पूजा: ${count}<br>एकूण दक्षिणा: ₹ ${totalDak}`;
+
+ let topName="",topVal=0;
+ for(let y in yajTotals){
+   if(yajTotals[y]>topVal){topVal=yajTotals[y];topName=y;}
+ }
+ topYajman.innerHTML = topName ? `${topName} (₹ ${topVal})` : "—";
+}
+
+/* Start */
+showTab('list');
+</script>
+
+</body>
+</html>

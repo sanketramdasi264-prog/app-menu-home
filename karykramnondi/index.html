@@ -21,6 +21,7 @@ body{font-family:Poppins;margin:0;background:#f7f2ed;color:#2b0000;}
  background:#fff;border-radius:10px;padding:12px;margin:10px 0;
  box-shadow:0 2px 6px rgba(0,0,0,0.1);
  border-left:4px solid #8b0000;
+ position:relative;
 }
 input,textarea{
  width:100%;padding:9px;margin:5px 0;border-radius:6px;
@@ -86,7 +87,6 @@ input,textarea{
 
 <div id="emptyState" style="display:none;text-align:center;margin-top:80px;">
   <h3>📖 अजून कोणतीही नोंद नाही</h3>
-  <p>पहिली पूजा नोंद करा</p>
   <button onclick="newEntry()" class="primary-btn" style="width:70%;margin:auto;">
     ➕ पहिली पूजा नोंद करा
   </button>
@@ -100,9 +100,9 @@ input,textarea{
 <h4 id="topYajman"></h4>
 </div>
 
+<!-- ADD / EDIT FORM -->
 <div id="addTab" style="display:none;" class="card">
 
-<!-- Close Button -->
 <div style="text-align:right;">
   <button onclick="showTab('list')" style="background:none;border:none;font-size:22px;color:#8b0000;">✖</button>
 </div>
@@ -208,10 +208,24 @@ function showTab(tab){
  }
 }
 
-/* New Entry Blank Form */
+/* Open blank form for NEW */
 function newEntry(){
  editIndex = -1;
+ openForm();
+ clearForm();
+}
 
+/* Open form screen */
+function openForm(){
+ addTab.style.display="block";
+ listTab.style.display="none";
+ reportTab.style.display="none";
+ emptyState.style.display="none";
+ fabBtn.style.display="none";
+}
+
+/* Clear Form */
+function clearForm(){
  pooja.value="";
  date.value="";
  time.value="";
@@ -232,12 +246,6 @@ function newEntry(){
  reminderBody.style.display="none";
  remArrow.innerText="▼";
  remExpanded=false;
-
- addTab.style.display="block";
- listTab.style.display="none";
- reportTab.style.display="none";
- emptyState.style.display="none";
- fabBtn.style.display="none";
 }
 
 /* Reminder Expand */
@@ -256,7 +264,7 @@ function collectReminderData(){
  remData.value=JSON.stringify(rem);
 }
 
-/* Recent store */
+/* Suggestions */
 function saveRecent(key,name){
  let arr=JSON.parse(localStorage.getItem(key)||"[]");
  arr=arr.filter(n=>n!=name);
@@ -265,7 +273,6 @@ function saveRecent(key,name){
  localStorage.setItem(key,JSON.stringify(arr));
 }
 
-/* Suggestions */
 function showRecent(key,boxId,inputId){
  let arr=JSON.parse(localStorage.getItem(key)||"[]");
  let box=document.getElementById(boxId);
@@ -288,13 +295,14 @@ yajman.onfocus=()=>showRecent("recentYajman","yajmanSuggest","yajman");
 pooja.onblur=()=>setTimeout(()=>poojaSuggest.style.display="none",200);
 yajman.onblur=()=>setTimeout(()=>yajmanSuggest.style.display="none",200);
 
-/* Edit with Confirmation */
+/* EDIT with confirmation */
 function editEntry(index){
  if(!confirm("ही नोंद Edit करायची आहे का?")) return;
 
  let e = data[index];
  editIndex = index;
- newEntry();
+ openForm();
+ clearForm();
 
  pooja.value=e.pooja;
  date.value=e.date;
@@ -307,7 +315,15 @@ function editEntry(index){
  if(e.time) timePh.style.display="none";
 }
 
-/* Save Entry */
+/* DELETE */
+function deleteEntry(index){
+ if(!confirm("ही नोंद Delete करायची आहे का?")) return;
+ data.splice(index,1);
+ localStorage.setItem("rojnishiData",JSON.stringify(data));
+ renderList();
+}
+
+/* SAVE */
 function saveEntry(){
  [pooja,date,yajman].forEach(f=>f.style.border="1px solid #ccc");
  let valid=true;
@@ -336,7 +352,7 @@ function saveEntry(){
  if(editIndex>=0){
    data[editIndex]=entry;
    editIndex=-1;
- }else{
+ } else {
    data.push(entry);
  }
 
@@ -348,7 +364,7 @@ function saveEntry(){
  showTab('list');
 }
 
-/* Render List + Status + Edit Button */
+/* LIST render */
 function renderList(){
  listTab.innerHTML="";
 
@@ -376,22 +392,28 @@ function renderList(){
 
   let div=document.createElement("div");
   div.className="card";
+
   div.innerHTML=`
-   <div style="display:flex;justify-content:space-between;align-items:center;">
+   <div style="display:flex;justify-content:space-between;">
      <b>${e.pooja}</b>
      <button onclick="editEntry(${index})"
-      style="background:#ffd700;border:none;padding:4px 8px;border-radius:4px;">✏️ Edit</button>
+      style="background:#ffd700;border:none;padding:4px 8px;border-radius:4px;">✏️</button>
    </div>
    👤 ${e.yajman}<br>
    📅 ${fd} ${e.time||""}<br>
    💰 ₹ ${e.dakshina}<br>
    Status : ${status}
+
+   <div style="text-align:right;margin-top:6px;">
+     <button onclick="deleteEntry(${index})"
+      style="background:#8b0000;color:#fff;border:none;padding:3px 8px;border-radius:4px;">🗑 Delete</button>
+   </div>
   `;
   listTab.appendChild(div);
  });
 }
 
-/* Report */
+/* REPORT */
 function generateCurrentMonth(){
  let now=new Date();
  monthPick.value=now.toISOString().slice(0,7);
@@ -420,7 +442,7 @@ function generateMonthReport(){
  topYajman.innerHTML = topName ? `${topName} (₹ ${topVal})` : "—";
 }
 
-/* Init */
+/* INIT */
 showTab('list');
 </script>
 

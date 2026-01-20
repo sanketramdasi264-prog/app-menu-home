@@ -2,170 +2,595 @@
 <html lang="mr">
 <head>
 <meta charset="UTF-8">
-<title>कार्यक्रम नोंद</title>
+<title>पूजा रजिस्टर - Ultimate</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{font-family:Poppins;margin:0;background:#f7f2ed;color:#2b0000;}
-.app-header{
- background:linear-gradient(135deg,#5a0000,#8b0000);
- color:#ffd700;padding:15px;text-align:center;font-size:20px;font-weight:600;
+* { box-sizing: border-box; }
+body { font-family: Poppins, sans-serif; margin: 0; background: #f7f2ed; color: #2b0000; }
+
+.app-header {
+  background: linear-gradient(135deg, #5a0000, #8b0000);
+  color: #ffd700;
+  padding: 16px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
-.tabs{display:flex;}
-.tabs button{flex:1;padding:12px;border:none;background:#fff;color:#5a0000;font-weight:500;}
-.tabs button.active{background:#ffd700;}
-.container{padding:12px;padding-bottom:80px;}
-.card{
- background:#fff;border-radius:10px;padding:12px;margin:10px 0;
- box-shadow:0 2px 6px rgba(0,0,0,0.1);
- border-left:4px solid #8b0000;
- position:relative;
+
+.tabs {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-input,textarea{
- width:100%;padding:9px;margin:5px 0;border-radius:6px;
- border:1px solid #ccc;font-size:14px;box-sizing:border-box;
+
+.tabs button {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  background: #fff;
+  color: #5a0000;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.3s;
 }
-.primary-btn{
- background:linear-gradient(135deg,#8b0000,#5a0000);
- color:#ffd700;border:none;padding:11px;width:100%;
- border-radius:8px;font-size:15px;
+
+.tabs button.active {
+  background: #ffd700;
+  border-bottom: 3px solid #8b0000;
 }
-.fab{
- position:fixed;bottom:18px;right:18px;
- background:linear-gradient(135deg,#8b0000,#5a0000);
- color:#ffd700;width:52px;height:52px;border-radius:50%;
- font-size:26px;border:none;
+
+.container {
+  padding: 15px;
+  padding-bottom: 90px;
+  max-width: 800px;
+  margin: 0 auto;
 }
-.date-wrap{position:relative;}
-.date-placeholder{
- position:absolute;left:12px;top:10px;color:#888;
- pointer-events:none;font-size:14px;
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+  border-left: 5px solid #8b0000;
+  position: relative;
+  transition: transform 0.2s;
 }
-.reminder-head{
- background:#fff;border:1px solid #8b0000;
- padding:10px;border-radius:8px;margin-top:8px;
- display:flex;justify-content:space-between;cursor:pointer;
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(0,0,0,0.18);
 }
-.reminder-body{display:none;margin-top:10px;}
-.rem-section{
- border:1px solid #ddd;border-radius:8px;padding:10px;margin:8px 0;
- display:flex;align-items:center;gap:10px;
+
+.card-title {
+  font-size: 19px;
+  color: #8b0000;
+  font-weight: 700;
+  display: block;
+  border-bottom: 2px solid #ffd700;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
 }
-.rem-left{flex:1;}
-.rem-right{display:flex;gap:6px;align-items:center;}
-.rem-right input{background:#eee;border:1px solid #ccc;padding:6px;border-radius:6px;}
-.tickbox{width:22px;height:22px;}
-.suggest-box{
- background:#fff;border:1px solid #ccc;border-radius:6px;
- display:none;position:absolute;width:100%;z-index:50;
- max-height:120px;overflow:auto;
+
+.info-row {
+  display: flex;
+  margin: 8px 0;
+  font-size: 14px;
+  align-items: center;
 }
-.suggest-item{padding:6px;cursor:pointer;}
-.suggest-item:hover{background:#ffe9a3;}
-#toast{
- visibility:hidden;min-width:200px;background:#333;color:#fff;
- text-align:center;border-radius:6px;padding:10px;
- position:fixed;left:50%;bottom:30px;transform:translateX(-50%);
- font-size:14px;z-index:1000;
+
+.label-box {
+  width: 100px;
+  color: #666;
+  font-weight: 500;
+}
+
+.value-box {
+  flex: 1;
+  font-weight: 600;
+  color: #000;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.status-completed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-upcoming {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.pending-tag {
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: 8px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  font-size: 14px;
+  font-family: Poppins;
+  transition: border 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #8b0000;
+  box-shadow: 0 0 0 3px rgba(139,0,0,0.1);
+}
+
+.input-label {
+  font-size: 13px;
+  color: #8b0000;
+  font-weight: 600;
+  margin: 10px 0 4px 0;
+  display: block;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin: 12px 0;
+  padding: 10px;
+  background: #fff9e6;
+  border-radius: 8px;
+  border: 1px solid #ffd700;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  margin: 0 10px 0 0;
+  transform: scale(1.4);
+  cursor: pointer;
+}
+
+.checkbox-group label {
+  color: #8b0000;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+.date-placeholder {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  color: #999;
+  font-size: 14px;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.reminder-section {
+  background: linear-gradient(135deg, #f9f9f9, #fff);
+  padding: 14px;
+  border-radius: 10px;
+  margin: 12px 0;
+  border: 2px dashed #8b0000;
+}
+
+.reminder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px;
+  background: #fff;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.reminder-options {
+  display: none;
+  margin-top: 10px;
+}
+
+.reminder-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 8px 0;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #8b0000, #5a0000);
+  color: #ffd700;
+  border: none;
+  padding: 14px;
+  width: 100%;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 10px rgba(139,0,0,0.3);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(139,0,0,0.4);
+}
+
+.secondary-btn {
+  background: #ffd700;
+  color: #5a0000;
+  border: 2px solid #8b0000;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.secondary-btn:hover {
+  background: #ffed4e;
+  transform: scale(1.05);
+}
+
+.fab {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: linear-gradient(135deg, #8b0000, #5a0000);
+  color: #ffd700;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 32px;
+  border: none;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  cursor: pointer;
+  z-index: 200;
+  transition: all 0.3s;
+}
+
+.fab:hover {
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+.suggest-box {
+  background: #fff;
+  border: 2px solid #8b0000;
+  border-radius: 8px;
+  display: none;
+  position: absolute;
+  width: 100%;
+  z-index: 50;
+  max-height: 150px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.suggest-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.suggest-item:hover {
+  background: #ffd700;
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  margin-top: 80px;
+  padding: 30px;
+}
+
+.empty-state h3 {
+  color: #8b0000;
+  font-size: 20px;
+}
+
+.report-card {
+  background: linear-gradient(135deg, #fff9e6, #fff);
+  border: 2px solid #ffd700;
+  padding: 16px;
+  border-radius: 12px;
+  margin: 15px 0;
+}
+
+.stat-item {
+  padding: 12px;
+  margin: 8px 0;
+  background: #fff;
+  border-radius: 8px;
+  border-left: 4px solid #8b0000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  font-weight: 500;
+  color: #666;
+}
+
+.stat-value {
+  font-weight: 700;
+  font-size: 18px;
+  color: #8b0000;
+}
+
+.ranking-item {
+  padding: 12px;
+  margin: 8px 0;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s;
+}
+
+.ranking-item:hover {
+  border-color: #ffd700;
+  transform: translateX(5px);
+}
+
+.rank-number {
+  width: 35px;
+  height: 35px;
+  background: linear-gradient(135deg, #8b0000, #5a0000);
+  color: #ffd700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.see-full {
+  color: #0066cc;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: block;
+  margin-top: 12px;
+  text-decoration: underline;
+  text-align: center;
+  transition: color 0.2s;
+}
+
+.see-full:hover {
+  color: #004499;
+}
+
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+  padding: 14px;
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  font-size: 15px;
+  z-index: 3000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-edit, .btn-delete {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-edit {
+  background: #ffd700;
+  color: #5a0000;
+}
+
+.btn-edit:hover {
+  background: #ffed4e;
+}
+
+.btn-delete {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-delete:hover {
+  background: #c82333;
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    font-size: 18px;
+    padding: 12px;
+  }
+  
+  .card-title {
+    font-size: 17px;
+  }
+  
+  .fab {
+    width: 55px;
+    height: 55px;
+    font-size: 28px;
+  }
 }
 </style>
 </head>
 <body>
 
-<div class="app-header">✨ पूजा रजिस्टर...✍️</div>
+<div class="app-header">✨ पूजा रजिस्टर... ✍️</div>
 
 <div class="tabs">
-<button id="tabNondi" class="active" onclick="showTab('list')">नोंदी</button>
-<button id="tabReport" onclick="showTab('report')">रिपोर्ट</button>
+  <button id="tabNondi" class="active" onclick="showTab('list')">📝 नोंदी</button>
+  <button id="tabReport" onclick="showTab('report')">📊 रिपोर्ट</button>
 </div>
 
 <div class="container">
+  
+  <!-- LIST TAB -->
+  <div id="listTab"></div>
+  
+  <div id="emptyState" class="empty-state" style="display:none;">
+    <h3>📖 अजून कोणतीही नोंद नाही</h3>
+    <p style="color:#666;">पहिली पूजा नोंद करण्यासाठी खालील + बटणावर क्लिक करा</p>
+  </div>
 
-<div id="listTab"></div>
+  <!-- REPORT TAB -->
+  <div id="reportTab" style="display:none;">
+    <div class="report-card">
+      <h3 style="color:#8b0000; margin-top:0;">📊 मासिक रिपोर्ट</h3>
+      <label class="input-label">महिना निवडा:</label>
+      <input type="month" id="monthPick" onchange="generateMonthReport()">
+      
+      <div id="monthSummary" style="margin-top:20px;"></div>
+    </div>
 
-<div id="emptyState" style="display:none;text-align:center;margin-top:80px;">
-  <h3>📖 अजून कोणतीही नोंद नाही</h3>
-  <button onclick="newEntry()" class="primary-btn" style="width:70%;margin:auto;">
-    ➕ पहिली पूजा नोंद करा
-  </button>
-</div>
+    <div class="report-card">
+      <h3 style="color:#8b0000; margin-top:0;">🏆 टॉप यजमान (दक्षिणा क्रमाने)</h3>
+      <div id="yajmanRanking"></div>
+      <span id="seeFullBtn" class="see-full" onclick="toggleFullList()">पूर्ण यादी पहा</span>
+    </div>
 
-<div id="reportTab" style="display:none;" class="card">
-<h3>Month Wise Report</h3>
-<input type="month" id="monthPick" onchange="generateMonthReport()">
-<h4 id="monthResult"></h4>
-<h4>🏆 Top Yajman</h4>
-<h4 id="topYajman"></h4>
-</div>
-
-<!-- ADD / EDIT FORM -->
-<div id="addTab" style="display:none;" class="card">
-
-<div style="text-align:right;">
-  <button onclick="showTab('list')" style="background:none;border:none;font-size:22px;color:#8b0000;">✖</button>
-</div>
-
-<h3>नवीन पूजा</h3>
-
-<div style="position:relative;">
-<input id="pooja" placeholder="पूजा नाव *">
-<div id="poojaSuggest" class="suggest-box"></div>
-</div>
-
-<div class="date-wrap">
-  <input type="date" id="date">
-  <span class="date-placeholder" id="datePh">तारीख निवडा *</span>
-</div>
-
-<div class="date-wrap">
-  <input type="time" id="time">
-  <span class="date-placeholder" id="timePh">वेळ (optional)</span>
-</div>
-
-<div style="position:relative;">
-<input id="yajman" placeholder="यजमान नाव *">
-<div id="yajmanSuggest" class="suggest-box"></div>
-</div>
-
-<input id="dakshina" placeholder="दक्षिणा (optional)">
-<textarea id="notes" placeholder="नोंदी (optional)"></textarea>
-
-<div class="reminder-head" onclick="toggleReminder()">
- 🔔 Reminder सेट करा <span id="remArrow">▼</span>
-</div>
-
-<div class="reminder-body" id="reminderBody">
-  <div class="rem-section">
-    <div class="rem-left">त्याच दिवशी</div>
-    <div class="rem-right">
-      <input type="time" id="sameTime">
-      <input type="checkbox" id="sameDay" class="tickbox">
+    <div class="report-card" style="border-color:#ff4444;">
+      <h3 style="color:#dc3545; margin-top:0;">🚩 प्रलंबित दक्षिणा</h3>
+      <div id="pendingList"></div>
     </div>
   </div>
 
-  <div class="rem-section">
-    <div class="rem-left">एक दिवस आधी</div>
-    <div class="rem-right">
-      <input type="time" id="beforeTime">
-      <input type="checkbox" id="beforeDay" class="tickbox">
+  <!-- ADD/EDIT TAB -->
+  <div id="addTab" style="display:none;">
+    <div class="card">
+      <div style="text-align:right;">
+        <button onclick="showTab('list')" style="background:none;border:none;font-size:28px;color:#8b0000;cursor:pointer;">✖</button>
+      </div>
+      
+      <h3 id="formTitle" style="color:#8b0000; margin-top:0;">नवीन पूजा नोंद</h3>
+      
+      <div style="position:relative;">
+        <label class="input-label">पूजा/कार्यक्रमाचे नाव *</label>
+        <input id="pooja" placeholder="उदा. सत्यनारायण पूजा">
+        <div id="poojaSuggest" class="suggest-box"></div>
+      </div>
+      
+      <label class="input-label">तारीख निवडा *</label>
+      <div style="position:relative;">
+        <input type="date" id="date">
+        <span class="date-placeholder" id="datePlaceholder">तारीख निवडा</span>
+      </div>
+      
+      <label class="input-label">वेळ निवडा</label>
+      <div style="position:relative;">
+        <input type="time" id="time">
+        <span class="date-placeholder" id="timePlaceholder">वेळ निवडा</span>
+      </div>
+      
+      <div style="position:relative;">
+        <label class="input-label">यजमान नाव *</label>
+        <input id="yajman" placeholder="यजमानाचे पूर्ण नाव">
+        <div id="yajmanSuggest" class="suggest-box"></div>
+      </div>
+      
+      <label class="input-label">दक्षिणा रक्कम (₹)</label>
+      <input id="dakshina" type="number" placeholder="₹ 0">
+      
+      <div class="checkbox-group">
+        <input type="checkbox" id="isPending">
+        <label for="isPending">🔴 दक्षिणा येणे बाकी (Pending)</label>
+      </div>
+
+      <div class="reminder-section">
+        <div class="reminder-header" onclick="toggleReminder()">
+          <b style="color:#8b0000;">🔔 Smart Reminder सेट करा</b>
+          <span id="remArrow">▼</span>
+        </div>
+        
+        <div class="reminder-options" id="reminderOptions">
+          <div class="reminder-item">
+            <div style="flex:1;">
+              <input type="checkbox" id="remSame" onchange="toggleReminderTime('remSame', 'remSameTime')" style="width:auto; margin-right:8px;">
+              <label for="remSame" style="font-weight:600;">त्याच दिवशी सकाळी</label>
+            </div>
+            <input type="time" id="remSameTime" value="08:00" disabled style="width:120px; padding:6px;">
+          </div>
+          
+          <div class="reminder-item">
+            <div style="flex:1;">
+              <input type="checkbox" id="remBefore" onchange="toggleReminderTime('remBefore', 'remBeforeTime')" style="width:auto; margin-right:8px;">
+              <label for="remBefore" style="font-weight:600;">एक दिवस आधी संध्याकाळी</label>
+            </div>
+            <input type="time" id="remBeforeTime" value="18:00" disabled style="width:120px; padding:6px;">
+          </div>
+          
+          <div class="reminder-item">
+            <div style="flex:1;">
+              <input type="checkbox" id="remCustom" onchange="toggleReminderTime('remCustom', 'remCustomTime')" style="width:auto; margin-right:8px;">
+              <label for="remCustom" style="font-weight:600;">Custom Date & Time</label>
+            </div>
+            <input type="datetime-local" id="remCustomTime" disabled style="width:200px; padding:6px;">
+          </div>
+          
+          <div style="background:#fff9e6; padding:10px; border-radius:6px; margin-top:8px; border:1px dashed #ffd700;">
+            <small style="color:#8b0000; font-weight:600;">
+              💡 टीप: Reminder चालू असलेल्या browsers मध्ये notification येईल
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <label class="input-label">इतर नोंदी (साहित्य, टीप इ.)</label>
+      <textarea id="notes" placeholder="साहित्य यादी, विशेष सूचना..." rows="3"></textarea>
+      
+      <button class="primary-btn" onclick="saveEntry()">💾 नोंद जतन करा</button>
     </div>
   </div>
-
-  <div class="rem-section">
-    <div class="rem-left">Custom Date-Time</div>
-    <div class="rem-right">
-      <input type="datetime-local" id="customDateTime">
-      <input type="checkbox" id="customRem" class="tickbox">
-    </div>
-  </div>
-</div>
-
-<input type="hidden" id="remData">
-<br>
-<button class="primary-btn" onclick="saveEntry()">Save</button>
-</div>
 
 </div>
 
@@ -173,277 +598,555 @@ input,textarea{
 <div id="toast"></div>
 
 <script>
-let data = JSON.parse(localStorage.getItem("rojnishiData")||"[]");
-let editIndex = -1;
-let remExpanded=false;
+let data = JSON.parse(localStorage.getItem("poojaRegisterData") || "[]");
+let currentEditId = null;
+let showAllYajmans = false;
+let reminderExpanded = false;
+let reminderCheckInterval = null;
 
-/* Toast */
-function showToast(msg){
- let t=document.getElementById("toast");
- t.innerText=msg;
- t.style.visibility="visible";
- setTimeout(()=>t.style.visibility="hidden",2000);
+// Initialize Notification Permission
+if ("Notification" in window && Notification.permission === "default") {
+  Notification.requestPermission();
 }
 
-/* Tabs */
-function showTab(tab){
- listTab.style.display="none";
- reportTab.style.display="none";
- addTab.style.display="none";
- emptyState.style.display="none";
- fabBtn.style.display="block";
-
- tabNondi.classList.remove("active");
- tabReport.classList.remove("active");
-
- if(tab=="list"){
-   listTab.style.display="block";
-   tabNondi.classList.add("active");
-   renderList();
- }
- if(tab=="report"){
-   reportTab.style.display="block";
-   tabReport.classList.add("active");
-   generateCurrentMonth();
- }
-}
-
-/* Open blank form for NEW */
-function newEntry(){
- editIndex = -1;
- openForm();
- clearForm();
-}
-
-/* Open form screen */
-function openForm(){
- addTab.style.display="block";
- listTab.style.display="none";
- reportTab.style.display="none";
- emptyState.style.display="none";
- fabBtn.style.display="none";
-}
-
-/* Clear Form */
-function clearForm(){
- pooja.value="";
- date.value="";
- time.value="";
- yajman.value="";
- dakshina.value="";
- notes.value="";
- remData.value="";
-
- datePh.style.display="block";
- timePh.style.display="block";
-
- sameDay.checked=false;
- beforeDay.checked=false;
- customRem.checked=false;
- sameTime.value="";
- beforeTime.value="";
- customDateTime.value="";
- reminderBody.style.display="none";
- remArrow.innerText="▼";
- remExpanded=false;
-}
-
-/* Reminder Expand */
-function toggleReminder(){
- remExpanded=!remExpanded;
- reminderBody.style.display=remExpanded?"block":"none";
- remArrow.innerText=remExpanded?"▲":"▼";
-}
-
-/* Collect Reminder */
-function collectReminderData(){
- let rem=[];
- if(sameDay.checked) rem.push({type:"same",time:sameTime.value});
- if(beforeDay.checked) rem.push({type:"before",time:beforeTime.value});
- if(customRem.checked) rem.push({type:"custom",datetime:customDateTime.value});
- remData.value=JSON.stringify(rem);
-}
-
-/* Suggestions */
-function saveRecent(key,name){
- let arr=JSON.parse(localStorage.getItem(key)||"[]");
- arr=arr.filter(n=>n!=name);
- arr.unshift(name);
- if(arr.length>5) arr.pop();
- localStorage.setItem(key,JSON.stringify(arr));
-}
-
-function showRecent(key,boxId,inputId){
- let arr=JSON.parse(localStorage.getItem(key)||"[]");
- let box=document.getElementById(boxId);
- box.innerHTML="";
- if(arr.length==0){box.style.display="none";return;}
- arr.slice(0,3).forEach(n=>{
-  let div=document.createElement("div");
-  div.className="suggest-item";
-  div.innerText=n;
-  div.onclick=()=>{
-    document.getElementById(inputId).value=n;
-    box.style.display="none";
-  };
-  box.appendChild(div);
- });
- box.style.display="block";
-}
-pooja.onfocus=()=>showRecent("recentPooja","poojaSuggest","pooja");
-yajman.onfocus=()=>showRecent("recentYajman","yajmanSuggest","yajman");
-pooja.onblur=()=>setTimeout(()=>poojaSuggest.style.display="none",200);
-yajman.onblur=()=>setTimeout(()=>yajmanSuggest.style.display="none",200);
-
-/* EDIT with confirmation */
-function editEntry(index){
- if(!confirm("ही नोंद Edit करायची आहे का?")) return;
-
- let e = data[index];
- editIndex = index;
- openForm();
- clearForm();
-
- pooja.value=e.pooja;
- date.value=e.date;
- time.value=e.time;
- yajman.value=e.yajman;
- dakshina.value=e.dakshina;
- notes.value=e.notes;
-
- datePh.style.display="none";
- if(e.time) timePh.style.display="none";
-}
-
-/* DELETE */
-function deleteEntry(index){
- if(!confirm("ही नोंद Delete करायची आहे का?")) return;
- data.splice(index,1);
- localStorage.setItem("rojnishiData",JSON.stringify(data));
- renderList();
-}
-
-/* SAVE */
-function saveEntry(){
- [pooja,date,yajman].forEach(f=>f.style.border="1px solid #ccc");
- let valid=true;
-
- if(pooja.value.trim()==""){pooja.style.border="2px solid red";valid=false;}
- if(date.value.trim()==""){date.style.border="2px solid red";valid=false;}
- if(yajman.value.trim()==""){yajman.style.border="2px solid red";valid=false;}
-
- if(!valid){
-   showToast("⚠️ पूजा नाव, तारीख, यजमान नाव आवश्यक आहे");
-   return;
- }
-
- collectReminderData();
-
- let entry={
-  pooja:pooja.value.trim(),
-  date:date.value,
-  time:time.value.trim(),
-  yajman:yajman.value.trim(),
-  dakshina:Number(dakshina.value||0),
-  notes:notes.value,
-  remData:remData.value
- };
-
- if(editIndex>=0){
-   data[editIndex]=entry;
-   editIndex=-1;
- } else {
-   data.push(entry);
- }
-
- localStorage.setItem("rojnishiData",JSON.stringify(data));
- saveRecent("recentPooja",entry.pooja);
- saveRecent("recentYajman",entry.yajman);
-
- showToast("✔️ Saved Successfully");
- showTab('list');
-}
-
-/* LIST render */
-function renderList(){
- listTab.innerHTML="";
-
- if(data.length==0){
-   emptyState.style.display="block";
-   fabBtn.style.display="none";
-   return;
- }
-
- emptyState.style.display="none";
- fabBtn.style.display="block";
-
- let today=new Date();
- today.setHours(0,0,0,0);
-
- data.forEach((e,index)=>{
-  let d=new Date(e.date);
-  d.setHours(0,0,0,0);
-
-  let status=(d<today)
-   ? "<span style='color:green;font-weight:600;'>Completed</span>"
-   : "<span style='color:orange;font-weight:600;'>Upcoming</span>";
-
-  let fd=("0"+d.getDate()).slice(-2)+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+d.getFullYear().toString().slice(-2);
-
-  let div=document.createElement("div");
-  div.className="card";
-
-  div.innerHTML=`
-   <div style="display:flex;justify-content:space-between;">
-     <b>${e.pooja}</b>
-     <button onclick="editEntry(${index})"
-      style="background:#ffd700;border:none;padding:4px 8px;border-radius:4px;">✏️</button>
-   </div>
-   👤 ${e.yajman}<br>
-   📅 ${fd} ${e.time||""}<br>
-   💰 ₹ ${e.dakshina}<br>
-   Status : ${status}
-
-   <div style="text-align:right;margin-top:6px;">
-     <button onclick="deleteEntry(${index})"
-      style="background:#8b0000;color:#fff;border:none;padding:3px 8px;border-radius:4px;">🗑 Delete</button>
-   </div>
-  `;
-  listTab.appendChild(div);
- });
-}
-
-/* REPORT */
-function generateCurrentMonth(){
- let now=new Date();
- monthPick.value=now.toISOString().slice(0,7);
- generateMonthReport();
-}
-
-function generateMonthReport(){
- let monthVal=monthPick.value;
- let totalDak=0,count=0;
- let yajTotals={};
-
- data.forEach(e=>{
-  if(e.date.startsWith(monthVal)){
-   totalDak+=e.dakshina;
-   count++;
-   yajTotals[e.yajman]=(yajTotals[e.yajman]||0)+e.dakshina;
+// Date/Time Placeholder Management
+document.addEventListener("DOMContentLoaded", function() {
+  const dateInput = document.getElementById("date");
+  const timeInput = document.getElementById("time");
+  const datePlaceholder = document.getElementById("datePlaceholder");
+  const timePlaceholder = document.getElementById("timePlaceholder");
+  
+  if (dateInput && datePlaceholder) {
+    dateInput.addEventListener("focus", () => datePlaceholder.style.opacity = "0");
+    dateInput.addEventListener("blur", () => {
+      if (!dateInput.value) datePlaceholder.style.opacity = "1";
+    });
+    dateInput.addEventListener("change", () => {
+      if (dateInput.value) datePlaceholder.style.opacity = "0";
+    });
   }
- });
+  
+  if (timeInput && timePlaceholder) {
+    timeInput.addEventListener("focus", () => timePlaceholder.style.opacity = "0");
+    timeInput.addEventListener("blur", () => {
+      if (!timeInput.value) timePlaceholder.style.opacity = "1";
+    });
+    timeInput.addEventListener("change", () => {
+      if (timeInput.value) timePlaceholder.style.opacity = "0";
+    });
+  }
+  
+  // Start reminder checking
+  startReminderCheck();
+});
 
- monthResult.innerHTML=`एकूण पूजा: ${count}<br>एकूण दक्षिणा: ₹ ${totalDak}`;
-
- let topName="",topVal=0;
- for(let y in yajTotals){
-   if(yajTotals[y]>topVal){topVal=yajTotals[y];topName=y;}
- }
- topYajman.innerHTML = topName ? `${topName} (₹ ${topVal})` : "—";
+// Toggle Reminder Time Input
+function toggleReminderTime(checkboxId, timeInputId) {
+  const checkbox = document.getElementById(checkboxId);
+  const timeInput = document.getElementById(timeInputId);
+  timeInput.disabled = !checkbox.checked;
+  if (checkbox.checked) {
+    timeInput.style.background = "#fff";
+    timeInput.style.borderColor = "#8b0000";
+  } else {
+    timeInput.style.background = "#eee";
+    timeInput.style.borderColor = "#ccc";
+  }
 }
 
-/* INIT */
-showTab('list');
+// Check and Show Reminders
+function startReminderCheck() {
+  // Check every minute
+  reminderCheckInterval = setInterval(checkReminders, 60000);
+  // Also check immediately
+  checkReminders();
+}
+
+function checkReminders() {
+  const now = new Date();
+  
+  data.forEach(entry => {
+    if (!entry.reminders) return;
+    
+    const eventDate = new Date(entry.date + (entry.time ? " " + entry.time : " 00:00"));
+    
+    // Check Same Day Reminder
+    if (entry.reminders.same && entry.reminders.sameTime) {
+      const reminderTime = new Date(entry.date + " " + entry.reminders.sameTime);
+      if (shouldShowReminder(reminderTime, now, entry.id + "_same")) {
+        showNotification(entry, "आजचा कार्यक्रम", entry.time || "आज");
+      }
+    }
+    
+    // Check Before Day Reminder
+    if (entry.reminders.before && entry.reminders.beforeTime) {
+      const beforeDate = new Date(eventDate);
+      beforeDate.setDate(beforeDate.getDate() - 1);
+      const reminderTime = new Date(entry.date + " " + entry.reminders.beforeTime);
+      reminderTime.setDate(reminderTime.getDate() - 1);
+      
+      if (shouldShowReminder(reminderTime, now, entry.id + "_before")) {
+        showNotification(entry, "उद्याचा कार्यक्रम", "उद्या");
+      }
+    }
+    
+    // Check Custom Reminder
+    if (entry.reminders.custom && entry.reminders.customTime) {
+      const reminderTime = new Date(entry.reminders.customTime);
+      if (shouldShowReminder(reminderTime, now, entry.id + "_custom")) {
+        showNotification(entry, "Reminder", formatDateTime(eventDate));
+      }
+    }
+  });
+}
+
+function shouldShowReminder(reminderTime, now, uniqueId) {
+  // Check if reminder time has passed and within 2 minutes
+  const diff = now - reminderTime;
+  const twoMinutes = 2 * 60 * 1000;
+  
+  if (diff >= 0 && diff < twoMinutes) {
+    // Check if already shown
+    const shownKey = "shown_" + uniqueId;
+    const lastShown = localStorage.getItem(shownKey);
+    
+    if (!lastShown || (now - new Date(lastShown)) > 24 * 60 * 60 * 1000) {
+      localStorage.setItem(shownKey, now.toISOString());
+      return true;
+    }
+  }
+  return false;
+}
+
+function showNotification(entry, title, timeText) {
+  const message = `${entry.pooja}\n👤 ${entry.yajman}\n📅 ${timeText}${entry.time ? " | " + entry.time : ""}`;
+  
+  // Browser Notification
+  if ("Notification" in window && Notification.permission === "granted") {
+    const notification = new Notification("🔔 " + title, {
+      body: message,
+      icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🔔</text></svg>",
+      requireInteraction: true
+    });
+    
+    notification.onclick = function() {
+      window.focus();
+      showTab("list");
+      notification.close();
+    };
+  }
+  
+  // In-app Toast
+  showToast("🔔 " + title + ": " + entry.pooja + " - " + entry.yajman);
+}
+
+function formatDateTime(date) {
+  const d = new Date(date);
+  const day = ("0" + d.getDate()).slice(-2);
+  const month = ("0" + (d.getMonth() + 1)).slice(-2);
+  const year = d.getFullYear();
+  const hours = ("0" + d.getHours()).slice(-2);
+  const mins = ("0" + d.getMinutes()).slice(-2);
+  return `${day}-${month}-${year} ${hours}:${mins}`;
+}
+
+// Toast Notification
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.style.visibility = "visible";
+  setTimeout(() => toast.style.visibility = "hidden", 2500);
+}
+
+// Tab Navigation
+function showTab(tab) {
+  document.getElementById("listTab").style.display = "none";
+  document.getElementById("reportTab").style.display = "none";
+  document.getElementById("addTab").style.display = "none";
+  document.getElementById("emptyState").style.display = "none";
+  document.getElementById("fabBtn").style.display = "block";
+  
+  document.getElementById("tabNondi").classList.remove("active");
+  document.getElementById("tabReport").classList.remove("active");
+
+  if (tab === "list") {
+    document.getElementById("listTab").style.display = "block";
+    document.getElementById("tabNondi").classList.add("active");
+    renderList();
+  }
+  if (tab === "report") {
+    document.getElementById("reportTab").style.display = "block";
+    document.getElementById("tabReport").classList.add("active");
+    initReport();
+  }
+}
+
+// New Entry
+function newEntry() {
+  currentEditId = null;
+  clearForm();
+  document.getElementById("formTitle").innerText = "नवीन पूजा नोंद";
+  document.getElementById("addTab").style.display = "block";
+  document.getElementById("listTab").style.display = "none";
+  document.getElementById("fabBtn").style.display = "none";
+}
+
+// Clear Form
+function clearForm() {
+  document.getElementById("pooja").value = "";
+  document.getElementById("date").value = "";
+  document.getElementById("time").value = "";
+  document.getElementById("yajman").value = "";
+  document.getElementById("dakshina").value = "";
+  document.getElementById("isPending").checked = false;
+  document.getElementById("notes").value = "";
+  
+  // Reset reminders
+  document.getElementById("remSame").checked = false;
+  document.getElementById("remBefore").checked = false;
+  document.getElementById("remCustom").checked = false;
+  document.getElementById("remSameTime").value = "08:00";
+  document.getElementById("remSameTime").disabled = true;
+  document.getElementById("remSameTime").style.background = "#eee";
+  document.getElementById("remBeforeTime").value = "18:00";
+  document.getElementById("remBeforeTime").disabled = true;
+  document.getElementById("remBeforeTime").style.background = "#eee";
+  document.getElementById("remCustomTime").value = "";
+  document.getElementById("remCustomTime").disabled = true;
+  document.getElementById("remCustomTime").style.background = "#eee";
+  
+  // Reset reminder section
+  reminderExpanded = false;
+  document.getElementById("reminderOptions").style.display = "none";
+  document.getElementById("remArrow").innerText = "▼";
+  
+  // Reset placeholders
+  const datePlaceholder = document.getElementById("datePlaceholder");
+  const timePlaceholder = document.getElementById("timePlaceholder");
+  if (datePlaceholder) datePlaceholder.style.opacity = "1";
+  if (timePlaceholder) timePlaceholder.style.opacity = "1";
+}
+
+// Toggle Reminder Section
+function toggleReminder() {
+  reminderExpanded = !reminderExpanded;
+  document.getElementById("reminderOptions").style.display = reminderExpanded ? "block" : "none";
+  document.getElementById("remArrow").innerText = reminderExpanded ? "▲" : "▼";
+}
+
+// Suggestions
+function saveRecent(key, name) {
+  let arr = JSON.parse(localStorage.getItem(key) || "[]");
+  arr = arr.filter(n => n !== name);
+  arr.unshift(name);
+  if (arr.length > 5) arr.pop();
+  localStorage.setItem(key, JSON.stringify(arr));
+}
+
+function showRecent(key, boxId, inputId) {
+  let arr = JSON.parse(localStorage.getItem(key) || "[]");
+  let box = document.getElementById(boxId);
+  box.innerHTML = "";
+  
+  if (arr.length === 0) {
+    box.style.display = "none";
+    return;
+  }
+  
+  arr.slice(0, 3).forEach(n => {
+    let div = document.createElement("div");
+    div.className = "suggest-item";
+    div.innerText = n;
+    div.onclick = () => {
+      document.getElementById(inputId).value = n;
+      box.style.display = "none";
+    };
+    box.appendChild(div);
+  });
+  box.style.display = "block";
+}
+
+// Event Listeners for Suggestions
+document.getElementById("pooja").onfocus = () => showRecent("recentPooja", "poojaSuggest", "pooja");
+document.getElementById("yajman").onfocus = () => showRecent("recentYajman", "yajmanSuggest", "yajman");
+document.getElementById("pooja").onblur = () => setTimeout(() => document.getElementById("poojaSuggest").style.display = "none", 200);
+document.getElementById("yajman").onblur = () => setTimeout(() => document.getElementById("yajmanSuggest").style.display = "none", 200);
+
+// Save Entry
+function saveEntry() {
+  const pooja = document.getElementById("pooja").value.trim();
+  const date = document.getElementById("date").value;
+  const yajman = document.getElementById("yajman").value.trim();
+
+  // Validation
+  if (!pooja || !date || !yajman) {
+    showToast("⚠️ कृपया पूजा नाव, तारीख आणि यजमान भरा");
+    return;
+  }
+
+  const entry = {
+    id: currentEditId || Date.now(),
+    pooja: pooja,
+    date: date,
+    time: document.getElementById("time").value,
+    yajman: yajman,
+    dakshina: Number(document.getElementById("dakshina").value || 0),
+    isPending: document.getElementById("isPending").checked,
+    notes: document.getElementById("notes").value,
+    reminders: {
+      same: document.getElementById("remSame").checked,
+      sameTime: document.getElementById("remSameTime").value,
+      before: document.getElementById("remBefore").checked,
+      beforeTime: document.getElementById("remBeforeTime").value,
+      custom: document.getElementById("remCustom").checked,
+      customTime: document.getElementById("remCustomTime").value
+    }
+  };
+
+  if (currentEditId) {
+    const idx = data.findIndex(i => i.id === currentEditId);
+    data[idx] = entry;
+  } else {
+    data.push(entry);
+  }
+
+  localStorage.setItem("poojaRegisterData", JSON.stringify(data));
+  saveRecent("recentPooja", entry.pooja);
+  saveRecent("recentYajman", entry.yajman);
+  
+  showToast("✔️ नोंद यशस्वीरित्या सेव्ह झाली!");
+  showTab("list");
+}
+
+// Edit Entry
+function editEntry(id) {
+  const item = data.find(i => i.id === id);
+  if (!item) return;
+  
+  currentEditId = id;
+  document.getElementById("formTitle").innerText = "नोंद संपादित करा";
+  document.getElementById("pooja").value = item.pooja;
+  document.getElementById("date").value = item.date;
+  document.getElementById("time").value = item.time || "";
+  document.getElementById("yajman").value = item.yajman;
+  document.getElementById("dakshina").value = item.dakshina || "";
+  document.getElementById("isPending").checked = item.isPending || false;
+  document.getElementById("notes").value = item.notes || "";
+  
+  // Hide placeholders if values exist
+  if (item.date) document.getElementById("datePlaceholder").style.opacity = "0";
+  if (item.time) document.getElementById("timePlaceholder").style.opacity = "0";
+  
+  // Set reminders
+  if (item.reminders) {
+    const remSame = document.getElementById("remSame");
+    const remBefore = document.getElementById("remBefore");
+    const remCustom = document.getElementById("remCustom");
+    
+    remSame.checked = item.reminders.same || false;
+    document.getElementById("remSameTime").value = item.reminders.sameTime || "08:00";
+    toggleReminderTime("remSame", "remSameTime");
+    
+    remBefore.checked = item.reminders.before || false;
+    document.getElementById("remBeforeTime").value = item.reminders.beforeTime || "18:00";
+    toggleReminderTime("remBefore", "remBeforeTime");
+    
+    remCustom.checked = item.reminders.custom || false;
+    document.getElementById("remCustomTime").value = item.reminders.customTime || "";
+    toggleReminderTime("remCustom", "remCustomTime");
+  }
+  
+  document.getElementById("addTab").style.display = "block";
+  document.getElementById("listTab").style.display = "none";
+  document.getElementById("fabBtn").style.display = "none";
+}
+
+// Delete Entry
+function deleteEntry(id) {
+  if (!confirm("या नोंदीला खरोखरच डिलीट करायचे का?")) return;
+  
+  data = data.filter(i => i.id !== id);
+  localStorage.setItem("poojaRegisterData", JSON.stringify(data));
+  showToast("🗑️ नोंद डिलीट झाली");
+  renderList();
+}
+
+// Render List
+function renderList() {
+  const listTab = document.getElementById("listTab");
+  listTab.innerHTML = "";
+  
+  if (data.length === 0) {
+    document.getElementById("emptyState").style.display = "block";
+    return;
+  }
+
+  const sorted = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const today = new Date().toISOString().split("T")[0];
+
+  sorted.forEach(e => {
+    const isPast = e.date < today;
+    const dArr = e.date.split("-");
+    const fmtDate = `${dArr[2]}-${dArr[1]}-${dArr[0].slice(-2)}`;
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <span class="card-title">${e.pooja}</span>
+      
+      <div class="info-row">
+        <div class="label-box">👤 यजमान:</div>
+        <div class="value-box">${e.yajman}</div>
+      </div>
+      
+      <div class="info-row">
+        <div class="label-box">📅 तारीख:</div>
+        <div class="value-box">${fmtDate} ${e.time ? "| " + e.time : ""}</div>
+      </div>
+      
+      <div class="info-row">
+        <div class="label-box">💰 दक्षिणा:</div>
+        <div class="value-box">
+          ₹ ${e.dakshina}
+          ${e.isPending ? '<span class="pending-tag">PENDING</span>' : ""}
+        </div>
+      </div>
+      
+      ${e.notes ? `<div class="info-row"><div class="label-box">📝 नोंद:</div><div class="value-box">${e.notes}</div></div>` : ""}
+      
+      ${e.reminders && (e.reminders.same || e.reminders.before || e.reminders.custom) ? `
+      <div style="margin-top:8px; padding:8px; background:#fff9e6; border-radius:6px; border-left:3px solid #ffd700;">
+        <div style="font-size:12px; color:#8b0000; font-weight:600; margin-bottom:4px;">🔔 Active Reminders:</div>
+        ${e.reminders.same ? `<div style="font-size:11px; color:#666;">• त्याच दिवशी ${e.reminders.sameTime}</div>` : ""}
+        ${e.reminders.before ? `<div style="font-size:11px; color:#666;">• एक दिवस आधी ${e.reminders.beforeTime}</div>` : ""}
+        ${e.reminders.custom ? `<div style="font-size:11px; color:#666;">• Custom: ${formatDateTime(new Date(e.reminders.customTime))}</div>` : ""}
+      </div>
+      ` : ""}
+      
+      <div style="margin-top:12px; padding-top:10px; border-top:1px solid #eee;">
+        <span class="status-badge ${isPast ? "status-completed" : "status-upcoming"}">
+          ${isPast ? "✅ पूर्ण झाले" : "⏰ आगामी"}
+        </span>
+        ${isPast && e.isPending ? '<span class="pending-tag">दक्षिणा बाकी 🔔</span>' : ""}
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn-edit" onclick="editEntry(${e.id})">✏️ Edit</button>
+        <button class="btn-delete" onclick="deleteEntry(${e.id})">🗑️ Delete</button>
+      </div>
+    `;
+    listTab.appendChild(card);
+  });
+}
+
+// Initialize Report
+function initReport() {
+  document.getElementById("monthPick").value = new Date().toISOString().slice(0, 7);
+  showAllYajmans = false;
+  generateMonthReport();
+}
+
+// Generate Monthly Report
+function generateMonthReport() {
+  const selMonth = document.getElementById("monthPick").value;
+  let totalPaid = 0;
+  let totalPending = 0;
+  let count = 0;
+  let yajmanDakshina = {};
+  let pendingYajmans = {};
+
+  data.filter(i => i.date.startsWith(selMonth)).forEach(i => {
+    count++;
+    if (i.isPending) {
+      totalPending += i.dakshina;
+      pendingYajmans[i.yajman] = (pendingYajmans[i.yajman] || 0) + i.dakshina;
+    } else {
+      totalPaid += i.dakshina;
+    }
+    yajmanDakshina[i.yajman] = (yajmanDakshina[i.yajman] || 0) + i.dakshina;
+  });
+
+  // Month Summary
+  document.getElementById("monthSummary").innerHTML = `
+    <div class="stat-item">
+      <span class="stat-label">एकूण कार्यक्रम</span>
+      <span class="stat-value">${count}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">जमा दक्षिणा</span>
+      <span class="stat-value" style="color:#28a745;">₹ ${totalPaid}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">येणे बाकी (Pending)</span>
+      <span class="stat-value" style="color:#dc3545;">₹ ${totalPending}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">एकूण दक्षिणा</span>
+      <span class="stat-value" style="color:#8b0000;">₹ ${totalPaid + totalPending}</span>
+    </div>
+  `;
+
+  // Top Yajmans Ranking
+  let sortedYajmans = Object.entries(yajmanDakshina).sort((a, b) => b[1] - a[1]);
+  let displayList = showAllYajmans ? sortedYajmans : sortedYajmans.slice(0, 5);
+  
+  let rankHtml = "";
+  if (displayList.length === 0) {
+    rankHtml = "<p style='text-align:center; color:#666;'>या महिन्यात कोणतीही नोंद नाही</p>";
+  } else {
+    displayList.forEach(([name, amt], idx) => {
+      rankHtml += `
+        <div class="ranking-item">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="rank-number">${idx + 1}</span>
+            <span style="font-weight:600; color:#000;">${name}</span>
+          </div>
+          <span style="font-weight:700; color:#8b0000; font-size:16px;">₹ ${amt}</span>
+        </div>
+      `;
+    });
+  }
+  document.getElementById("yajmanRanking").innerHTML = rankHtml;
+  
+  // Show/Hide "See Full List" button
+  const seeFullBtn = document.getElementById("seeFullBtn");
+  if (sortedYajmans.length > 5) {
+    seeFullBtn.style.display = "block";
+    seeFullBtn.innerText = showAllYajmans ? "कमी दाखवा" : "पूर्ण यादी पहा";
+  } else {
+    seeFullBtn.style.display = "none";
+  }
+
+  // Pending Dakshina List
+  let pendHtml = "";
+  const pendingEntries = Object.entries(pendingYajmans);
+  
+  if (pendingEntries.length === 0) {
+    pendHtml = "<p style='text-align:center; color:#28a745; font-weight:600;'>✅ कोणाचीही दक्षिणा बाकी नाही!</p>";
+  } else {
+    pendingEntries.sort((a, b) => b[1] - a[1]).forEach(([name, amt]) => {
+      pendHtml += `
+        <div class="ranking-item" style="border-left:4px solid #dc3545;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:20px;">👤</span>
+            <span style="font-weight:600; color:#000;">${name}</span>
+          </div>
+          <span style="font-weight:700; color:#dc3545; font-size:16px;">₹ ${amt}</span>
+        </div>
+      `;
+    });
+  }
+  document.getElementById("pendingList").innerHTML = pendHtml;
+}
+
+// Toggle Full Yajman List
+function toggleFullList() {
+  showAllYajmans = !showAllYajmans;
+  generateMonthReport();
+}
+
+// Initialize App
+showTab("list");
 </script>
 
 </body>

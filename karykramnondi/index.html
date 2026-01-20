@@ -2,62 +2,46 @@
 <html lang="mr">
 <head>
 <meta charset="UTF-8">
-<title>पूजा रजिस्टर</title>
+<title>कार्यक्रम नोंद</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 body{font-family:Poppins;margin:0;background:#f7f2ed;color:#2b0000;}
-
-/* Custom Header (Appilix-safe) */
 .app-header{
  background:linear-gradient(135deg,#5a0000,#8b0000);
- color:#ffd700;
- padding:15px;
- text-align:center;
- font-size:20px;
- font-weight:600;
+ color:#ffd700;padding:15px;text-align:center;font-size:20px;font-weight:600;
 }
-
 .tabs{display:flex;}
 .tabs button{flex:1;padding:12px;border:none;background:#fff;color:#5a0000;font-weight:500;}
 .tabs button.active{background:#ffd700;}
-
 .container{padding:12px;padding-bottom:80px;}
-
 .card{
  background:#fff;border-radius:10px;padding:12px;margin:10px 0;
  box-shadow:0 2px 6px rgba(0,0,0,0.1);
  border-left:4px solid #8b0000;
 }
-
 input,textarea{
- width:100%;padding:9px;margin:5px 0;
- border-radius:6px;border:1px solid #ccc;
- font-size:14px;box-sizing:border-box;
+ width:100%;padding:9px;margin:5px 0;border-radius:6px;
+ border:1px solid #ccc;font-size:14px;box-sizing:border-box;
 }
-
 .primary-btn{
  background:linear-gradient(135deg,#8b0000,#5a0000);
- color:#ffd700;border:none;padding:11px;
- width:100%;border-radius:8px;font-size:15px;
+ color:#ffd700;border:none;padding:11px;width:100%;
+ border-radius:8px;font-size:15px;
 }
-
 .fab{
  position:fixed;bottom:18px;right:18px;
  background:linear-gradient(135deg,#8b0000,#5a0000);
- color:#ffd700;width:52px;height:52px;
- border-radius:50%;font-size:26px;border:none;
+ color:#ffd700;width:52px;height:52px;border-radius:50%;
+ font-size:26px;border:none;
 }
-
 .date-wrap{position:relative;}
 .date-placeholder{
- position:absolute;left:12px;top:10px;
- color:#888;pointer-events:none;font-size:14px;
+ position:absolute;left:12px;top:10px;color:#888;
+ pointer-events:none;font-size:14px;
 }
-
-/* Reminder */
 .reminder-head{
  background:#fff;border:1px solid #8b0000;
  padding:10px;border-radius:8px;margin-top:8px;
@@ -65,16 +49,13 @@ input,textarea{
 }
 .reminder-body{display:none;margin-top:10px;}
 .rem-section{
- border:1px solid #ddd;border-radius:8px;
- padding:10px;margin:8px 0;
+ border:1px solid #ddd;border-radius:8px;padding:10px;margin:8px 0;
  display:flex;align-items:center;gap:10px;
 }
 .rem-left{flex:1;}
 .rem-right{display:flex;gap:6px;align-items:center;}
 .rem-right input{background:#eee;border:1px solid #ccc;padding:6px;border-radius:6px;}
 .tickbox{width:22px;height:22px;}
-
-/* Suggestion */
 .suggest-box{
  background:#fff;border:1px solid #ccc;border-radius:6px;
  display:none;position:absolute;width:100%;z-index:50;
@@ -82,8 +63,6 @@ input,textarea{
 }
 .suggest-item{padding:6px;cursor:pointer;}
 .suggest-item:hover{background:#ffe9a3;}
-
-/* Toast */
 #toast{
  visibility:hidden;min-width:200px;background:#333;color:#fff;
  text-align:center;border-radius:6px;padding:10px;
@@ -94,8 +73,7 @@ input,textarea{
 </head>
 <body>
 
-<!-- Custom Header -->
-<div class="app-header">पूजा रजिस्टर ✍️</div>
+<div class="app-header">✨ पूजा रजिस्टर...✍️</div>
 
 <div class="tabs">
 <button id="tabNondi" class="active" onclick="showTab('list')">नोंदी</button>
@@ -104,10 +82,8 @@ input,textarea{
 
 <div class="container">
 
-<!-- LIST -->
 <div id="listTab"></div>
 
-<!-- EMPTY STATE -->
 <div id="emptyState" style="display:none;text-align:center;margin-top:80px;">
   <h3>📖 अजून कोणतीही नोंद नाही</h3>
   <p>पहिली पूजा नोंद करा</p>
@@ -116,7 +92,6 @@ input,textarea{
   </button>
 </div>
 
-<!-- REPORT -->
 <div id="reportTab" style="display:none;" class="card">
 <h3>Month Wise Report</h3>
 <input type="month" id="monthPick" onchange="generateMonthReport()">
@@ -125,8 +100,13 @@ input,textarea{
 <h4 id="topYajman"></h4>
 </div>
 
-<!-- ADD -->
 <div id="addTab" style="display:none;" class="card">
+
+<!-- Close Button -->
+<div style="text-align:right;">
+  <button onclick="showTab('list')" style="background:none;border:none;font-size:22px;color:#8b0000;">✖</button>
+</div>
+
 <h3>नवीन पूजा</h3>
 
 <div style="position:relative;">
@@ -152,7 +132,6 @@ input,textarea{
 <input id="dakshina" placeholder="दक्षिणा (optional)">
 <textarea id="notes" placeholder="नोंदी (optional)"></textarea>
 
-<!-- Reminder -->
 <div class="reminder-head" onclick="toggleReminder()">
  🔔 Reminder सेट करा <span id="remArrow">▼</span>
 </div>
@@ -190,14 +169,13 @@ input,textarea{
 
 </div>
 
-<!-- FAB -->
 <button class="fab" id="fabBtn" onclick="newEntry()">+</button>
-
-<!-- Toast -->
 <div id="toast"></div>
 
 <script>
 let data = JSON.parse(localStorage.getItem("rojnishiData")||"[]");
+let editIndex = -1;
+let remExpanded=false;
 
 /* Toast */
 function showToast(msg){
@@ -219,7 +197,7 @@ function showTab(tab){
  tabReport.classList.remove("active");
 
  if(tab=="list"){
-   listTab.style.display="block";   // <-- ही line missing होती
+   listTab.style.display="block";
    tabNondi.classList.add("active");
    renderList();
  }
@@ -230,8 +208,31 @@ function showTab(tab){
  }
 }
 
-/* New Entry */
+/* New Entry Blank Form */
 function newEntry(){
+ editIndex = -1;
+
+ pooja.value="";
+ date.value="";
+ time.value="";
+ yajman.value="";
+ dakshina.value="";
+ notes.value="";
+ remData.value="";
+
+ datePh.style.display="block";
+ timePh.style.display="block";
+
+ sameDay.checked=false;
+ beforeDay.checked=false;
+ customRem.checked=false;
+ sameTime.value="";
+ beforeTime.value="";
+ customDateTime.value="";
+ reminderBody.style.display="none";
+ remArrow.innerText="▼";
+ remExpanded=false;
+
  addTab.style.display="block";
  listTab.style.display="none";
  reportTab.style.display="none";
@@ -239,12 +240,7 @@ function newEntry(){
  fabBtn.style.display="none";
 }
 
-/* Placeholder hide */
-date.onchange=()=>datePh.style.display=date.value?"none":"block";
-time.onchange=()=>timePh.style.display=time.value?"none":"block";
-
-/* Reminder expand */
-let remExpanded=false;
+/* Reminder Expand */
 function toggleReminder(){
  remExpanded=!remExpanded;
  reminderBody.style.display=remExpanded?"block":"none";
@@ -269,7 +265,7 @@ function saveRecent(key,name){
  localStorage.setItem(key,JSON.stringify(arr));
 }
 
-/* Suggest */
+/* Suggestions */
 function showRecent(key,boxId,inputId){
  let arr=JSON.parse(localStorage.getItem(key)||"[]");
  let box=document.getElementById(boxId);
@@ -287,13 +283,31 @@ function showRecent(key,boxId,inputId){
  });
  box.style.display="block";
 }
-
 pooja.onfocus=()=>showRecent("recentPooja","poojaSuggest","pooja");
 yajman.onfocus=()=>showRecent("recentYajman","yajmanSuggest","yajman");
 pooja.onblur=()=>setTimeout(()=>poojaSuggest.style.display="none",200);
 yajman.onblur=()=>setTimeout(()=>yajmanSuggest.style.display="none",200);
 
-/* SAVE */
+/* Edit with Confirmation */
+function editEntry(index){
+ if(!confirm("ही नोंद Edit करायची आहे का?")) return;
+
+ let e = data[index];
+ editIndex = index;
+ newEntry();
+
+ pooja.value=e.pooja;
+ date.value=e.date;
+ time.value=e.time;
+ yajman.value=e.yajman;
+ dakshina.value=e.dakshina;
+ notes.value=e.notes;
+
+ datePh.style.display="none";
+ if(e.time) timePh.style.display="none";
+}
+
+/* Save Entry */
 function saveEntry(){
  [pooja,date,yajman].forEach(f=>f.style.border="1px solid #ccc");
  let valid=true;
@@ -319,7 +333,13 @@ function saveEntry(){
   remData:remData.value
  };
 
- data.push(entry);
+ if(editIndex>=0){
+   data[editIndex]=entry;
+   editIndex=-1;
+ }else{
+   data.push(entry);
+ }
+
  localStorage.setItem("rojnishiData",JSON.stringify(data));
  saveRecent("recentPooja",entry.pooja);
  saveRecent("recentYajman",entry.yajman);
@@ -328,28 +348,50 @@ function saveEntry(){
  showTab('list');
 }
 
-/* LIST with Empty State */
+/* Render List + Status + Edit Button */
 function renderList(){
  listTab.innerHTML="";
+
  if(data.length==0){
    emptyState.style.display="block";
    fabBtn.style.display="none";
    return;
  }
+
  emptyState.style.display="none";
  fabBtn.style.display="block";
 
- data.forEach(e=>{
+ let today=new Date();
+ today.setHours(0,0,0,0);
+
+ data.forEach((e,index)=>{
   let d=new Date(e.date);
+  d.setHours(0,0,0,0);
+
+  let status=(d<today)
+   ? "<span style='color:green;font-weight:600;'>Completed</span>"
+   : "<span style='color:orange;font-weight:600;'>Upcoming</span>";
+
   let fd=("0"+d.getDate()).slice(-2)+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+d.getFullYear().toString().slice(-2);
+
   let div=document.createElement("div");
   div.className="card";
-  div.innerHTML=`<b>${e.pooja}</b><br>👤 ${e.yajman}<br>📅 ${fd} ${e.time||""}<br>💰 ₹ ${e.dakshina}`;
+  div.innerHTML=`
+   <div style="display:flex;justify-content:space-between;align-items:center;">
+     <b>${e.pooja}</b>
+     <button onclick="editEntry(${index})"
+      style="background:#ffd700;border:none;padding:4px 8px;border-radius:4px;">✏️ Edit</button>
+   </div>
+   👤 ${e.yajman}<br>
+   📅 ${fd} ${e.time||""}<br>
+   💰 ₹ ${e.dakshina}<br>
+   Status : ${status}
+  `;
   listTab.appendChild(div);
  });
 }
 
-/* REPORT */
+/* Report */
 function generateCurrentMonth(){
  let now=new Date();
  monthPick.value=now.toISOString().slice(0,7);
@@ -378,7 +420,7 @@ function generateMonthReport(){
  topYajman.innerHTML = topName ? `${topName} (₹ ${topVal})` : "—";
 }
 
-/* START */
+/* Init */
 showTab('list');
 </script>
 

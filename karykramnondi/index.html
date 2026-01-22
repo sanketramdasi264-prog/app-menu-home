@@ -38,6 +38,7 @@ body { font-family: Poppins, sans-serif; margin: 0; background: #f7f2ed; color: 
   font-weight: 600;
   font-size: 15px;
   transition: all 0.3s;
+  cursor: pointer;
 }
 
 .tabs button.active {
@@ -86,7 +87,7 @@ body { font-family: Poppins, sans-serif; margin: 0; background: #f7f2ed; color: 
 }
 
 .label-box {
-  width: 100px;
+  width: 120px;
   color: #666;
   font-weight: 500;
 }
@@ -157,6 +158,16 @@ input:focus, textarea:focus, select:focus {
   display: block;
 }
 
+.date-placeholder {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  color: #999;
+  font-size: 14px;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
 .checkbox-group {
   display: flex;
   align-items: center;
@@ -179,16 +190,6 @@ input:focus, textarea:focus, select:focus {
   font-weight: 600;
   cursor: pointer;
   user-select: none;
-}
-
-.date-placeholder {
-  position: absolute;
-  left: 14px;
-  top: 14px;
-  color: #999;
-  font-size: 14px;
-  pointer-events: none;
-  transition: opacity 0.3s;
 }
 
 .reminder-section {
@@ -395,23 +396,6 @@ input:focus, textarea:focus, select:focus {
   color: #004499;
 }
 
-#toast {
-  visibility: hidden;
-  min-width: 250px;
-  background: #333;
-  color: #fff;
-  text-align: center;
-  border-radius: 10px;
-  padding: 14px;
-  position: fixed;
-  left: 50%;
-  bottom: 40px;
-  transform: translateX(-50%);
-  font-size: 15px;
-  z-index: 3000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
 .action-buttons {
   display: flex;
   gap: 8px;
@@ -446,6 +430,23 @@ input:focus, textarea:focus, select:focus {
   background: #c82333;
 }
 
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+  padding: 14px;
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  font-size: 15px;
+  z-index: 3000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
 @media (max-width: 480px) {
   .app-header {
     font-size: 18px;
@@ -466,7 +467,7 @@ input:focus, textarea:focus, select:focus {
 </head>
 <body>
 
-<div class="app-header">✨ पूजा रजिस्टर... ✍️</div>
+<div class="app-header">✨ पूजा रजिस्टर - Ultimate Edition ✍️</div>
 
 <div class="tabs">
   <button id="tabNondi" class="active" onclick="showTab('list')">📝 नोंदी</button>
@@ -476,7 +477,7 @@ input:focus, textarea:focus, select:focus {
 <div class="container">
   
   <!-- LIST TAB -->
-  <div id="listTab"></div>
+  <div id="listTab" style="display:block;"></div>
   
   <div id="emptyState" class="empty-state" style="display:none;">
     <h3>📖 अजून कोणतीही नोंद नाही</h3>
@@ -494,14 +495,15 @@ input:focus, textarea:focus, select:focus {
     </div>
 
     <div class="report-card">
-      <h3 style="color:#8b0000; margin-top:0;">🏆 टॉप यजमान (दक्षिणा क्रमाने)</h3>
+      <h3 style="color:#8b0000; margin-top:0;">🏆 टॉप यजमान / आचार्य (दक्षिणा क्रमाने)</h3>
       <div id="yajmanRanking"></div>
-      <span id="seeFullBtn" class="see-full" onclick="toggleFullList()">पूर्ण यादी पहा</span>
+      <div id="seeFullYajmanBtn" class="see-full" onclick="toggleFullYajmanList()" style="display:none;">अजून पहा</div>
     </div>
 
     <div class="report-card" style="border-color:#ff4444;">
       <h3 style="color:#dc3545; margin-top:0;">🚩 प्रलंबित दक्षिणा</h3>
       <div id="pendingList"></div>
+      <div id="seeFullPendingBtn" class="see-full" onclick="toggleFullPendingList()" style="display:none;">अजून पहा</div>
     </div>
   </div>
 
@@ -533,8 +535,8 @@ input:focus, textarea:focus, select:focus {
       </div>
       
       <div style="position:relative;">
-        <label class="input-label">यजमान नाव *</label>
-        <input id="yajman" placeholder="यजमानाचे पूर्ण नाव">
+        <label class="input-label">यजमान / आचार्य नाव *</label>
+        <input id="yajman" placeholder="यजमान किंवा आचार्य नाव">
         <div id="yajmanSuggest" class="suggest-box"></div>
       </div>
       
@@ -598,156 +600,17 @@ input:focus, textarea:focus, select:focus {
 <div id="toast"></div>
 
 <script>
-let data = JSON.parse(localStorage.getItem("poojaRegisterData") || "[]");
+let data = [];
 let currentEditId = null;
 let showAllYajmans = false;
+let showAllPending = false;
 let reminderExpanded = false;
-let reminderCheckInterval = null;
 
-// Initialize Notification Permission
-if ("Notification" in window && Notification.permission === "default") {
-  Notification.requestPermission();
-}
-
-// Date/Time Placeholder Management
-document.addEventListener("DOMContentLoaded", function() {
-  const dateInput = document.getElementById("date");
-  const timeInput = document.getElementById("time");
-  const datePlaceholder = document.getElementById("datePlaceholder");
-  const timePlaceholder = document.getElementById("timePlaceholder");
-  
-  if (dateInput && datePlaceholder) {
-    dateInput.addEventListener("focus", () => datePlaceholder.style.opacity = "0");
-    dateInput.addEventListener("blur", () => {
-      if (!dateInput.value) datePlaceholder.style.opacity = "1";
-    });
-    dateInput.addEventListener("change", () => {
-      if (dateInput.value) datePlaceholder.style.opacity = "0";
-    });
-  }
-  
-  if (timeInput && timePlaceholder) {
-    timeInput.addEventListener("focus", () => timePlaceholder.style.opacity = "0");
-    timeInput.addEventListener("blur", () => {
-      if (!timeInput.value) timePlaceholder.style.opacity = "1";
-    });
-    timeInput.addEventListener("change", () => {
-      if (timeInput.value) timePlaceholder.style.opacity = "0";
-    });
-  }
-  
-  // Start reminder checking
-  startReminderCheck();
-});
-
-// Toggle Reminder Time Input
-function toggleReminderTime(checkboxId, timeInputId) {
-  const checkbox = document.getElementById(checkboxId);
-  const timeInput = document.getElementById(timeInputId);
-  timeInput.disabled = !checkbox.checked;
-  if (checkbox.checked) {
-    timeInput.style.background = "#fff";
-    timeInput.style.borderColor = "#8b0000";
-  } else {
-    timeInput.style.background = "#eee";
-    timeInput.style.borderColor = "#ccc";
-  }
-}
-
-// Check and Show Reminders
-function startReminderCheck() {
-  // Check every minute
-  reminderCheckInterval = setInterval(checkReminders, 60000);
-  // Also check immediately
-  checkReminders();
-}
-
-function checkReminders() {
-  const now = new Date();
-  
-  data.forEach(entry => {
-    if (!entry.reminders) return;
-    
-    const eventDate = new Date(entry.date + (entry.time ? " " + entry.time : " 00:00"));
-    
-    // Check Same Day Reminder
-    if (entry.reminders.same && entry.reminders.sameTime) {
-      const reminderTime = new Date(entry.date + " " + entry.reminders.sameTime);
-      if (shouldShowReminder(reminderTime, now, entry.id + "_same")) {
-        showNotification(entry, "आजचा कार्यक्रम", entry.time || "आज");
-      }
-    }
-    
-    // Check Before Day Reminder
-    if (entry.reminders.before && entry.reminders.beforeTime) {
-      const beforeDate = new Date(eventDate);
-      beforeDate.setDate(beforeDate.getDate() - 1);
-      const reminderTime = new Date(entry.date + " " + entry.reminders.beforeTime);
-      reminderTime.setDate(reminderTime.getDate() - 1);
-      
-      if (shouldShowReminder(reminderTime, now, entry.id + "_before")) {
-        showNotification(entry, "उद्याचा कार्यक्रम", "उद्या");
-      }
-    }
-    
-    // Check Custom Reminder
-    if (entry.reminders.custom && entry.reminders.customTime) {
-      const reminderTime = new Date(entry.reminders.customTime);
-      if (shouldShowReminder(reminderTime, now, entry.id + "_custom")) {
-        showNotification(entry, "Reminder", formatDateTime(eventDate));
-      }
-    }
-  });
-}
-
-function shouldShowReminder(reminderTime, now, uniqueId) {
-  // Check if reminder time has passed and within 2 minutes
-  const diff = now - reminderTime;
-  const twoMinutes = 2 * 60 * 1000;
-  
-  if (diff >= 0 && diff < twoMinutes) {
-    // Check if already shown
-    const shownKey = "shown_" + uniqueId;
-    const lastShown = localStorage.getItem(shownKey);
-    
-    if (!lastShown || (now - new Date(lastShown)) > 24 * 60 * 60 * 1000) {
-      localStorage.setItem(shownKey, now.toISOString());
-      return true;
-    }
-  }
-  return false;
-}
-
-function showNotification(entry, title, timeText) {
-  const message = `${entry.pooja}\n👤 ${entry.yajman}\n📅 ${timeText}${entry.time ? " | " + entry.time : ""}`;
-  
-  // Browser Notification
-  if ("Notification" in window && Notification.permission === "granted") {
-    const notification = new Notification("🔔 " + title, {
-      body: message,
-      icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🔔</text></svg>",
-      requireInteraction: true
-    });
-    
-    notification.onclick = function() {
-      window.focus();
-      showTab("list");
-      notification.close();
-    };
-  }
-  
-  // In-app Toast
-  showToast("🔔 " + title + ": " + entry.pooja + " - " + entry.yajman);
-}
-
-function formatDateTime(date) {
-  const d = new Date(date);
-  const day = ("0" + d.getDate()).slice(-2);
-  const month = ("0" + (d.getMonth() + 1)).slice(-2);
-  const year = d.getFullYear();
-  const hours = ("0" + d.getHours()).slice(-2);
-  const mins = ("0" + d.getMinutes()).slice(-2);
-  return `${day}-${month}-${year} ${hours}:${mins}`;
+// Load data on start
+function loadData() {
+  const stored = localStorage.getItem("poojaRegisterData");
+  data = stored ? JSON.parse(stored) : [];
+  console.log("Loaded data:", data.length, "entries");
 }
 
 // Toast Notification
@@ -760,6 +623,8 @@ function showToast(msg) {
 
 // Tab Navigation
 function showTab(tab) {
+  loadData(); // Always reload fresh data
+  
   document.getElementById("listTab").style.display = "none";
   document.getElementById("reportTab").style.display = "none";
   document.getElementById("addTab").style.display = "none";
@@ -777,6 +642,7 @@ function showTab(tab) {
   if (tab === "report") {
     document.getElementById("reportTab").style.display = "block";
     document.getElementById("tabReport").classList.add("active");
+    document.getElementById("fabBtn").style.display = "none";
     initReport();
   }
 }
@@ -801,7 +667,6 @@ function clearForm() {
   document.getElementById("isPending").checked = false;
   document.getElementById("notes").value = "";
   
-  // Reset reminders
   document.getElementById("remSame").checked = false;
   document.getElementById("remBefore").checked = false;
   document.getElementById("remCustom").checked = false;
@@ -815,12 +680,10 @@ function clearForm() {
   document.getElementById("remCustomTime").disabled = true;
   document.getElementById("remCustomTime").style.background = "#eee";
   
-  // Reset reminder section
   reminderExpanded = false;
   document.getElementById("reminderOptions").style.display = "none";
   document.getElementById("remArrow").innerText = "▼";
   
-  // Reset placeholders
   const datePlaceholder = document.getElementById("datePlaceholder");
   const timePlaceholder = document.getElementById("timePlaceholder");
   if (datePlaceholder) datePlaceholder.style.opacity = "1";
@@ -832,6 +695,20 @@ function toggleReminder() {
   reminderExpanded = !reminderExpanded;
   document.getElementById("reminderOptions").style.display = reminderExpanded ? "block" : "none";
   document.getElementById("remArrow").innerText = reminderExpanded ? "▲" : "▼";
+}
+
+// Toggle Reminder Time Input
+function toggleReminderTime(checkboxId, timeInputId) {
+  const checkbox = document.getElementById(checkboxId);
+  const timeInput = document.getElementById(timeInputId);
+  timeInput.disabled = !checkbox.checked;
+  if (checkbox.checked) {
+    timeInput.style.background = "#fff";
+    timeInput.style.borderColor = "#8b0000";
+  } else {
+    timeInput.style.background = "#eee";
+    timeInput.style.borderColor = "#ccc";
+  }
 }
 
 // Suggestions
@@ -867,10 +744,42 @@ function showRecent(key, boxId, inputId) {
 }
 
 // Event Listeners for Suggestions
-document.getElementById("pooja").onfocus = () => showRecent("recentPooja", "poojaSuggest", "pooja");
-document.getElementById("yajman").onfocus = () => showRecent("recentYajman", "yajmanSuggest", "yajman");
-document.getElementById("pooja").onblur = () => setTimeout(() => document.getElementById("poojaSuggest").style.display = "none", 200);
-document.getElementById("yajman").onblur = () => setTimeout(() => document.getElementById("yajmanSuggest").style.display = "none", 200);
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("pooja").onfocus = () => showRecent("recentPooja", "poojaSuggest", "pooja");
+  document.getElementById("yajman").onfocus = () => showRecent("recentYajman", "yajmanSuggest", "yajman");
+  document.getElementById("pooja").onblur = () => setTimeout(() => document.getElementById("poojaSuggest").style.display = "none", 200);
+  document.getElementById("yajman").onblur = () => setTimeout(() => document.getElementById("yajmanSuggest").style.display = "none", 200);
+  
+  // Date/Time Placeholder Management
+  const dateInput = document.getElementById("date");
+  const timeInput = document.getElementById("time");
+  const datePlaceholder = document.getElementById("datePlaceholder");
+  const timePlaceholder = document.getElementById("timePlaceholder");
+  
+  if (dateInput && datePlaceholder) {
+    dateInput.addEventListener("focus", () => datePlaceholder.style.opacity = "0");
+    dateInput.addEventListener("blur", () => {
+      if (!dateInput.value) datePlaceholder.style.opacity = "1";
+    });
+    dateInput.addEventListener("change", () => {
+      if (dateInput.value) datePlaceholder.style.opacity = "0";
+    });
+  }
+  
+  if (timeInput && timePlaceholder) {
+    timeInput.addEventListener("focus", () => timePlaceholder.style.opacity = "0");
+    timeInput.addEventListener("blur", () => {
+      if (!timeInput.value) timePlaceholder.style.opacity = "1";
+    });
+    timeInput.addEventListener("change", () => {
+      if (timeInput.value) timePlaceholder.style.opacity = "0";
+    });
+  }
+  
+  // Load initial data
+  loadData();
+  showTab("list");
+});
 
 // Save Entry
 function saveEntry() {
@@ -878,7 +787,6 @@ function saveEntry() {
   const date = document.getElementById("date").value;
   const yajman = document.getElementById("yajman").value.trim();
 
-  // Validation
   if (!pooja || !date || !yajman) {
     showToast("⚠️ कृपया पूजा नाव, तारीख आणि यजमान भरा");
     return;
@@ -905,7 +813,7 @@ function saveEntry() {
 
   if (currentEditId) {
     const idx = data.findIndex(i => i.id === currentEditId);
-    data[idx] = entry;
+    if (idx >= 0) data[idx] = entry;
   } else {
     data.push(entry);
   }
@@ -933,11 +841,9 @@ function editEntry(id) {
   document.getElementById("isPending").checked = item.isPending || false;
   document.getElementById("notes").value = item.notes || "";
   
-  // Hide placeholders if values exist
   if (item.date) document.getElementById("datePlaceholder").style.opacity = "0";
   if (item.time) document.getElementById("timePlaceholder").style.opacity = "0";
   
-  // Set reminders
   if (item.reminders) {
     const remSame = document.getElementById("remSame");
     const remBefore = document.getElementById("remBefore");
@@ -976,73 +882,123 @@ function renderList() {
   const listTab = document.getElementById("listTab");
   listTab.innerHTML = "";
   
+  console.log("Rendering list with", data.length, "entries");
+  
   if (data.length === 0) {
     document.getElementById("emptyState").style.display = "block";
+    document.getElementById("listTab").style.display = "none";
     return;
   }
+  
+  document.getElementById("emptyState").style.display = "none";
+  document.getElementById("listTab").style.display = "block";
 
   const sorted = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
   const today = new Date().toISOString().split("T")[0];
-
+  
+  const groupedByMonth = {};
   sorted.forEach(e => {
-    const isPast = e.date < today;
-    const dArr = e.date.split("-");
-    const fmtDate = `${dArr[2]}-${dArr[1]}-${dArr[0].slice(-2)}`;
-
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <span class="card-title">${e.pooja}</span>
-      
-      <div class="info-row">
-        <div class="label-box">👤 यजमान:</div>
-        <div class="value-box">${e.yajman}</div>
-      </div>
-      
-      <div class="info-row">
-        <div class="label-box">📅 तारीख:</div>
-        <div class="value-box">${fmtDate} ${e.time ? "| " + e.time : ""}</div>
-      </div>
-      
-      <div class="info-row">
-        <div class="label-box">💰 दक्षिणा:</div>
-        <div class="value-box">
-          ₹ ${e.dakshina}
-          ${e.isPending ? '<span class="pending-tag">PENDING</span>' : ""}
-        </div>
-      </div>
-      
-      ${e.notes ? `<div class="info-row"><div class="label-box">📝 नोंद:</div><div class="value-box">${e.notes}</div></div>` : ""}
-      
-      ${e.reminders && (e.reminders.same || e.reminders.before || e.reminders.custom) ? `
-      <div style="margin-top:8px; padding:8px; background:#fff9e6; border-radius:6px; border-left:3px solid #ffd700;">
-        <div style="font-size:12px; color:#8b0000; font-weight:600; margin-bottom:4px;">🔔 Active Reminders:</div>
-        ${e.reminders.same ? `<div style="font-size:11px; color:#666;">• त्याच दिवशी ${e.reminders.sameTime}</div>` : ""}
-        ${e.reminders.before ? `<div style="font-size:11px; color:#666;">• एक दिवस आधी ${e.reminders.beforeTime}</div>` : ""}
-        ${e.reminders.custom ? `<div style="font-size:11px; color:#666;">• Custom: ${formatDateTime(new Date(e.reminders.customTime))}</div>` : ""}
-      </div>
-      ` : ""}
-      
-      <div style="margin-top:12px; padding-top:10px; border-top:1px solid #eee;">
-        <span class="status-badge ${isPast ? "status-completed" : "status-upcoming"}">
-          ${isPast ? "✅ पूर्ण झाले" : "⏰ आगामी"}
-        </span>
-        ${isPast && e.isPending ? '<span class="pending-tag">दक्षिणा बाकी 🔔</span>' : ""}
-      </div>
-      
-      <div class="action-buttons">
-        <button class="btn-edit" onclick="editEntry(${e.id})">✏️ Edit</button>
-        <button class="btn-delete" onclick="deleteEntry(${e.id})">🗑️ Delete</button>
-      </div>
-    `;
-    listTab.appendChild(card);
+    const monthKey = e.date.substring(0, 7);
+    if (!groupedByMonth[monthKey]) {
+      groupedByMonth[monthKey] = [];
+    }
+    groupedByMonth[monthKey].push(e);
   });
+  
+  const sortedMonths = Object.keys(groupedByMonth).sort((a, b) => b.localeCompare(a));
+  
+  sortedMonths.forEach(monthKey => {
+    const entries = groupedByMonth[monthKey];
+    const monthDate = new Date(monthKey + "-01");
+    const monthName = getMarathiMonth(monthDate.getMonth());
+    const year = monthDate.getFullYear();
+    
+    const monthHeader = document.createElement("div");
+    monthHeader.style.cssText = `
+      background: linear-gradient(135deg, #8b0000, #5a0000);
+      color: #ffd700;
+      padding: 12px 16px;
+      margin: 20px 0 10px 0;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 3px 10px rgba(139,0,0,0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    `;
+    
+    const monthTotal = entries.reduce((sum, e) => sum + e.dakshina, 0);
+    
+    monthHeader.innerHTML = `
+      <span>📅 ${monthName} ${year}</span>
+      <span style="font-size:13px; background:rgba(255,215,0,0.2); padding:4px 10px; border-radius:20px;">
+        ${entries.length} नोंदी | ₹${monthTotal}
+      </span>
+    `;
+    listTab.appendChild(monthHeader);
+
+    entries.forEach(e => {
+      const isPast = e.date < today;
+      const dArr = e.date.split("-");
+      const fmtDate = `${dArr[2]}-${dArr[1]}-${dArr[0].slice(-2)}`;
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <span class="card-title">${e.pooja}</span>
+        
+        <div class="info-row">
+          <div class="label-box">👤 यजमान / आचार्य:</div>
+          <div class="value-box">${e.yajman}</div>
+        </div>
+        
+        <div class="info-row">
+          <div class="label-box">📅 तारीख:</div>
+          <div class="value-box">${fmtDate} ${e.time ? "| " + e.time : ""}</div>
+        </div>
+        
+        <div class="info-row">
+          <div class="label-box">💰 दक्षिणा:</div>
+          <div class="value-box">
+            ₹ ${e.dakshina}
+            ${e.isPending ? '<span class="pending-tag">PENDING</span>' : ""}
+          </div>
+        </div>
+        
+        ${e.notes ? `<div class="info-row"><div class="label-box">📝 नोंद:</div><div class="value-box">${e.notes}</div></div>` : ""}
+        
+        <div style="margin-top:12px; padding-top:10px; border-top:1px solid #eee;">
+          <span class="status-badge ${isPast ? "status-completed" : "status-upcoming"}">
+            ${isPast ? "✅ पूर्ण झाले" : "⏰ आगामी"}
+          </span>
+          ${isPast && e.isPending ? '<span class="pending-tag">दक्षिणा बाकी 🔔</span>' : ""}
+        </div>
+        
+        <div class="action-buttons">
+          <button class="btn-edit" onclick="editEntry(${e.id})">✏️ Edit</button>
+          <button class="btn-delete" onclick="deleteEntry(${e.id})">🗑️ Delete</button>
+        </div>
+      `;
+      listTab.appendChild(card);
+    });
+  });
+}
+
+// Get Marathi Month Name
+function getMarathiMonth(monthIndex) {
+  const months = [
+    "जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून",
+    "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"
+  ];
+  return months[monthIndex];
 }
 
 // Initialize Report
 function initReport() {
   document.getElementById("monthPick").value = new Date().toISOString().slice(0, 7);
   showAllYajmans = false;
+  showAllPending = false;
   generateMonthReport();
 }
 
@@ -1066,7 +1022,6 @@ function generateMonthReport() {
     yajmanDakshina[i.yajman] = (yajmanDakshina[i.yajman] || 0) + i.dakshina;
   });
 
-  // Month Summary
   document.getElementById("monthSummary").innerHTML = `
     <div class="stat-item">
       <span class="stat-label">एकूण कार्यक्रम</span>
@@ -1086,19 +1041,19 @@ function generateMonthReport() {
     </div>
   `;
 
-  // Top Yajmans Ranking
   let sortedYajmans = Object.entries(yajmanDakshina).sort((a, b) => b[1] - a[1]);
-  let displayList = showAllYajmans ? sortedYajmans : sortedYajmans.slice(0, 5);
+  let displayYajmanList = showAllYajmans ? sortedYajmans : sortedYajmans.slice(0, 5);
   
   let rankHtml = "";
-  if (displayList.length === 0) {
+  if (displayYajmanList.length === 0) {
     rankHtml = "<p style='text-align:center; color:#666;'>या महिन्यात कोणतीही नोंद नाही</p>";
   } else {
-    displayList.forEach(([name, amt], idx) => {
+    displayYajmanList.forEach(([name, amt], idx) => {
+      const actualRank = showAllYajmans ? idx + 1 : sortedYajmans.findIndex(([n]) => n === name) + 1;
       rankHtml += `
         <div class="ranking-item">
           <div style="display:flex; align-items:center; gap:12px;">
-            <span class="rank-number">${idx + 1}</span>
+            <span class="rank-number">${actualRank}</span>
             <span style="font-weight:600; color:#000;">${name}</span>
           </div>
           <span style="font-weight:700; color:#8b0000; font-size:16px;">₹ ${amt}</span>
@@ -1108,27 +1063,28 @@ function generateMonthReport() {
   }
   document.getElementById("yajmanRanking").innerHTML = rankHtml;
   
-  // Show/Hide "See Full List" button
-  const seeFullBtn = document.getElementById("seeFullBtn");
+  const seeFullYajmanBtn = document.getElementById("seeFullYajmanBtn");
   if (sortedYajmans.length > 5) {
-    seeFullBtn.style.display = "block";
-    seeFullBtn.innerText = showAllYajmans ? "कमी दाखवा" : "पूर्ण यादी पहा";
+    seeFullYajmanBtn.style.display = "block";
+    seeFullYajmanBtn.innerText = showAllYajmans ? "कमी दाखवा" : "अजून पहा";
   } else {
-    seeFullBtn.style.display = "none";
+    seeFullYajmanBtn.style.display = "none";
   }
 
-  // Pending Dakshina List
   let pendHtml = "";
-  const pendingEntries = Object.entries(pendingYajmans);
+  const pendingEntries = Object.entries(pendingYajmans).sort((a, b) => b[1] - a[1]);
   
   if (pendingEntries.length === 0) {
     pendHtml = "<p style='text-align:center; color:#28a745; font-weight:600;'>✅ कोणाचीही दक्षिणा बाकी नाही!</p>";
   } else {
-    pendingEntries.sort((a, b) => b[1] - a[1]).forEach(([name, amt]) => {
+    const displayPendingList = showAllPending ? pendingEntries : pendingEntries.slice(0, 5);
+    
+    displayPendingList.forEach(([name, amt], idx) => {
+      const actualRank = showAllPending ? idx + 1 : pendingEntries.findIndex(([n]) => n === name) + 1;
       pendHtml += `
         <div class="ranking-item" style="border-left:4px solid #dc3545;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:20px;">👤</span>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="rank-number" style="background:linear-gradient(135deg, #dc3545, #c82333);">${actualRank}</span>
             <span style="font-weight:600; color:#000;">${name}</span>
           </div>
           <span style="font-weight:700; color:#dc3545; font-size:16px;">₹ ${amt}</span>
@@ -1137,16 +1093,25 @@ function generateMonthReport() {
     });
   }
   document.getElementById("pendingList").innerHTML = pendHtml;
+  
+  const seeFullPendingBtn = document.getElementById("seeFullPendingBtn");
+  if (pendingEntries.length > 5) {
+    seeFullPendingBtn.style.display = "block";
+    seeFullPendingBtn.innerText = showAllPending ? "कमी दाखवा" : "अजून पहा";
+  } else {
+    seeFullPendingBtn.style.display = "none";
+  }
 }
 
-// Toggle Full Yajman List
-function toggleFullList() {
+function toggleFullYajmanList() {
   showAllYajmans = !showAllYajmans;
   generateMonthReport();
 }
 
-// Initialize App
-showTab("list");
+function toggleFullPendingList() {
+  showAllPending = !showAllPending;
+  generateMonthReport();
+}
 </script>
 
 </body>

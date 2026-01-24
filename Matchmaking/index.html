@@ -1,485 +1,409 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-<meta charset="UTF-8">
-<title>अचूक गुण मिलान</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
---primary:#d84315;
---primary-dark:#6d1b00;
---accent:#ff6f00;
---bg1:#3e1a1a;
---bg2:#5d2424;
---success:#66bb6a;
---warning:#ffa726;
---danger:#ef5350;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-font-family:'Noto Sans Devanagari',sans-serif;
-background:linear-gradient(135deg,var(--bg1),var(--bg2));
-min-height:100vh;
-padding:15px;
-position:relative;
-}
-body::before{
-content:'';
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background:radial-gradient(circle at 20% 50%,rgba(191,54,12,.15) 0%,transparent 50%),
-radial-gradient(circle at 80% 80%,rgba(255,111,0,.1) 0%,transparent 50%);
-pointer-events:none;
-z-index:0;
-}
-.container{max-width:650px;margin:auto;position:relative;z-index:1}
-.header{text-align:center;margin-bottom:25px}
-.header h1{color:#ffccbc;font-size:28px;margin:0 0 5px;text-shadow:2px 2px 8px rgba(255,111,0,.5)}
-.header p{color:#e0e0e0;font-size:13px}
-.card{
-background:rgba(42,15,15,.95);
-border-radius:16px;
-padding:25px;
-box-shadow:0 8px 30px rgba(0,0,0,.5);
-margin-bottom:20px;
-border:1px solid rgba(191,54,12,.2);
-backdrop-filter:blur(10px);
-}
-.person-section{
-padding:18px;
-border-radius:12px;
-background:linear-gradient(135deg,rgba(61,22,22,.8),rgba(93,36,36,.6));
-margin-bottom:18px;
-border:1px solid rgba(191,54,12,.3);
-}
-.person-title{
-font-size:18px;
-font-weight:700;
-color:#ffccbc;
-margin:0 0 15px;
-display:flex;
-align-items:center;
-gap:8px;
-}
-.person-icon{
-width:28px;height:28px;
-background:linear-gradient(135deg,#d84315,#bf360c);
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:14px;
-box-shadow:0 3px 8px rgba(191,54,12,.4);
-}
-.form-group{margin-bottom:15px}
-label{display:block;font-weight:600;color:#fff;margin-bottom:6px;font-size:14px}
-.optional-tag{
-color:#ffa726;
-font-size:12px;
-font-weight:400;
-margin-left:5px;
-}
-input,select{
-width:100%;
-padding:12px 14px;
-border:2px solid rgba(191,54,12,.3);
-border-radius:10px;
-font-size:15px;
-font-family:inherit;
-background:rgba(61,22,22,.6);
-color:#fff;
-transition:all .2s;
-}
-input::placeholder{color:#bdbdbd}
-input:focus,select:focus{
-outline:none;
-border-color:#d84315;
-box-shadow:0 0 0 3px rgba(216,67,21,.2);
-background:rgba(61,22,22,.9);
-}
-select{cursor:pointer}
-select option{background:#2a0f0f;color:#fff}
-.divider{
-height:2px;
-background:linear-gradient(90deg,transparent,rgba(191,54,12,.5),transparent);
-margin:20px 0;
-}
-.btn{
-width:100%;
-padding:14px;
-background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-color:#fff;
-border:none;
-border-radius:10px;
-font-size:17px;
-font-weight:700;
-cursor:pointer;
-transition:all .3s;
-box-shadow:0 4px 15px rgba(216,67,21,.3);
-font-family:inherit;
-}
-.btn:hover{
-transform:translateY(-2px);
-box-shadow:0 6px 20px rgba(216,67,21,.5);
-}
-.btn:active{transform:translateY(0)}
-.info-box{
-background:rgba(61,22,22,.6);
-border-left:4px solid #ff6f00;
-padding:12px;
-border-radius:8px;
-margin-top:15px;
-font-size:13px;
-color:#ffccbc;
-}
-.result-section{
-display:none;
-animation:slideIn .5s;
-}
-.result-section.show{display:block}
-@keyframes slideIn{
-from{opacity:0;transform:translateY(20px)}
-to{opacity:1;transform:translateY(0)}
-}
-.details-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-margin-bottom:20px;
-}
-.detail-card{
-background:rgba(42,15,15,.95);
-border-radius:12px;
-padding:18px;
-border:1px solid rgba(191,54,12,.3);
-text-align:center;
-}
-.detail-card h3{
-color:#ffccbc;
-font-size:16px;
-margin-bottom:10px;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-}
-.name-box{
-font-size:20px;
-font-weight:700;
-color:#ff6f00;
-padding:12px;
-background:rgba(61,22,22,.6);
-border-radius:8px;
-border:2px solid rgba(216,67,21,.4);
-min-height:50px;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-.combined-details{
-background:rgba(42,15,15,.95);
-border-radius:12px;
-padding:20px;
-border:1px solid rgba(191,54,12,.3);
-margin-bottom:20px;
-}
-.detail-row{
-display:flex;
-align-items:center;
-padding:12px 0;
-border-bottom:1px solid rgba(191,54,12,.2);
-}
-.detail-row:last-child{border-bottom:none}
-.detail-label-main{
-flex:0 0 100px;
-font-weight:700;
-color:#ffccbc;
-font-size:15px;
-}
-.detail-values{
-flex:1;
-display:flex;
-align-items:center;
-justify-content:space-around;
-font-size:15px;
-color:#e0e0e0;
-}
-.detail-values span{
-flex:1;
-text-align:center;
-}
-.vs{
-color:#ff6f00;
-font-weight:700;
-font-size:18px;
-flex:0 0 40px;
-}
-.score-card{
-background:linear-gradient(135deg,rgba(46,125,50,.2),rgba(102,187,106,.15));
-border:1px solid rgba(102,187,106,.3);
-border-radius:16px;
-padding:25px;
-text-align:center;
-backdrop-filter:blur(10px);
-}
-.score-circle{
-width:130px;
-height:130px;
-margin:0 auto 15px;
-border-radius:50%;
-background:linear-gradient(135deg,rgba(42,15,15,.95),rgba(61,22,22,.95));
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-box-shadow:0 8px 25px rgba(0,0,0,.5),0 0 40px rgba(191,54,12,.4);
-border:3px solid rgba(216,67,21,.5);
-}
-.score-number{
-font-size:42px;
-font-weight:700;
-color:#ffccbc;
-text-shadow:0 0 20px rgba(255,111,0,.6);
-}
-.score-total{font-size:16px;color:#e0e0e0;margin-top:4px}
-.compatibility-level{
-font-size:22px;
-font-weight:700;
-margin:12px 0;
-}
-.dosha-info{
-background:rgba(42,15,15,.7);
-padding:12px;
-border-radius:10px;
-margin-top:15px;
-font-size:14px;
-color:#fff;
-border:1px solid rgba(191,54,12,.3);
-}
-.excellent{color:#66bb6a;text-shadow:0 0 10px rgba(102,187,106,.5)}
-.good{color:#9ccc65;text-shadow:0 0 10px rgba(156,204,101,.5)}
-.average{color:#ffa726;text-shadow:0 0 10px rgba(255,167,38,.5)}
-.poor{color:#ef5350;text-shadow:0 0 10px rgba(239,83,80,.5)}
-@media (max-width:600px){
-.details-grid{grid-template-columns:1fr;gap:15px}
-.header h1{font-size:24px}
-.card{padding:18px}
-}
-</style>
+    <meta charset="UTF-8">
+    <title>अचूक गुण मिलान</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --primary:#d84315;
+            --primary-dark:#6d1b00;
+            --accent:#ff6f00;
+            --bg1:#3e1a1a;
+            --bg2:#5d2424;
+            --success:#66bb6a;
+            --warning:#ffa726;
+            --danger:#ef5350;
+        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{
+            font-family:'Noto Sans Devanagari',sans-serif;
+            background:linear-gradient(135deg,var(--bg1),var(--bg2));
+            min-height:100vh;
+            padding:15px;
+            position:relative;
+        }
+        body::before{
+            content:'';
+            position:fixed;
+            top:0;left:0;
+            width:100%;height:100%;
+            background:radial-gradient(circle at 20% 50%,rgba(191,54,12,.15) 0%,transparent 50%),
+            radial-gradient(circle at 80% 80%,rgba(255,111,0,.1) 0%,transparent 50%);
+            pointer-events:none;
+            z-index:0;
+        }
+        .container{max-width:650px;margin:auto;position:relative;z-index:1}
+        .header{text-align:center;margin-bottom:25px}
+        .header h1{color:#ffccbc;font-size:28px;margin:0 0 5px;text-shadow:2px 2px 8px rgba(255,111,0,.5)}
+        .header p{color:#e0e0e0;font-size:13px}
+        .card{
+            background:rgba(42,15,15,.95);
+            border-radius:16px;
+            padding:25px;
+            box-shadow:0 8px 30px rgba(0,0,0,.5);
+            margin-bottom:20px;
+            border:1px solid rgba(191,54,12,.2);
+            backdrop-filter:blur(10px);
+        }
+        .person-section{
+            padding:18px;
+            border-radius:12px;
+            background:linear-gradient(135deg,rgba(61,22,22,.8),rgba(93,36,36,.6));
+            margin-bottom:18px;
+            border:1px solid rgba(191,54,12,.3);
+        }
+        .person-title{
+            font-size:18px;
+            font-weight:700;
+            color:#ffccbc;
+            margin:0 0 15px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .person-icon{
+            width:28px;height:28px;
+            background:linear-gradient(135deg,#d84315,#bf360c);
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:14px;
+            box-shadow:0 3px 8px rgba(191,54,12,.4);
+        }
+        .form-group{margin-bottom:15px}
+        label{display:block;font-weight:600;color:#fff;margin-bottom:6px;font-size:14px}
+        .optional-tag{
+            color:#ffa726;
+            font-size:12px;
+            font-weight:400;
+            margin-left:5px;
+        }
+        input,select{
+            width:100%;
+            padding:12px 14px;
+            border:2px solid rgba(191,54,12,.3);
+            border-radius:10px;
+            font-size:15px;
+            font-family:inherit;
+            background:rgba(61,22,22,.6);
+            color:#fff;
+            transition:all .2s;
+        }
+        input::placeholder{color:#bdbdbd}
+        input:focus,select:focus{
+            outline:none;
+            border-color:#d84315;
+            box-shadow:0 0 0 3px rgba(216,67,21,.2);
+            background:rgba(61,22,22,.9);
+        }
+        select{cursor:pointer}
+        select option{background:#2a0f0f;color:#fff}
+        .divider{
+            height:2px;
+            background:linear-gradient(90deg,transparent,rgba(191,54,12,.5),transparent);
+            margin:20px 0;
+        }
+        .btn{
+            width:100%;
+            padding:14px;
+            background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+            color:#fff;
+            border:none;
+            border-radius:10px;
+            font-size:17px;
+            font-weight:700;
+            cursor:pointer;
+            transition:all .3s;
+            box-shadow:0 4px 15px rgba(216,67,21,.3);
+            font-family:inherit;
+        }
+        .btn:hover{
+            transform:translateY(-2px);
+            box-shadow:0 6px 20px rgba(216,67,21,.5);
+        }
+        .btn:active{transform:translateY(0)}
+        .info-box{
+            background:rgba(61,22,22,.6);
+            border-left:4px solid #ff6f00;
+            padding:12px;
+            border-radius:8px;
+            margin-top:15px;
+            font-size:13px;
+            color:#ffccbc;
+        }
+        .result-section{
+            display:none;
+            animation:slideIn .5s;
+        }
+        .result-section.show{display:block}
+        @keyframes slideIn{
+            from{opacity:0;transform:translateY(20px)}
+            to{opacity:1;transform:translateY(0)}
+        }
+        .details-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:15px;
+            margin-bottom:20px;
+        }
+        .detail-card{
+            background:rgba(42,15,15,.95);
+            border-radius:12px;
+            padding:18px;
+            border:1px solid rgba(191,54,12,.3);
+            text-align:center;
+        }
+        .detail-card h3{
+            color:#ffccbc;
+            font-size:16px;
+            margin-bottom:10px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:8px;
+        }
+        .name-box{
+            font-size:20px;
+            font-weight:700;
+            color:#ff6f00;
+            padding:12px;
+            background:rgba(61,22,22,.6);
+            border-radius:8px;
+            border:2px solid rgba(216,67,21,.4);
+            min-height:50px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+        .combined-details{
+            background:rgba(42,15,15,.95);
+            border-radius:12px;
+            padding:20px;
+            border:1px solid rgba(191,54,12,.3);
+            margin-bottom:20px;
+        }
+        .detail-row{
+            display:flex;
+            align-items:center;
+            padding:12px 0;
+            border-bottom:1px solid rgba(191,54,12,.2);
+        }
+        .detail-row:last-child{border-bottom:none}
+        .detail-label-main{
+            flex:0 0 100px;
+            font-weight:700;
+            color:#ffccbc;
+            font-size:15px;
+        }
+        .detail-values{
+            flex:1;
+            display:flex;
+            align-items:center;
+            justify-content:space-around;
+            font-size:15px;
+            color:#e0e0e0;
+        }
+        .detail-values span{
+            flex:1;
+            text-align:center;
+        }
+        .vs{
+            color:#ff6f00;
+            font-weight:700;
+            font-size:18px;
+            flex:0 0 40px;
+        }
+        .score-card{
+            background:linear-gradient(135deg,rgba(46,125,50,.2),rgba(102,187,106,.15));
+            border:1px solid rgba(102,187,106,.3);
+            border-radius:16px;
+            padding:25px;
+            text-align:center;
+            backdrop-filter:blur(10px);
+        }
+        .score-circle{
+            width:130px;
+            height:130px;
+            margin:0 auto 15px;
+            border-radius:50%;
+            background:linear-gradient(135deg,rgba(42,15,15,.95),rgba(61,22,22,.95));
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            box-shadow:0 8px 25px rgba(0,0,0,.5),0 0 40px rgba(191,54,12,.4);
+            border:3px solid rgba(216,67,21,.5);
+        }
+        .score-number{
+            font-size:42px;
+            font-weight:700;
+            color:#ffccbc;
+            text-shadow:0 0 20px rgba(255,111,0,.6);
+        }
+        .score-total{font-size:16px;color:#e0e0e0;margin-top:4px}
+        .compatibility-level{
+            font-size:22px;
+            font-weight:700;
+            margin:12px 0;
+        }
+        .dosha-info{
+            background:rgba(42,15,15,.7);
+            padding:12px;
+            border-radius:10px;
+            margin-top:15px;
+            font-size:14px;
+            color:#fff;
+            border:1px solid rgba(191,54,12,.3);
+        }
+        .excellent{color:#66bb6a;text-shadow:0 0 10px rgba(102,187,106,.5)}
+        .good{color:#9ccc65;text-shadow:0 0 10px rgba(156,204,101,.5)}
+        .average{color:#ffa726;text-shadow:0 0 10px rgba(255,167,38,.5)}
+        .poor{color:#ef5350;text-shadow:0 0 10px rgba(239,83,80,.5)}
+    </style>
 </head>
 <body>
 <div class="container">
-<div class="header">
-<h1>🕉️ अचूक गुण मिलान</h1>
-<p>वैदिक ज्योतिष पद्धतीनुसार विवाह सुसंगतता तपासा</p>
-</div>
+    <div class="header">
+        <h1>🕉️ अचूक गुण मिलान</h1>
+        <p>वैदिक ज्योतिष पद्धतीनुसार विवाह सुसंगतता तपासा</p>
+    </div>
 
-<div class="card">
-<div class="person-section">
-<div class="person-title">
-<div class="person-icon">👨</div>
-<span>वराची माहिती</span>
-</div>
-<div class="form-group">
-<label>नाव<span class="optional-tag">(पर्यायी)</span></label>
-<input type="text" id="boyName" placeholder="वराचे नाव प्रविष्ट करा" oninput="autoFillFromName('boy')">
-</div>
-<div class="form-group">
-<label>राशी निवडा</label>
-<select id="boyRashi" onchange="loadNak('boy')">
-<option value="">-- राशी निवडा --</option>
-</select>
-</div>
-<div class="form-group">
-<label>नक्षत्र व चरण निवडा</label>
-<select id="boyNak">
-<option value="">-- प्रथम राशी निवडा --</option>
-</select>
-</div>
-</div>
+    <div class="card">
+        <div class="person-section">
+            <div class="person-title"><div class="person-icon">👨</div><span>वराची माहिती</span></div>
+            <div class="form-group">
+                <label>नाव</label>
+                <input type="text" id="boyName" placeholder="वराचे नाव प्रविष्ट करा">
+            </div>
+            <div class="form-group">
+                <label>राशी निवडा</label>
+                <select id="boyRashi" onchange="loadNak('boy')">
+                    <option value="">-- राशी निवडा --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>नक्षत्र व चरण निवडा</label>
+                <select id="boyNak">
+                    <option value="">-- प्रथम राशी निवडा --</option>
+                </select>
+            </div>
+        </div>
 
-<div class="divider"></div>
+        <div class="divider"></div>
 
-<div class="person-section">
-<div class="person-title">
-<div class="person-icon">👩</div>
-<span>वधूची माहिती</span>
-</div>
-<div class="form-group">
-<label>नाव<span class="optional-tag">(पर्यायी)</span></label>
-<input type="text" id="girlName" placeholder="वधूचे नाव प्रविष्ट करा" oninput="autoFillFromName('girl')">
-</div>
-<div class="form-group">
-<label>राशी निवडा</label>
-<select id="girlRashi" onchange="loadNak('girl')">
-<option value="">-- राशी निवडा --</option>
-</select>
-</div>
-<div class="form-group">
-<label>नक्षत्र व चरण निवडा</label>
-<select id="girlNak">
-<option value="">-- प्रथम राशी निवडा --</option>
-</select>
-</div>
-</div>
+        <div class="person-section">
+            <div class="person-title"><div class="person-icon">👩</div><span>वधूची माहिती</span></div>
+            <div class="form-group">
+                <label>नाव</label>
+                <input type="text" id="girlName" placeholder="वधूचे नाव प्रविष्ट करा">
+            </div>
+            <div class="form-group">
+                <label>राशी निवडा</label>
+                <select id="girlRashi" onchange="loadNak('girl')">
+                    <option value="">-- राशी निवडा --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>नक्षत्र व चरण निवडा</label>
+                <select id="girlNak">
+                    <option value="">-- प्रथम राशी निवडा --</option>
+                </select>
+            </div>
+        </div>
 
-<button class="btn" onclick="calc()">गुण तपासा</button>
+        <button class="btn" onclick="calc()">गुण तपासा</button>
 
-<div class="info-box">
-ℹ️ <strong>सूचना:</strong> 18 किंवा त्यापेक्षा जास्त गुण असल्यास विवाह शुभ मानला जातो.
-</div>
-</div>
+        <div class="info-box">
+            ℹ️ 18 किंवा त्यापेक्षा जास्त गुण असल्यास विवाह शुभ मानला जातो.
+        </div>
+    </div>
 
-<div class="result-section" id="resultSection">
-<div class="details-grid">
-<div class="detail-card">
-<h3><span class="person-icon">👨</span> वर</h3>
-<div class="name-box" id="boyNameBox">--</div>
-</div>
+    <div class="result-section" id="resultSection">
+        <div class="details-grid">
+            <div class="detail-card">
+                <h3>👨 वर</h3>
+                <div class="name-box" id="boyNameBox">--</div>
+            </div>
+            <div class="detail-card">
+                <h3>👩 वधू</h3>
+                <div class="name-box" id="girlNameBox">--</div>
+            </div>
+        </div>
 
-<div class="detail-card">
-<h3><span class="person-icon">👩</span> वधू</h3>
-<div class="name-box" id="girlNameBox">--</div>
-</div>
-</div>
+        <div class="combined-details">
+            <div class="detail-row"><div class="detail-label-main">नक्षत्र</div><div class="detail-values"><span id="boyNakshatra">--</span><span class="vs">⚡</span><span id="girlNakshatra">--</span></div></div>
+            <div class="detail-row"><div class="detail-label-main">चरण</div><div class="detail-values"><span id="boyCharan">--</span><span class="vs">⚡</span><span id="girlCharan">--</span></div></div>
+            <div class="detail-row"><div class="detail-label-main">नाडी</div><div class="detail-values"><span id="boyNadi">--</span><span class="vs">⚡</span><span id="girlNadi">--</span></div></div>
+            <div class="detail-row"><div class="detail-label-main">योनी</div><div class="detail-values"><span id="boyYoni">--</span><span class="vs">⚡</span><span id="girlYoni">--</span></div></div>
+            <div class="detail-row"><div class="detail-label-main">गण</div><div class="detail-values"><span id="boyGan">--</span><span class="vs">⚡</span><span id="girlGan">--</span></div></div>
+            <div class="detail-row"><div class="detail-label-main">राशी</div><div class="detail-values"><span id="boyRashiDetail">--</span><span class="vs">⚡</span><span id="girlRashiDetail">--</span></div></div>
+        </div>
 
-<div class="combined-details">
-<div class="detail-row">
-<div class="detail-label-main">नक्षत्र</div>
-<div class="detail-values">
-<span id="boyNakshatra">--</span>
-<span class="vs">⚡</span>
-<span id="girlNakshatra">--</span>
-</div>
-</div>
-
-<div class="detail-row">
-<div class="detail-label-main">चरण</div>
-<div class="detail-values">
-<span id="boyCharan">--</span>
-<span class="vs">⚡</span>
-<span id="girlCharan">--</span>
-</div>
-</div>
-
-<div class="detail-row">
-<div class="detail-label-main">नाडी</div>
-<div class="detail-values">
-<span id="boyNadi">--</span>
-<span class="vs">⚡</span>
-<span id="girlNadi">--</span>
-</div>
-</div>
-
-<div class="detail-row">
-<div class="detail-label-main">योनी</div>
-<div class="detail-values">
-<span id="boyYoni">--</span>
-<span class="vs">⚡</span>
-<span id="girlYoni">--</span>
-</div>
-</div>
-
-<div class="detail-row">
-<div class="detail-label-main">गण</div>
-<div class="detail-values">
-<span id="boyGan">--</span>
-<span class="vs">⚡</span>
-<span id="girlGan">--</span>
-</div>
-</div>
-
-<div class="detail-row">
-<div class="detail-label-main">राशी</div>
-<div class="detail-values">
-<span id="boyRashiDetail">--</span>
-<span class="vs">⚡</span>
-<span id="girlRashiDetail">--</span>
-</div>
-</div>
-
-<div class="detail-row">
-<div class="detail-label-main">वर्ग</div>
-<div class="detail-values">
-<span id="boyVarg">--</span>
-<span class="vs">⚡</span>
-<span id="girlVarg">--</span>
-</div>
-</div>
-</div>
-
-<div class="score-card">
-<div class="score-circle">
-<div class="score-number" id="scoreNum">--</div>
-<div class="score-total">/ 36</div>
-</div>
-<div class="compatibility-level" id="compatLevel">--</div>
-<div class="dosha-info">
-<strong>दोष:</strong> <span id="doshaText">--</span>
-</div>
-</div>
-</div>
+        <div class="score-card">
+            <div class="score-circle">
+                <div class="score-number" id="scoreNum">--</div>
+                <div class="score-total">/ 36</div>
+            </div>
+            <div class="compatibility-level" id="compatLevel">--</div>
+            <div class="dosha-info"><strong>दोष:</strong> <span id="doshaText">--</span></div>
+        </div>
+    </div>
 </div>
 
 <script>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       }
-  const rashiMap = { मेष: [['अश्विनी', 4], ['भरणी', 4], ['कृत्तिका', 1]], वृषभ: [['कृत्तिका', 3], ['रोहिणी', 4], ['मृगशीर्ष', 2]], मिथुन: [['मृगशीर्ष', 2], ['आर्द्रा', 4], ['पुनर्वसू', 3]], कर्क: [['पुनर्वसू', 1], ['पुष्य', 4], ['आश्लेषा', 4]], सिंह: [['मघा', 4], ['पूर्वा फाल्गुनी', 4], ['उत्तर फाल्गुनी', 1]], कन्या: [['उत्तर फाल्गुनी', 3], ['हस्त', 4], ['चित्रा', 2]], तुला: [['चित्रा', 2], ['स्वाती', 4], ['विशाखा', 3]], वृश्चिक: [['विशाखा', 1], ['अनुराधा', 4], ['ज्येष्ठा', 4]], धनु: [['मूळ', 4], ['पूर्वाषाढा', 4], ['उत्तराषाढा', 1]], मकर: [['उत्तराषाढा', 3], ['श्रवण', 4], ['धनिष्ठा', 2]], कुंभ: [['धनिष्ठा', 2], ['शततारका', 4], ['पूर्वाभाद्रपदा', 3]], मीन: [['पूर्वाभाद्रपदा', 1], ['उत्तराभाद्रपदा', 4], ['रेवती', 4]] };
+//
+const rashiMap={मेष:[[`अश्विनी`,4],[`भरणी`,4],[`कृत्तिका`,1]],वृषभ:[[`कृत्तिका`,3],[`रोहिणी`,4],[`मृगशीर्ष`,2]],मिथुन:[[`मृगशीर्ष`,2],[`आर्द्रा`,4],[`पुनर्वसू`,3]],कर्क:[[`पुनर्वसू`,1],[`पुष्य`,4],[`आश्लेषा`,4]],सिंह:[[`मघा`,4],[`पूर्वा फाल्गुनी`,4],[`उत्तर फाल्गुनी`,1]],कन्या:[[`उत्तर फाल्गुनी`,3],[`हस्त`,4],[`चित्रा`,2]],तुला:[[`चित्रा`,2],[`स्वाती`,4],[`विशाखा`,3]],वृश्चिक:[[`विशाखा`,1],[`अनुराधा`,4],[`ज्येष्ठा`,4]],धनु:[[`मूळ`,4],[`पूर्वाषाढा`,4],[`उत्तराषाढा`,1]],मकर:[[`उत्तराषाढा`,3],[`श्रवण`,4],[`धनिष्ठा`,2]],कुंभ:[[`धनिष्ठा`,2],[`शततारका`,4],[`पूर्वाभाद्रपदा',3]],मीन:[[`पूर्वाभाद्रपदा`,1],[`उत्तराभाद्रपदा`,4],[`रेवती`,4]]};
+const charanLetters={अश्विनी:[`चु`,`चे`,`चो`,`ला`],भरणी:[`लि`,`लू`,`ले`,`लो`],कृत्तिका:[`आ`,`इ`,`उ`,`ए`],रोहिणी:[`ओ`,`वा`,`वि`,`वु`],मृगशीर्ष:[`वे`,`वो`,`का`,`कि`],आर्द्रा:[`कु`,`घ`,`ङ`,`छ`],पुनर्वसू:[`के`,`को`,`हा`,`हि`],पुष्य:[`हु`,`हे`,`हो`,`डा`],आश्लेषा:[`डि`,`डु`,`डे`,`डो`],मघा:[`मा`,`मि`,`मु`,`मे`],[`पूर्वा फाल्गुनी`]:[`मो`,`टा`,`टि`,`टु`],[`उत्तर फाल्गुनी`]:[`टे`,`टो`,`पा`,`पि`],हस्त:[`पु`,`ष`,`ण`,`ठ`],चित्रा:[`पे`,`पो`,`रा`,`रि`],स्वाती:[`रु`,`रे`,`रो`,`ता`],विशाखा:[`ति`,`तु`,`ते`,`तो`],अनुराधा:[`ना`,`नि`,`नु`,`ने`],ज्येष्ठा:[`नो`,`या`,`यि`,`यु`],मूळ:[`ये`,`यो`,`भा`,`भि`],पूर्वाषाढा:[`भू`,`धा`,`फा`,`ढा`],उत्तराषाढा:[`भे`,`भो`,`जा`,`जि`],श्रवण:[`जु`,`जे`,`जो`,`खा`],धनिष्ठा:[`खि`,`खु`,`खे`,`खो`],शततारका:[`गु`,`गे`,`गो`,`सा`],पूर्वाभाद्रपदा:[`सि`,`सु`,`से`,`सो`],उत्तराभाद्रपदा:[`दा`,`दि`,`दु`,`दे`],रेवती:[`दो`,`चा`,`चि`,`चु`]};
+const nakDetails={अश्विनी:{नाडी:`आदी`,योनी:`अश्व`,गण:`देव`,वर्ग:`चतुष्पद`},भरणी:{नाडी:`आदी`,योनी:`गज`,गण:`मनुष्य`,वर्ग:`मनुष्य`},कृत्तिका:{नाडी:`आदी`,योनी:`मेष`,गण:`राक्षस`,वर्ग:`चतुष्पद`},रोहिणी:{नाडी:`मध्य`,योनी:`सर्प`,गण:`मनुष्य`,वर्ग:`चतुष्पद`},मृगशीर्ष:{नाडी:`आदी`,योनी:`सर्प`,गण:`देव`,वर्ग:`चतुष्पद`},आर्द्रा:{नाडी:`मध्य`,योनी:`कुत्ता`,गण:`मनुष्य`,वर्ग:`मनुष्य`},पुनर्वसू:{नाडी:`आदी`,योनी:`मार्जार`,गण:`देव`,वर्ग:`चतुष्पद`},पुष्य:{नाडी:`अंत्य`,योनी:`मेष`,गण:`देव`,वर्ग:`चतुष्पद`},आश्लेषा:{नाडी:`मध्य`,योनी:`मार्जार`,गण:`राक्षस`,वर्ग:`जलचर`},मघा:{नाडी:`आदी`,योनी:`मूषक`,गण:`राक्षस`,वर्ग:`मनुष्य`},[`पूर्वा फाल्गुनी`]:{नाडी:`अंत्य`,योनी:`मूषक`,गण:`मनुष्य`,वर्ग:`मनुष्य`},[`उत्तर फाल्गुनी`]:{नाडी:`मध्य`,योनी:`गौ`,गण:`मनुष्य`,वर्ग:`मनुष्य`},हस्त:{नाडी:`आदी`,योनी:`महिष`,गण:`देव`,वर्ग:`चतुष्पद`},चित्रा:{नाडी:`अंत्य`,योनी:`व्याघ्र`,गण:`राक्षस`,वर्ग:`जलचर`},स्वाती:{नाडी:`मध्य`,योनी:`महिष`,गण:`देव`,वर्ग:`चतुष्पद`},विशाखा:{नाडी:`आदी`,योनी:`व्याघ्र`,गण:`राक्षस`,वर्ग:`चतुष्पद`},अनुराधा:{नाडी:`अंत्य`,योनी:`हरिण`,गण:`देव`,वर्ग:`मनुष्य`},ज्येष्ठा:{नाडी:`मध्य`,योनी:`हरिण`,गण:`राक्षस`,वर्ग:`जलचर`},मूळ:{नाडी:`आदी`,योनी:`कुत्ता`,गण:`राक्षस`,वर्ग:`जलचर`},पूर्वाषाढा:{नाडी:`अंत्य`,योनी:`वानर`,गण:`मनुष्य`,वर्ग:`मनुष्य`},उत्तराषाढा:{नाडी:`मध्य`,योनी:`नकुल`,गण:`मनुष्य`,वर्ग:`मनुष्य`},श्रवण:{नाडी:`आदी`,योनी:`वानर`,गण:`देव`,वर्ग:`चतुष्पद`},धनिष्ठा:{नाडी:`अंत्य`,योनी:`सिंह`,गण:`राक्षस`,वर्ग:`जलचर`},शततारका:{नाडी:`मध्य`,योनी:`अश्व`,गण:`राक्षस`,वर्ग:`चतुष्पद`},पूर्वाभाद्रपदा:{नाडी:`आदी`,योनी:`सिंह`,गण:`मनुष्य`,वर्ग:`मनुष्य`},उत्तराभाद्रपदा:{नाडी:`अंत्य`,योनी:`गौ`,गण:`मनुष्य`,वर्ग:`मनुष्य`},रेवती:{नाडी:`मध्य`,योनी:`गज`,गण:`देव`,वर्ग:`जलचर`}};
 
-const charanLetters = { अश्विनी: ['चु', 'चे', 'चो', 'ला'], भरणी: ['लि', 'लू', 'ले', 'लो'], कृत्तिका: ['आ', 'इ', 'उ', 'ए'], रोहिणी: ['ओ', 'वा', 'वि', 'वु'], मृगशीर्ष: ['वे', 'वो', 'का', 'कि'], आर्द्रा: ['कु', 'घ', 'ङ', 'छ'], पुनर्वसू: ['के', 'को', 'हा', 'हि'], पुष्य: ['हु', 'हे', 'हो', 'डा'], आश्लेषा: ['डि', 'डु', 'डे', 'डो'], मघा: ['मा', 'मि', 'मु', 'मे'], 'पूर्वा फाल्गुनी': ['मो', 'टा', 'टि', 'टु'], 'उत्तर फाल्गुनी': ['टे', 'टो', 'पा', 'पि'], हस्त: ['पु', 'ष', 'ण', 'ठ'], चित्रा: ['पे', 'पो', 'रा', 'रि'], स्वाती: ['रु', 'रे', 'रो', 'ता'], विशाखा: ['ति', 'तु', 'ते', 'तो'], अनुराधा: ['ना', 'नि', 'नु', 'ने'], ज्येष्ठा: ['नो', 'या', 'यि', 'यु'], मूळ: ['ये', 'यो', 'भा', 'भि'], पूर्वाषाढा: ['भू', 'धा', 'फा', 'ढा'], उत्तराषाढा: ['भे', 'भो', 'जा', 'जि'], श्रवण: ['जु', 'जे', 'जो', 'खा'], धनिष्ठा: ['खि', 'खु', 'खे', 'खो'], शततारका: ['गु', 'गे', 'गो', 'सा'], पूर्वाभाद्रपदा: ['सि', 'सु', 'से', 'सो'], उत्तराभाद्रपदा: ['दा', 'दि', 'दु', 'दे'], रेवती: ['दो', 'चा', 'चि', 'चु'] };
+let gunData={};
 
-const nakDetails = { अश्विनी: { नाडी: 'आदी', योनी: 'अश्व', गण: 'देव', वर्ग: 'चतुष्पद' }, भरणी: { नाडी: 'आदी', योनी: 'गज', गण: 'मनुष्य', वर्ग: 'मनुष्य' }, कृत्तिका: { नाडी: 'आदी', योनी: 'मेष', गण: 'राक्षस', वर्ग: 'चतुष्पद' }, रोहिणी: { नाडी: 'मध्य', योनी: 'सर्प', गण: 'मनुष्य', वर्ग: 'चतुष्पद' }, मृगशीर्ष: { नाडी: 'आदी', योनी: 'सर्प', गण: 'देव', वर्ग: 'चतुष्पद' }, आर्द्रा: { नाडी: 'मध्य', योनी: 'कुत्ता', गण: 'मनुष्य', वर्ग: 'मनुष्य' }, पुनर्वसू: { नाडी: 'आदी', योनी: 'मार्जार', गण: 'देव', वर्ग: 'चतुष्पद' }, पुष्य: { नाडी: 'अंत्य', योनी: 'मेष', गण: 'देव', वर्ग: 'चतुष्पद' }, आश्लेषा: { नाडी: 'मध्य', योनी: 'मार्जार', गण: 'राक्षस', वर्ग: 'जलचर' }, मघा: { नाडी: 'आदी', योनी: 'मूषक', गण: 'राक्षस', वर्ग: 'मनुष्य' }, 'पूर्वा फाल्गुनी': { नाडी: 'अंत्य', योनी: 'मूषक', गण: 'मनुष्य', वर्ग: 'मनुष्य' }, 'उत्तर फाल्गुनी': { नाडी: 'मध्य', योनी: 'गौ', गण: 'मनुष्य', वर्ग: 'मनुष्य' }, हस्त: { नाडी: 'आदी', योनी: 'महिष', गण: 'देव', वर्ग: 'चतुष्पद' }, चित्रा: { नाडी: 'अंत्य', योनी: 'व्याघ्र', गण: 'राक्षस', वर्ग: 'जलचर' }, स्वाती: { नाडी: 'मध्य', योनी: 'महिष', गण: 'देव', वर्ग: 'चतुष्पद' }, विशाखा: { नाडी: 'आदी', योनी: 'व्याघ्र', गण: 'राक्षस', वर्ग: 'चतुष्पद' }, अनुराधा: { नाडी: 'अंत्य', योनी: 'हरिण', गण: 'देव', वर्ग: 'मनुष्य' }, ज्येष्ठा: { नाडी: 'मध्य', योनी: 'हरिण', गण: 'राक्षस', वर्ग: 'जलचर' }, मूळ: { नाडी: 'आदी', योनी: 'कुत्ता', गण: 'राक्षस', वर्ग: 'जलचर' }, पूर्वाषाढा: { नाडी: 'अंत्य', योनी: 'वानर', गण: 'मनुष्य', वर्ग: 'मनुष्य' }, उत्तराषाढा: { नाडी: 'मध्य', योनी: 'नकुल', गण: 'मनुष्य', वर्ग: 'मनुष्य' }, श्रवण: { नाडी: 'आदी', योनी: 'वानर', गण: 'देव', वर्ग: 'चतुष्पद' }, धनिष्ठा: { नाडी: 'अंत्य', योनी: 'सिंह', गण: 'राक्षस', वर्ग: 'जलचर' }, शततारका: { नाडी: 'मध्य', योनी: 'अश्व', गण: 'राक्षस', वर्ग: 'चतुष्पद' }, पूर्वाभाद्रपदा: { नाडी: 'आदी', योनी: 'सिंह', गण: 'मनुष्य', वर्ग: 'मनुष्य' }, उत्तराभाद्रपदा: { नाडी: 'अंत्य', योनी: 'गौ', गण: 'मनुष्य', वर्ग: 'मनुष्य' }, रेवती: { नाडी: 'मध्य', योनी: 'गज', गण: 'देव', वर्ग: 'जलचर' } };
+//
+fetch(`gunmilan_data (3).json`)
+    .then(r=>r.json())
+    .then(d=>{gunData=d; console.log("✅ Data Loaded")})
+    .catch(e=>alert("Error loading JSON file"));
 
-let gunData = {};
+// Populate Rashis
+window.onload = () => {
+    const br=document.getElementById(`boyRashi`), gr=document.getElementById(`girlRashi`);
+    Object.keys(rashiMap).forEach(r=>{
+        br.innerHTML+=`<option value="${r}">${r}</option>`;
+        gr.innerHTML+=`<option value="${r}">${r}</option>`;
+    });
+};
 
-// 1. Fetch JSON Data
-fetch('gunmilan_data (3).json') // Ensure this filename matches exactly
-    .then(r => r.json())
-    .then(d => { 
-        gunData = d; 
-        console.log("✅ Data Loaded Successfully");
-    })
-    .catch(e => console.error("❌ Error loading JSON:", e));
-
-// 2. Populate Rashi Dropdowns
-const boyRashi = document.getElementById('boyRashi');
-const girlRashi = document.getElementById('girlRashi');
-
-Object.keys(rashiMap).forEach(r => {
-    boyRashi.innerHTML += `<option value="${r}">${r}</option>`;
-    girlRashi.innerHTML += `<option value="${r}">${r}</option>`;
-});
-
-function loadNak(t) {
-    const r = document.getElementById(t + 'Rashi').value;
-    const s = document.getElementById(t + 'Nak');
-    s.innerHTML = `<option value="">-- नक्षत्र व चरण निवडा --</option>`;
-    if (!r) return;
-    rashiMap[r].forEach(n => {
-        const nm = n[0], c = n[1];
-        for (let i = 1; i <= c; i++) {
-            const l = charanLetters[nm][i - 1];
-            s.innerHTML += `<option value="${nm}-${i}">${nm} - चरण ${i} (${l})</option>`;
+function loadNak(t){
+    const r=document.getElementById(t+`Rashi`).value, s=document.getElementById(t+`Nak`);
+    s.innerHTML=`<option value="">-- नक्षत्र निवडा --</option>`;
+    if(!r) return;
+    rashiMap[r].forEach(n=>{
+        const nm=n[0], c=n[1];
+        for(let i=1;i<=c;i++){
+            s.innerHTML+=`<option value="${nm}-${i}">${nm} - चरण ${i}</option>`;
         }
     });
 }
 
-// 3. KEY MATCHING LOGIC
-// Maps "अश्विनी-1" to the JSON key "अश्विनी-1,2,3,4"
-function getJsonKeyPart(selection) {
+/** * MATCHING HELPER
+ * Converts selected "अश्विनी-1" to JSON key range "अश्विनी-1,2,3,4"
+ */
+function findMatchKey(selection) {
     if (!selection) return null;
     const [name, charan] = selection.split('-');
-    
-    // Look through all unique nakshatra-range parts in the JSON keys
     const allKeys = Object.keys(gunData);
-    for (let fullKey of allKeys) {
-        const parts = fullKey.split('_'); // [ "अश्विनी-1,2,3,4", "भरणी-1,2,3,4" ]
+    
+    // Check all keys to see which one contains this nakshatra and charan
+    for (let key of allKeys) {
+        const parts = key.split('_'); 
         for (let part of parts) {
             const [pName, pCharans] = part.split('-');
             if (pName === name) {
-                const charanList = pCharans.split(',');
-                if (charanList.includes(charan)) {
+                // Check if the charan digit is inside the comma list (e.g. "1" is in "1,2,3,4")
+                if (pCharans.split(',').includes(charan)) {
                     return part;
                 }
             }
@@ -488,63 +412,53 @@ function getJsonKeyPart(selection) {
     return null;
 }
 
-function calc() {
-    const bValue = document.getElementById('boyNak').value;
-    const gValue = document.getElementById('girlNak').value;
-    const bR = document.getElementById('boyRashi').value;
-    const gR = document.getElementById('girlRashi').value;
+function calc(){
+    const bRaw=document.getElementById(`boyNak`).value;
+    const gRaw=document.getElementById(`girlNak`).value;
+    if(!bRaw || !gRaw) { alert("माहिती पूर्ण भरा"); return; }
 
-    if (!bValue || !gValue) { alert("कृपया माहिती पूर्ण भरा"); return; }
-
-    // Map selection to JSON format
-    const boyJsonPart = getJsonKeyPart(bValue);
-    const girlJsonPart = getJsonKeyPart(gValue);
+    // Use helper to find the range keys
+    const boyKeyPart = findMatchKey(bRaw);
+    const girlKeyPart = findMatchKey(gRaw);
+    const finalKey = `${boyKeyPart}_${girlKeyPart}`;
     
-    const lookupKey = `${boyJsonPart}_${girlJsonPart}`;
-    const result = gunData[lookupKey];
+    const res = gunData[finalKey];
 
-    // Details for UI
-    const [bNak, bChar] = bValue.split('-');
-    const [gNak, gChar] = gValue.split('-');
-    
-    document.getElementById('boyNameBox').textContent = document.getElementById('boyName').value || bNak;
-    document.getElementById('girlNameBox').textContent = document.getElementById('girlName').value || gNak;
-    document.getElementById('boyNakshatra').textContent = bNak;
-    document.getElementById('boyCharan').textContent = bChar;
-    document.getElementById('girlNakshatra').textContent = gNak;
-    document.getElementById('girlCharan').textContent = gChar;
-    
-    // Set Vedic Details
-    document.getElementById('boyNadi').textContent = nakDetails[bNak].नाडी;
-    document.getElementById('girlNadi').textContent = nakDetails[gNak].नाडी;
-    document.getElementById('boyYoni').textContent = nakDetails[bNak].योनी;
-    document.getElementById('girlYoni').textContent = nakDetails[gNak].योनी;
-    document.getElementById('boyGan').textContent = nakDetails[bNak].गण;
-    document.getElementById('girlGan').textContent = nakDetails[gNak].गण;
-    document.getElementById('boyRashiDetail').textContent = bR;
-    document.getElementById('girlRashiDetail').textContent = gR;
-    document.getElementById('boyVarg').textContent = nakDetails[bNak].वर्ग;
-    document.getElementById('girlVarg').textContent = nakDetails[gNak].वर्ग;
+    if(res){
+        const [bNak, bChar] = bRaw.split('-');
+        const [gNak, gChar] = gRaw.split('-');
+        
+        document.getElementById('boyNameBox').textContent = document.getElementById('boyName').value || bNak;
+        document.getElementById('girlNameBox').textContent = document.getElementById('girlName').value || gNak;
+        document.getElementById('boyNakshatra').textContent = bNak;
+        document.getElementById('boyCharan').textContent = bChar;
+        document.getElementById('girlNakshatra').textContent = gNak;
+        document.getElementById('girlCharan').textContent = gChar;
+        
+        document.getElementById('boyNadi').textContent = nakDetails[bNak].नाडी;
+        document.getElementById('girlNadi').textContent = nakDetails[gNak].नाडी;
+        document.getElementById('boyYoni').textContent = nakDetails[bNak].योनी;
+        document.getElementById('girlYoni').textContent = nakDetails[gNak].योनी;
+        document.getElementById('boyGan').textContent = nakDetails[bNak].गण;
+        document.getElementById('girlGan').textContent = nakDetails[gNak].गण;
+        document.getElementById('boyRashiDetail').textContent = document.getElementById('boyRashi').value;
+        document.getElementById('girlRashiDetail').textContent = document.getElementById('girlRashi').value;
 
-    if (result) {
-        document.getElementById('scoreNum').textContent = result.score;
-        document.getElementById('doshaText').textContent = result.dosha || "दोष नाही";
+        document.getElementById('scoreNum').textContent = res.score;
+        document.getElementById('doshaText').textContent = res.dosha || "दोष नाही";
 
-        let lvl = "", cls = "";
-        if (result.score >= 28) { lvl = "उत्तम जोडी ✨"; cls = "excellent"; }
-        else if (result.score >= 18) { lvl = "चांगली जोडी 👍"; cls = "good"; }
-        else { lvl = "योग्य नाही ❌"; cls = "poor"; }
+        let lvl="", cls="";
+        if(res.score >= 28) { lvl="उत्तम जोडी ✨"; cls="excellent"; }
+        else if(res.score >= 18) { lvl="चांगली जोडी 👍"; cls="good"; }
+        else { lvl="योग्य नाही ❌"; cls="poor"; }
 
-        const compatLevel = document.getElementById('compatLevel');
-        compatLevel.textContent = lvl;
-        compatLevel.className = "compatibility-level " + cls;
-        document.getElementById('resultSection').style.display = 'block';
+        document.getElementById('compatLevel').textContent = lvl;
+        document.getElementById('compatLevel').className = "compatibility-level " + cls;
+        document.getElementById('resultSection').classList.add('show');
     } else {
-        alert("या नक्षत्रांचा डेटा उपलब्ध नाही.");
+        alert("या संयोगासाठी डेटा उपलब्ध नाही");
     }
 }
-    
-  
 </script>
 </body>
 </html>

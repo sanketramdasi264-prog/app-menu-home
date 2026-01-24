@@ -1,0 +1,92 @@
+{
+  "astrology_data": {
+    "var_fixed": {
+      "nakshatra": "Ashwini",
+      "charan": "1,2,3,4"
+    },
+    "gun_milan_table": [
+      { "vadhu": "Ashwini", "charan": "1,2,3,4", "total_gun": 36, "active_dosha_ids": [3] },
+      { "vadhu": "Bharani", "charan": "1,2,3,4", "total_gun": 36, "active_dosha_ids": [] },
+      { "vadhu": "Krutika", "charan": "1", "total_gun": 36, "active_dosha_ids": [] },
+      { "vadhu": "Krutika", "charan": "2,3,4", "total_gun": 18.5, "active_dosha_ids": [7] },
+      { "vadhu": "Rohini", "charan": "1,2,3,4", "total_gun": 24.5, "active_dosha_ids": [7] },
+      { "vadhu": "Mrug", "charan": "1,2", "total_gun": 24.5, "active_dosha_ids": [7] },
+      { "vadhu": "Mrug", "charan": "3,4", "total_gun": 27.5, "active_dosha_ids": [] },
+      { "vadhu": "Ardra", "charan": "1,2,3,4", "total_gun": 18.5, "active_dosha_ids": [8] },
+      { "vadhu": "Punarvasu", "charan": "1,2,3", "total_gun": 18.5, "active_dosha_ids": [8] },
+      { "vadhu": "Punarvasu", "charan": "4", "total_gun": 21.5, "active_dosha_ids": [8] },
+      { "vadhu": "Pushya", "charan": "1,2,3,4", "total_gun": 29.5, "active_dosha_ids": [] },
+      { "vadhu": "Ashlesha", "charan": "1,2,3,4", "total_gun": 26, "active_dosha_ids": [2] },
+      { "vadhu": "Magha", "charan": "1,2,3,4", "total_gun": 23, "active_dosha_ids": [2] },
+      { "vadhu": "Purva Phalguni", "charan": "1,2,3,4", "total_gun": 28, "active_dosha_ids": [] },
+      { "vadhu": "Uttara Phalguni", "charan": "1", "total_gun": 17.5, "active_dosha_ids": [8] },
+      { "vadhu": "Uttara Phalguni", "charan": "2,3,4", "total_gun": 0, "active_dosha_ids": [8] },
+      { "vadhu": "Hasta", "charan": "1,2,3,4", "total_gun": 0, "active_dosha_ids": [8] },
+      { "vadhu": "Chitra", "charan": "1,2", "total_gun": 0, "active_dosha_ids": [] },
+      { "vadhu": "Chitra", "charan": "3,4", "total_gun": 23, "active_dosha_ids": [] },
+      { "vadhu": "Swati", "charan": "1,2,3,4", "total_gun": 27, "active_dosha_ids": [4] },
+      { "vadhu": "Vishakha", "charan": "1,2,3", "total_gun": 23, "active_dosha_ids": [] },
+      { "vadhu": "Vishakha", "charan": "4", "total_gun": 21.5, "active_dosha_ids": [2] },
+      { "vadhu": "Anuradha", "charan": "1,2,3,4", "total_gun": 28.5, "active_dosha_ids": [] },
+      { "vadhu": "Jyestha", "charan": "1,2,3,4", "total_gun": 17, "active_dosha_ids": [2, 8] },
+      { "vadhu": "Moola", "charan": "1,2,3,4", "total_gun": 15.5, "active_dosha_ids": [2, 8] },
+      { "vadhu": "Purvashadha", "charan": "1,2,3,4", "total_gun": 29.5, "active_dosha_ids": [] },
+      { "vadhu": "Uttarashadha", "charan": "1", "total_gun": 27, "active_dosha_ids": [] },
+      { "vadhu": "Uttarashadha", "charan": "2,3,4", "total_gun": 27, "active_dosha_ids": [] },
+      { "vadhu": "Shravan", "charan": "1,2,3,4", "total_gun": 28, "active_dosha_ids": [] },
+      { "vadhu": "Dhanishta", "charan": "1,2", "total_gun": 21, "active_dosha_ids": [] },
+      { "vadhu": "Dhanishta", "charan": "3,4", "total_gun": 20.5, "active_dosha_ids": [] },
+      { "vadhu": "Shatabhisha", "charan": "1,2,3,4", "total_gun": 15.5, "active_dosha_ids": [8] },
+      { "vadhu": "Purva Bhadrapada", "charan": "1,2,3", "total_gun": 17.5, "active_dosha_ids": [8] },
+      { "vadhu": "Purva Bhadrapada", "charan": "4", "total_gun": 17.5, "active_dosha_ids": [8] },
+      { "vadhu": "Uttara Bhadrapada", "charan": "1,2,3,4", "total_gun": 25.5, "active_dosha_ids": [] },
+      { "vadhu": "Revati", "charan": "1,2,3,4", "total_gun": 28, "active_dosha_ids": [1] }
+    ]
+  }
+}
+{
+  "astrology_data": {
+    "var_fixed": {
+      "nakshatra": "Bharani",
+      "charan": "1,2,3,4"
+    },
+    "gun_milan_table": [
+      { "vadhu": "Ashwini", "charan": "1,2,3,4", "total_gun": 36, "active_dosha_ids": [] },
+      { "vadhu": "Bharani", "charan": "1,2,3,4", "total_gun": 36, "active_dosha_ids": [3] },
+      { "vadhu": "Krutika", "charan": "1", "total_gun": 36, "active_dosha_ids": [] },
+      { "vadhu": "Krutika", "charan": "2,3,4", "total_gun": 20.67, "active_dosha_ids": [] },
+      { "vadhu": "Rohini", "charan": "1,2,3,4", "total_gun": 24.5, "active_dosha_ids": [7] },
+      { "vadhu": "Mrug", "charan": "1,2", "total_gun": 15.5, "active_dosha_ids": [8] },
+      { "vadhu": "Mrug", "charan": "3,4", "total_gun": 18.5, "active_dosha_ids": [7] },
+      { "vadhu": "Ardra", "charan": "1,2,3,4", "total_gun": 26.5, "active_dosha_ids": [] },
+      { "vadhu": "Punarvasu", "charan": "1,2,3", "total_gun": 25.5, "active_dosha_ids": [] },
+      { "vadhu": "Punarvasu", "charan": "4", "total_gun": 28.5, "active_dosha_ids": [] },
+      { "vadhu": "Pushya", "charan": "1,2,3,4", "total_gun": 21.5, "active_dosha_ids": [8] },
+      { "vadhu": "Ashlesha", "charan": "1,2,3,4", "total_gun": 23.5, "active_dosha_ids": [2, 6] },
+      { "vadhu": "Magha", "charan": "1,2,3,4", "total_gun": 22, "active_dosha_ids": [2, 6] },
+      { "vadhu": "Purva Phalguni", "charan": "1,2,3,4", "total_gun": 20, "active_dosha_ids": [8] },
+      { "vadhu": "Uttara Phalguni", "charan": "1", "total_gun": 28, "active_dosha_ids": [] },
+      { "vadhu": "Uttara Phalguni", "charan": "2,3,4", "total_gun": 0, "active_dosha_ids": [] },
+      { "vadhu": "Hasta", "charan": "1,2,3,4", "total_gun": 0, "active_dosha_ids": [] },
+      { "vadhu": "Chitra", "charan": "1,2", "total_gun": 0, "active_dosha_ids": [8] },
+      { "vadhu": "Chitra", "charan": "3,4", "total_gun": 14, "active_dosha_ids": [8] },
+      { "vadhu": "Swati", "charan": "1,2,3,4", "total_gun": 29, "active_dosha_ids": [] },
+      { "vadhu": "Vishakha", "charan": "1,2,3", "total_gun": 22, "active_dosha_ids": [6] },
+      { "vadhu": "Vishakha", "charan": "4", "total_gun": 20.5, "active_dosha_ids": [2, 6] },
+      { "vadhu": "Anuradha", "charan": "1,2,3,4", "total_gun": 18.5, "active_dosha_ids": [8] },
+      { "vadhu": "Jyestha", "charan": "1,2,3,4", "total_gun": 21.5, "active_dosha_ids": [2, 6] },
+      { "vadhu": "Moola", "charan": "1,2,3,4", "total_gun": 22.5, "active_dosha_ids": [2, 6] },
+      { "vadhu": "Purvashadha", "charan": "1,2,3,4", "total_gun": 21.5, "active_dosha_ids": [8] },
+      { "vadhu": "Uttarashadha", "charan": "1", "total_gun": 28.5, "active_dosha_ids": [] },
+      { "vadhu": "Uttarashadha", "charan": "2,3,4", "total_gun": 28.5, "active_dosha_ids": [] },
+      { "vadhu": "Shravan", "charan": "1,2,3,4", "total_gun": 27, "active_dosha_ids": [] },
+      { "vadhu": "Dhanishta", "charan": "1,2", "total_gun": 11, "active_dosha_ids": [8] },
+      { "vadhu": "Dhanishta", "charan": "3,4", "total_gun": 10.5, "active_dosha_ids": [8] },
+      { "vadhu": "Shatabhisha", "charan": "1,2,3,4", "total_gun": 20.5, "active_dosha_ids": [6] },
+      { "vadhu": "Purva Bhadrapada", "charan": "1,2,3", "total_gun": 24.5, "active_dosha_ids": [4] },
+      { "vadhu": "Purva Bhadrapada", "charan": "4", "total_gun": 24.5, "active_dosha_ids": [4] },
+      { "vadhu": "Uttara Bhadrapada", "charan": "1,2,3,4", "total_gun": 18.5, "active_dosha_ids": [8] },
+      { "vadhu": "Revati", "charan": "1,2,3,4", "total_gun": 27.5, "active_dosha_ids": [] }
+    ]
+  }
+}

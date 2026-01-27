@@ -30,7 +30,8 @@ const messaging = firebase.messaging();
 const db = firebase.firestore();
 
 /* ---------- FCM PERMISSION ---------- */
-navigator.serviceWorker.register('/firebase-messaging-sw.js')
+navigator.serviceWorker.register('firebase-messaging-sw.js')
+
 .then((registration) => {
  messaging.useServiceWorker(registration);
 });
@@ -52,13 +53,17 @@ requestPermission();
 /* ---------- SAVE REMINDER TO FIRESTORE ---------- */
 function saveReminderToCloud(entry){
  const token = localStorage.getItem("fcm_token");
- if(!token) return;
+ if(!token){
+  alert("🔔 Notification permission allow करा");
+  return;
+}
+
 
  // same day
  if(entry.reminders.same){
    db.collection("reminders").add({
      token: token,
-     time: entry.date + " " + entry.reminders.sameTime,
+time: entry.date + "T" + entry.reminders.sameTime + ":00",
      title: "🔔 पूजा आठवण",
      body: entry.pooja + " आज आहे"
    });
@@ -71,21 +76,22 @@ function saveReminderToCloud(entry){
    const day = d.toISOString().split("T")[0];
    db.collection("reminders").add({
      token: token,
-     time: day + " " + entry.reminders.beforeTime,
+     time: day + "T" + entry.reminders.beforeTime + ":00",
      title: "🔔 उद्याची पूजा",
      body: entry.pooja + " उद्या आहे"
    });
  }
 
  // custom
- if(entry.reminders.custom){
+if(entry.reminders.custom && entry.reminders.customTime){
    db.collection("reminders").add({
      token: token,
-     time: entry.reminders.customTime.replace("T"," "),
+     time: entry.reminders.customTime + ":00",
      title: "🔔 Custom Reminder",
      body: entry.pooja + " आठवण"
    });
- }
+}
+
 }
 </script>
 
@@ -173,15 +179,19 @@ function saveEntry(){
    }
  };
 
+ // ✅ इथे validation
+ if(!entry.pooja || !entry.date || !entry.yajman){
+   alert("⚠️ कृपया पूजा नाव, तारीख आणि यजमान भरा");
+   return;
+ }
+
+ // पुढचं existing code
  data.push(entry);
  localStorage.setItem("poojaRegisterData", JSON.stringify(data));
-
- // 🔥 send to cloud
  saveReminderToCloud(entry);
-
  alert("नोंद सेव्ह झाली ✅");
- location.reload();
 }
+
 </script>
 
 </body>

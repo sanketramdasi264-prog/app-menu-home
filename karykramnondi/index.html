@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-
 <meta charset="UTF-8">
 <title>पूजा रजिस्टर - Ultimate</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,55 +24,58 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const messaging = firebase.messaging();
 const db = firebase.firestore();
 
-/* ---------- FCM PERMISSION ---------- */
+/* ---------- SERVICE WORKER ---------- */
 navigator.serviceWorker.register('firebase-messaging-sw.js')
+.then(reg => messaging.useServiceWorker(reg));
 
-.then((registration) => {
- messaging.useServiceWorker(registration);
-});
-
+/* ---------- REQUEST PERMISSION ---------- */
 function requestPermission(){
  Notification.requestPermission().then(permission=>{
-   if(permission==="granted"){
+   if(permission === "granted"){
      messaging.getToken({
        vapidKey:"BKuAu4hhs0jc_il0_al9vAp1iW2icNIW8jSK1rm5C-qTM4Hj-rkKpx3St_AtlsDVImXv_3UqEn1Nk2LElgZ994s"
      }).then(token=>{
         localStorage.setItem("fcm_token", token);
-        console.log("FCM Token Saved");
+        console.log("✅ FCM Token:", token);
+
+        // Enable Save Button after token ready
+        document.getElementById("saveBtn").disabled = false;
      });
+   } else {
+     alert("🔔 Notification permission allow करा");
    }
  });
 }
 requestPermission();
 
+
 /* ---------- SAVE REMINDER TO FIRESTORE ---------- */
 function saveReminderToCloud(entry){
  const token = localStorage.getItem("fcm_token");
  if(!token){
-  alert("🔔 Notification permission allow करा");
-  return;
-}
+   alert("Token not ready yet. Page reload करा.");
+   return;
+ }
 
-
- // same day
+ // Same Day
  if(entry.reminders.same){
    db.collection("reminders").add({
      token: token,
-time: entry.date + "T" + entry.reminders.sameTime + ":00",
+     time: entry.date + "T" + entry.reminders.sameTime + ":00",
      title: "🔔 पूजा आठवण",
      body: entry.pooja + " आज आहे"
    });
  }
 
- // one day before
+ // One Day Before
  if(entry.reminders.before){
    const d = new Date(entry.date);
    d.setDate(d.getDate()-1);
    const day = d.toISOString().split("T")[0];
+
    db.collection("reminders").add({
      token: token,
      time: day + "T" + entry.reminders.beforeTime + ":00",
@@ -82,29 +84,28 @@ time: entry.date + "T" + entry.reminders.sameTime + ":00",
    });
  }
 
- // custom
-if(entry.reminders.custom && entry.reminders.customTime){
+ // Custom
+ if(entry.reminders.custom && entry.reminders.customTime){
    db.collection("reminders").add({
      token: token,
      time: entry.reminders.customTime + ":00",
      title: "🔔 Custom Reminder",
      body: entry.pooja + " आठवण"
    });
-}
+ }
 
+ console.log("✅ Reminder Saved in Firestore");
 }
 </script>
 
 <style>
 body{font-family:Poppins;margin:0;background:#f7f2ed;color:#2b0000;}
 .app-header{background:#8b0000;color:#ffd700;padding:14px;text-align:center;font-size:20px;font-weight:bold;}
-.tabs{display:flex;background:#fff;}
-.tabs button{flex:1;padding:12px;border:none;background:#fff;color:#8b0000;font-weight:600;}
-.tabs button.active{background:#ffd700;}
 .container{padding:15px;}
 .card{background:#fff;padding:15px;margin:10px 0;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);}
 .primary-btn{background:#8b0000;color:#ffd700;border:none;padding:12px;width:100%;border-radius:8px;font-weight:bold;}
-input,select,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:6px;}
+.primary-btn:disabled{background:#999;}
+input{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:6px;}
 .reminder-item{display:flex;justify-content:space-between;margin:6px 0;}
 </style>
 </head>
@@ -113,27 +114,23 @@ input,select,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc
 
 <div class="app-header">✨ पूजा रजिस्टर</div>
 
-<div class="tabs">
-  <button class="active">📝 नोंदी</button>
-</div>
-
 <div class="container">
 
 <div class="card">
-<label>पूजा नाव</label>
+
+<label>पूजा नाव *</label>
 <input id="pooja">
 
-<label>तारीख</label>
+<label>तारीख *</label>
 <input type="date" id="date">
 
-<label>यजमान</label>
+<label>यजमान *</label>
 <input id="yajman">
 
 <label>दक्षिणा</label>
 <input type="number" id="dakshina">
 
 <hr>
-
 <b>🔔 Reminder सेट करा</b>
 
 <div class="reminder-item">
@@ -154,20 +151,21 @@ input,select,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc
  <input type="datetime-local" id="remCustomTime">
 </div>
 
-<button class="primary-btn" onclick="saveEntry()">💾 सेव्ह</button>
-</div>
+<button class="primary-btn" id="saveBtn" onclick="saveEntry()" disabled>💾 सेव्ह</button>
 
+</div>
 </div>
 
 <script>
 let data=[];
 
 function saveEntry(){
+
  const entry = {
    id: Date.now(),
-   pooja: document.getElementById("pooja").value,
+   pooja: document.getElementById("pooja").value.trim(),
    date: document.getElementById("date").value,
-   yajman: document.getElementById("yajman").value,
+   yajman: document.getElementById("yajman").value.trim(),
    dakshina: Number(document.getElementById("dakshina").value||0),
    reminders:{
      same: document.getElementById("remSame").checked,
@@ -179,19 +177,26 @@ function saveEntry(){
    }
  };
 
- // ✅ इथे validation
+ // Validation
  if(!entry.pooja || !entry.date || !entry.yajman){
    alert("⚠️ कृपया पूजा नाव, तारीख आणि यजमान भरा");
    return;
  }
 
- // पुढचं existing code
  data.push(entry);
  localStorage.setItem("poojaRegisterData", JSON.stringify(data));
- saveReminderToCloud(entry);
- alert("नोंद सेव्ह झाली ✅");
-}
 
+ // Save to Firestore Cloud
+ saveReminderToCloud(entry);
+
+ alert("✅ नोंद सेव्ह झाली आणि Reminder Cloud ला गेला!");
+
+ // Reset form
+ document.getElementById("pooja").value="";
+ document.getElementById("date").value="";
+ document.getElementById("yajman").value="";
+ document.getElementById("dakshina").value="";
+}
 </script>
 
 </body>

@@ -1,0 +1,26 @@
+name: Reminder Sender
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # दर 5 मिनिटांनी चालेल
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Firebase Admin
+      run: npm install firebase-admin
+
+    - name: Run Reminder Script
+      env:
+        FIREBASE_SERVICE_KEY: ${{ secrets.FIREBASE_SERVICE_KEY }}
+      run: node reminder.js

@@ -1,6 +1,42 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCNF-MyRZjVJ7caQbwFMWrb5cbJKPLvu5E",
+  authDomain: "om-karmyog.firebaseapp.com",
+  projectId: "om-karmyog",
+  storageBucket: "om-karmyog.firebasestorage.app",
+  messagingSenderId: "115489306172",
+  appId: "1:115489306172:web:44ba73f0722d4208347539"
+};
+
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
+
+navigator.serviceWorker.register('/firebase-messaging-sw.js')
+.then((registration) => {
+ messaging.useServiceWorker(registration);
+});
+
+function requestPermission() {
+ Notification.requestPermission().then(permission => {
+   if (permission === 'granted') {
+     messaging.getToken({
+       vapidKey: "BKuAu4hhs0jc_il0_al9vAp1iW2icNIW8jSK1rm5C-qTM4Hj-rkKpx3St_AtlsDVImXv_3UqEn1Nk2LElgZ994s"
+     }).then((token) => {
+       console.log("User Token:", token);
+       localStorage.setItem("fcm_token", token);
+     });
+   }
+ });
+}
+
+requestPermission();
+</script>
 <meta charset="UTF-8">
 <title>पूजा रजिस्टर - Ultimate</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

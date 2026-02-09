@@ -2,169 +2,214 @@
 <html lang="mr">
 <head>
 <meta charset="UTF-8">
-<title>अचूक गुण मिलान</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<title>गुण मिलान</title>
+
 <style>
-:root{--primary:#d84315;--primary-dark:#6d1b00;--accent:#ff6f00;--bg1:#3e1a1a;--bg2:#5d2424;--success:#66bb6a;--warning:#ffa726;--danger:#ef5350;}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans Devanagari',sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));min-height:100vh;padding:15px;}
-.container{max-width:800px;margin:0 auto;background:rgba(255,255,255,.98);padding:20px;border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,.3);border:3px solid #ffd700}
-h1{text-align:center;color:var(--primary);margin-bottom:20px;border-bottom:2px solid #eee;padding-bottom:10px}
-.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:25px}
-.input-group{background:#fff3e0;padding:15px;border-radius:12px;border:1px solid #ffe0b2}
-h3{color:var(--primary-dark);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-label{display:block;margin-bottom:5px;font-weight:600;color:#555;}
-select{width:100%;padding:10px;border-radius:8px;border:2px solid #ffcc80;font-family:inherit;font-size:1rem;background:#fff}
-.btn-calculate{width:100%;padding:15px;background:linear-gradient(to right,var(--primary),var(--accent));color:#fff;border:none;border-radius:10px;font-size:1.2rem;font-weight:700;cursor:pointer;margin-bottom:25px;}
-.result-card{display:none;background:#fff;border-radius:15px;overflow:hidden;border:1px solid #eee;}
-.score-header{background:linear-gradient(45deg,var(--primary),var(--accent));color:#fff;padding:20px;text-align:center}
-.score-circle{width:80px;height:80px;background:#fff;color:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;margin:0 auto 10px;}
-.compatibility-level{font-weight:700;margin-top:10px;padding:5px 15px;border-radius:20px;background:rgba(255,255,255,.2);display:inline-block}
-.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#eee}
-.detail-item{background:#fff;padding:15px;text-align:center}
-.detail-label{font-size:.85rem;color:#777;}
-.detail-val{font-weight:600;color:#333}
-.dosha-box{background:#fff5f5;padding:15px;text-align:center;border-top:1px solid #fee2e2}
-.excellent{color:var(--success)}.good{color:#43a047}.average{color:var(--warning)}.poor{color:var(--danger)}
-@media(max-width:600px){.input-grid{grid-template-columns:1fr}}
+body{
+  font-family: sans-serif;
+  background:#1e1e1e;
+  color:white;
+  padding:20px;
+}
+.container{
+  max-width:600px;
+  margin:auto;
+}
+select,button{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:6px;
+  border:none;
+  font-size:16px;
+}
+button{
+  background:#ff5722;
+  color:white;
+  cursor:pointer;
+}
+.result{
+  margin-top:20px;
+  padding:15px;
+  background:#2a2a2a;
+  border-radius:8px;
+}
+.score{
+  font-size:28px;
+  font-weight:bold;
+}
+.good{color:#4caf50;}
+.avg{color:#ff9800;}
+.bad{color:#f44336;}
 </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>ॐ गुण मिलान ॐ</h1>
-    
-    <div class="input-grid">
-        <div class="input-group">
-            <h3>♂ मुलगा</h3>
-            <label>नक्षत्र</label>
-            <select id="boyNakshatraSelect"></select>
-            <label style="margin-top:10px">चरण</label>
-            <select id="boyCharanSelect">
-                <option value="1">१</option><option value="2">२</option>
-                <option value="3">३</option><option value="4">४</option>
-            </select>
-        </div>
 
-        <div class="input-group">
-            <h3>♀ मुलगी</h3>
-            <label>नक्षत्र</label>
-            <select id="girlNakshatraSelect"></select>
-            <label style="margin-top:10px">चरण</label>
-            <select id="girlCharanSelect">
-                <option value="1">१</option><option value="2">२</option>
-                <option value="3">३</option><option value="4">४</option>
-            </select>
-        </div>
-    </div>
+<h2>🕉️ अचूक गुण मिलान</h2>
 
-    <button class="btn-calculate" onclick="calculate()">गुण तपासा</button>
+<label>वराची राशी</label>
+<select id="boyRashi" onchange="loadNak('boy')">
+<option value="">-- निवडा --</option>
+</select>
 
-    <div id="resultCard" class="result-card">
-        <div class="score-header">
-            <div class="score-circle" id="scoreNum">0</div>
-            <div>एकूण गुण (३६ पैकी)</div>
-            <div id="compatLevel" class="compatibility-level"></div>
-        </div>
-        <div class="details-grid">
-            <div class="detail-item"><div class="detail-label">मुलाचे नक्षत्र</div><div class="detail-val"><span id="boyNakshatra"></span> (<span id="boyCharan"></span>)</div></div>
-            <div class="detail-item"><div class="detail-label">मुलीचे नक्षत्र</div><div class="detail-val"><span id="girlNakshatra"></span> (<span id="girlCharan"></span>)</div></div>
-            <div class="detail-item"><div class="detail-label">मुलाची रास</div><div class="detail-val" id="boyRashiDetail"></div></div>
-            <div class="detail-item"><div class="detail-label">मुलीची रास</div><div class="detail-val" id="girlRashiDetail"></div></div>
-        </div>
-        <div class="dosha-box">
-            <div id="doshaText">-</div>
-        </div>
-    </div>
+<label>वर नक्षत्र</label>
+<select id="boyNak">
+<option value="">-- प्रथम राशी निवडा --</option>
+</select>
+
+<hr>
+
+<label>वधूची राशी</label>
+<select id="girlRashi" onchange="loadNak('girl')">
+<option value="">-- निवडा --</option>
+</select>
+
+<label>वधू नक्षत्र</label>
+<select id="girlNak">
+<option value="">-- प्रथम राशी निवडा --</option>
+</select>
+
+<button onclick="calculate()">गुण तपासा</button>
+
+<div class="result" id="resultBox" style="display:none;">
+  <div class="score" id="scoreText"></div>
+  <div id="doshaText"></div>
+  <div id="levelText"></div>
+</div>
+
 </div>
 
 <script>
-let nakshatraData = {};
+
 let gunData = {};
 
-// Ensure these file names match your actual files on GitHub/Server
-const NAKSHATRA_FILE = 'nakshatra_details.json'; 
-const GUNMILAN_FILE = 'gunmilan_data (5).json';
+// 🔥 Load Grouped JSON
+fetch("gunmilan_data.json")
+.then(res => res.json())
+.then(data => {
+    gunData = data;
+    console.log("Grouped JSON Loaded");
+})
+.catch(err=>{
+    alert("JSON load झाला नाही");
+});
 
-async function init() {
-    try {
-        const [nRes, gRes] = await Promise.all([
-            fetch(NAKSHATRA_FILE),
-            fetch(GUNMILAN_FILE)
-        ]);
-        nakshatraData = await nRes.json();
-        gunData = await gRes.json();
-        
-        const bSel = document.getElementById('boyNakshatraSelect');
-        const gSel = document.getElementById('girlNakshatraSelect');
-        Object.keys(nakshatraData).forEach(n => {
-            bSel.add(new Option(n, n));
-            gSel.add(new Option(n, n));
-        });
-    } catch (e) {
-        alert("डेटा लोड अयशस्वी! कृपया फाईलची नावे तपासा.");
+// 🔹 राशी-नक्षत्र mapping
+const rashiMap = {
+  "मेष": [["अश्विनी",4],["भरणी",4],["कृत्तिका",1]],
+  "वृषभ": [["कृत्तिका",3],["रोहिणी",4],["मृगशीर्ष",2]],
+  "मिथुन": [["मृगशीर्ष",2],["आर्द्रा",4],["पुनर्वसू",3]],
+  "कर्क": [["पुनर्वसू",1],["पुष्य",4],["आश्लेषा",4]]
+};
+
+// 🔹 राशी dropdown load
+window.onload = function(){
+
+  const boy = document.getElementById("boyRashi");
+  const girl = document.getElementById("girlRashi");
+
+  Object.keys(rashiMap).forEach(r=>{
+    boy.innerHTML += `<option value="${r}">${r}</option>`;
+    girl.innerHTML += `<option value="${r}">${r}</option>`;
+  });
+};
+
+// 🔹 नक्षत्र dropdown
+function loadNak(type){
+
+  const rashi = document.getElementById(type+"Rashi").value;
+  const select = document.getElementById(type+"Nak");
+
+  select.innerHTML = `<option value="">-- निवडा --</option>`;
+
+  if(!rashi) return;
+
+  rashiMap[rashi].forEach(n=>{
+    const name = n[0];
+    const total = n[1];
+
+    for(let i=1;i<=total;i++){
+      select.innerHTML += 
+        `<option value="${name}-${i}">
+           ${name} - चरण ${i}
+         </option>`;
     }
+  });
 }
 
-function getRashi(nak, charan) {
-    const d = nakshatraData[nak];
-    if (!d || !d.राशी_चरण) return "-";
-    for (let r in d.राशी_चरण) {
-        if (d.राशी_चरण[r].includes(parseInt(charan))) return r;
+////////////////////////////////////////////////////
+// 🔥 MAIN CALCULATION (Grouped JSON Compatible)
+////////////////////////////////////////////////////
+function calculate(){
+
+  const boyVal = document.getElementById("boyNak").value;
+  const girlVal = document.getElementById("girlNak").value;
+
+  if(!boyVal || !girlVal){
+    alert("दोन्ही नक्षत्र निवडा");
+    return;
+  }
+
+  const boyNak = boyVal.split("-")[0];
+  const girlNak = girlVal.split("-")[0];
+
+  // 🔹 Grouped format key
+  let key = `${boyNak}-1,2,3,4_${girlNak}-1,2,3,4`;
+
+  if(!gunData[key]){
+    key = `${girlNak}-1,2,3,4_${boyNak}-1,2,3,4`;
+  }
+
+  const resultBox = document.getElementById("resultBox");
+  const scoreText = document.getElementById("scoreText");
+  const doshaText = document.getElementById("doshaText");
+  const levelText = document.getElementById("levelText");
+
+  if(gunData[key]){
+
+    const score = gunData[key].score;
+    const dosha = gunData[key].dosha;
+
+    scoreText.innerText = score + " / 36 गुण";
+    doshaText.innerText = "दोष: " + dosha;
+
+    let level = "";
+    let className = "";
+
+    if(score >= 28){
+      level = "उत्कृष्ट जुळणी";
+      className = "good";
     }
-    return "-";
+    else if(score >= 18){
+      level = "चांगली जुळणी";
+      className = "good";
+    }
+    else if(score >= 10){
+      level = "मध्यम जुळणी";
+      className = "avg";
+    }
+    else{
+      level = "अयोग्य जुळणी";
+      className = "bad";
+    }
+
+    levelText.innerText = level;
+    scoreText.className = "score " + className;
+
+  } else {
+
+    scoreText.innerText = "डेटा उपलब्ध नाही";
+    doshaText.innerText = "";
+    levelText.innerText = "";
+  }
+
+  resultBox.style.display = "block";
 }
 
-function calculate() {
-    const bN = document.getElementById('boyNakshatraSelect').value;
-    const bC = document.getElementById('boyCharanSelect').value;
-    const gN = document.getElementById('girlNakshatraSelect').value;
-    const gC = document.getElementById('girlCharanSelect').value;
-
-    document.getElementById('boyNakshatra').textContent = bN;
-    document.getElementById('boyCharan').textContent = bC;
-    document.getElementById('girlNakshatra').textContent = gN;
-    document.getElementById('girlCharan').textContent = gC;
-    document.getElementById('boyRashiDetail').textContent = getRashi(bN, bC);
-    document.getElementById('girlRashiDetail').textContent = getRashi(gN, gC);
-
-    let match = null;
-
-    // --- JSON 5 SEARCH LOGIC ---
-    for (let key in gunData) {
-        let parts = key.split('_'); // [ "अश्विनी-1,2,3,4", "भरणी-1,2,3,4" ]
-        let bPart = parts[0].split('-'); // [ "अश्विनी", "1,2,3,4" ]
-        let gPart = parts[1].split('-'); // [ "भरणी", "1,2,3,4" ]
-
-        // Check Boy: Name matches AND charan is in range
-        let bMatch = (bPart[0] === bN && bPart[1].split(',').includes(bC));
-        // Check Girl: Name matches AND charan is in range
-        let gMatch = (gPart[0] === gN && gPart[1].split(',').includes(gC));
-
-        if (bMatch && gMatch) {
-            match = gunData[key];
-            break;
-        }
-    }
-
-    if (match) {
-        document.getElementById('scoreNum').textContent = match.score;
-        document.getElementById('doshaText').textContent = match.dosha || "दोष नाही";
-        
-        let lvl = "सरासरी", cls = "average";
-        if (match.score >= 25) { lvl = "उत्तम जोडी ✨"; cls = "excellent"; }
-        else if (match.score >= 18) { lvl = "चांगली जोडी 👍"; cls = "good"; }
-        else { lvl = "जोडी योग्य नाही ❌"; cls = "poor"; }
-
-        document.getElementById('compatLevel').textContent = lvl;
-        document.getElementById('compatLevel').className = "compatibility-level " + cls;
-        document.getElementById('resultCard').style.display = 'block';
-    } else {
-        alert("माहिती उपलब्ध नाही.");
-    }
-}
-init();
 </script>
+
 </body>
 </html>

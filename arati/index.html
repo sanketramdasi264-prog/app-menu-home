@@ -456,6 +456,24 @@
     }
     document.getElementById('noResults').style.display = (foundTotal === 0 && input !== "") ? "block" : "none";
   }
+
+  // ॲपमधून जाणाऱ्या प्रत्येक लिंकला आपोआप 'app=true' जोडणारा कोड
+  document.addEventListener("DOMContentLoaded", function() {
+    var links = document.querySelectorAll('.item-card a'); // सर्व आरतीच्या लिंक्स पकडा
+    
+    links.forEach(function(link) {
+      var currentUrl = link.href;
+      
+      // जर लिंकमध्ये आधीच '?' असेल (उदा. ?m=1), तर '&app=true' लावा
+      if (currentUrl.includes("?")) {
+        link.href = currentUrl + "&app=true";
+      } 
+      // जर लिंकमध्ये '?' नसेल, तर '?app=true' लावा
+      else {
+        link.href = currentUrl + "?app=true";
+      }
+    });
+  });
 </script>
 
 </body>

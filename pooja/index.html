@@ -279,6 +279,29 @@
 
     document.getElementById('noResults').style.display = (foundTotal === 0 && input !== "") ? "block" : "none";
   }
+
+  // पेजवरील सर्व लिंक्सना आपोआप 'app=true' जोडणारा युनिव्हर्सल कोड
+  document.addEventListener("DOMContentLoaded", function() {
+    var allLinks = document.querySelectorAll('a'); // पेजवरील सर्व लिंक्स पकडा
+    
+    allLinks.forEach(function(link) {
+      var currentUrl = link.href;
+      
+      // १. लिंक जर आपल्या वेबसाईटची (omkarmyog.in) असेल तरच पुढचे काम करा
+      if (currentUrl.includes("omkarmyog.in")) {
+          
+        // २. लिंकमध्ये आधीपासूनच 'app=true' नसेल तरच ते जोडा (डबल होऊ नये म्हणून)
+        if (!currentUrl.includes("app=true")) {
+            
+          if (currentUrl.includes("?")) {
+            link.href = currentUrl + "&app=true"; // जर आधीच ? असेल (उदा. ?m=1)
+          } else {
+            link.href = currentUrl + "?app=true"; // जर ? नसेल
+          }
+        }
+      }
+    });
+  });
 </script>
 
 </body>

@@ -113,7 +113,7 @@ if (isRule5) {
 
         const m = this.db.matrices;
 
-        const varna   = m.varna[v.varna]?.[b.varna] ?? 0;
+       const varna = m.varna[b.varna]?.[v.varna] ?? 0;
         const vashya  = m.vashya[v.vashya]?.[b.vashya] ?? 0;
         const tara    = this.calculateTara(v.nakID, b.nakID);
         const yoniIdx_v = m.yoni.order.indexOf(v.yoni);

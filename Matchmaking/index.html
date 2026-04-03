@@ -510,7 +510,6 @@ function calculate() {
   const hasShubhBhakoot = res.remarks && res.remarks.some(r=>r.includes('शुभ भकूट'));
   const hasMrutyuDosh   = res.remarks && res.remarks.some(r=>r.includes('षडाष्टक')||r.includes('मृत्यू')||r.includes('Neshta'));
   let displayScore = res.finalScore;
-  if (hasShubhBhakoot) displayScore = 36;
   if (hasMrutyuDosh)   displayScore = 0;
 
   // Show results
@@ -527,9 +526,6 @@ function calculate() {
   // Score table
   const labels={varna:"वर्ण",vashya:"वश्य",tara:"तारा",yoni:"योनी",maitri:"ग्रहमैत्री",gana:"गण",bhakoot:"भकूट",nadi:"नाडी"};
   let tbl = '';
-  if (hasShubhBhakoot) {
-    tbl = `<tr><td colspan="2" style="text-align:center;color:#7ef09a;padding:10px 4px;font-size:0.88rem;line-height:1.5;">✅ शुभ भकूट योग —<br>संपूर्ण ३६ गुण लागू</td></tr>
-           <tr><td>एकूण</td><td>36</td></tr>`;
   } else if (hasMrutyuDosh) {
     tbl = `<tr><td colspan="2" style="text-align:center;color:#f08080;padding:10px 4px;font-size:0.88rem;line-height:1.5;">⚠️ मृत्यू षडाष्टक दोष —<br>विवाह अशुभ</td></tr>
            <tr><td>एकूण</td><td>0</td></tr>`;

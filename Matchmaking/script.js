@@ -107,8 +107,7 @@ const isRule5 =
 if (isRule5) {
     return {
         finalScore: 36,
-        remarks: ["एक नक्षत्र भिन्न चरण,एक राशि भिन्न नक्षत्र किंवा भिन्न राशि एक नक्षत्र असल्यास 
-  : ३६ गुण समजावे."],
+        remarks: ["एक नक्षत्र भिन्न चरण,एक राशि भिन्न नक्षत्र किंवा भिन्न राशि एक नक्षत्र असल्यास ३६ गुण समजावे."],
         scoreDetails: { varna: 1, vashya: 2, tara: 3, yoni: 4, maitri: 5, gana: 6, bhakoot: 7, nadi: 8 },
         vadhuDetails: v,
         varaDetails: b

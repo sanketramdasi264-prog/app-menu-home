@@ -95,7 +95,7 @@ class KundaliGrandMaster {
         const v = this.getDetails(vadhuName);
         const b = this.getDetails(varaName);
         if (!v || !b) return {
-            error: "नावावरून नक्षत्र सापडले नाही. कृपया नावाचे पहिले अक्षर स्पष्ट टाका."
+            error: "नावावरून नक्षत्र सापडले नाही. कृपया नावाचे पहिले अक्षर स्पष्ट/योग्य टाका."
         };
 
         // जुन्या Rule 5 च्या जागी हे वापरा
@@ -107,7 +107,8 @@ const isRule5 =
 if (isRule5) {
     return {
         finalScore: 36,
-        remarks: ["नियम ५: ३६ गुण (पूर्ण मिलन) समजावे."],
+        remarks: ["एक नक्षत्र भिन्न चरण,एक राशि भिन्न नक्षत्र किंवा भिन्न राशि एक नक्षत्र असल्यास 
+  : ३६ गुण समजावे."],
         scoreDetails: { varna: 1, vashya: 2, tara: 3, yoni: 4, maitri: 5, gana: 6, bhakoot: 7, nadi: 8 },
         vadhuDetails: v,
         varaDetails: b
@@ -134,16 +135,16 @@ if (isRule5) {
 
         let remarks = [];
         if (v.gana === "राक्षस" && b.gana === "मनुष्य" && finalScore >= 18) {
-            remarks.push("नियम ४: गण सवलत - विवाह कल्याणप्रद.");
+            remarks.push("वधू राक्षस गणाची व वर मनुष्य गणाचा असून जर (वश्य, तारा, योनि, ग्रहमैत्री, कूट, नाडी) हे शुभ असता विवाह कल्याणप्रद होतो.");
         }
         if (bRes.status === "Neshta") {
-            remarks.push("⚠️ इशारा: नेष्ट भकूट संबंध आढळला!");
+            remarks.push(" मृत्यू षडाष्टक दोष ");
         }
         if (bRes.status === "Shubha") {
-            remarks.push("✅ विशेष: शुभ भकूट - ३ बोनस गुण मिळाले.");
+            remarks.push("✅ शुभ भकूट ");
         }
         if (nadi === 0) {
-            remarks.push("⚠️ इशारा: नाडी दोष आढळला (एकच नाडी)!");
+            remarks.push(" एक नाडी दोष येतो");
         }
 
         return {

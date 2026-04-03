@@ -95,16 +95,21 @@ class KundaliGrandMaster {
             error: "नावावरून नक्षत्र सापडले नाही. कृपया नावाचे पहिले अक्षर स्पष्ट टाका."
         };
 
-        // नियम ५: एकच नक्षत्र, वेगळा चरण
-        if (v.nakName === b.nakName && v.charan !== b.charan) {
-            return {
-                finalScore: 36,
-                remarks: ["नियम ५: एक नक्षत्र भिन्न चरण - ३६ गुण (पूर्ण मिलन)."],
-                scoreDetails: {},
-                vadhuDetails: v,
-                varaDetails: b
-            };
-        }
+        // जुन्या Rule 5 च्या जागी हे वापरा
+const isRule5 = 
+    (v.nakName === b.nakName && v.charan !== b.charan) || // एक नक्षत्र भिन्न चरण
+    (v.rashi === b.rashi && v.nakName !== b.nakName) || // एक राशि भिन्न नक्षत्र
+    (v.rashi !== b.rashi && v.nakName === b.nakName); // भिन्न राशि एक नक्षत्र
+
+if (isRule5) {
+    return {
+        finalScore: 36,
+        remarks: ["नियम ५: ३६ गुण (पूर्ण मिलन) समजावे."],
+        scoreDetails: { varna: 1, vashya: 2, tara: 3, yoni: 4, maitri: 5, gana: 6, bhakoot: 7, nadi: 8 },
+        vadhuDetails: v,
+        varaDetails: b
+    };
+}
 
         const m = this.db.matrices;
 

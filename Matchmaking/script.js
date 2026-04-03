@@ -74,20 +74,22 @@ class KundaliGrandMaster {
             return { pts: 0, bonus: 3, status: "Shubha" };
         }
 
-        // FIX: diff आता वापरतो — index-based calculation
-        const vIdx = this.fullRashi.indexOf(vRashi);
-        const bIdx = this.fullRashi.indexOf(bRashi);
+       // FIX: diff आता वापरतो — index-based calculation
+    const vIdx = this.fullRashi.indexOf(vRashi);
+    const bIdx = this.fullRashi.indexOf(bRashi);
 
-        if (vIdx === -1 || bIdx === -1) return { pts: 0, bonus: 0, status: "Neutral" };
+    if (vIdx === -1 || bIdx === -1) return { pts: 0, bonus: 0, status: "Neutral" };
 
-        const diff = Math.abs(vIdx - bIdx);
-        // 1-7, 2-12, 3-11, 4-10 शुभ bhakoot positions
-       if ([0, 2, 3, 6, 9, 10].includes(diff)) {
-    return { pts: 7, bonus: 0, status: "Good" };
-}
-        }
-        return { pts: 0, bonus: 0, status: "Neutral" };
+    const diff = Math.abs(vIdx - bIdx);
+    
+    // शुभ भकूट पोझिशन्स: ०, २, ३, ६, ९, १०
+    if ([0, 2, 3, 6, 9, 10].includes(diff)) {
+        return { pts: 7, bonus: 0, status: "Good" };
     }
+
+    // जर वरीलपैकी काहीच मॅच झाले नाही, तर हे रिटर्न होईल
+    return { pts: 0, bonus: 0, status: "Neutral" };
+} // <--- हा कंस calculateBhakoot बंद करतो
 
     match(vadhuName, varaName) {
         const v = this.getDetails(vadhuName);

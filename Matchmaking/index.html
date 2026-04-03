@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>गुण मिलन | OmKarmyog</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Cinzel+Decorative:wght@400;700&family=Hind:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --maroon:     #3a0a0a;
@@ -71,7 +71,6 @@
   .field{margin-bottom:14px;}
   .field:last-child{margin-bottom:0;}
 
-  /* INPUTS */
   label { display:block; font-size:0.73rem; color:var(--gold); letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px; }
   input[type="text"] {
     width:100%; background:rgba(20,5,5,0.6); border:1px solid var(--border);
@@ -96,7 +95,7 @@
   select option{background:#3a0a0a;color:var(--text);}
 
   /* BUTTON */
-  .calc-wrap{text-align:center;margin:4px 0 26px;}
+  .calc-wrap{text-align:center;margin:4px 0 26px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
   #calculateBtn {
     background:linear-gradient(135deg,var(--gold) 0%,#a06820 100%);
     border:none; border-radius:50px; color:var(--maroon);
@@ -107,6 +106,16 @@
   }
   #calculateBtn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,147,58,0.5);}
   #calculateBtn:active{transform:translateY(0);}
+
+  #downloadBtn {
+    background:transparent;
+    border:1px solid var(--gold); border-radius:50px; color:var(--gold-lt);
+    font-family:'Tiro Devanagari Hindi',serif; font-size:0.95rem; font-weight:600;
+    padding:13px 28px; cursor:pointer; letter-spacing:0.5px;
+    transition:all 0.2s; display:none; align-items:center; gap:6px;
+  }
+  #downloadBtn:hover{background:rgba(201,147,58,0.12); transform:translateY(-2px);}
+  #downloadBtn.visible{display:inline-flex;}
 
   /* RESULT */
   #resultArea{display:none;animation:fadeUp 0.45s ease;}
@@ -152,6 +161,9 @@
 
   .footer{text-align:center;padding:28px 20px 10px;color:rgba(196,168,130,0.35);font-size:0.72rem;}
   .divider{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 auto 10px;}
+
+  /* Hidden canvas for download */
+  #reportCanvas { display:none; }
 </style>
 </head>
 <body>
@@ -166,24 +178,7 @@
 
   <div class="persons-grid">
 
-    <!-- वधू -->
-    <div class="card">
-      <div class="card-title"><span class="icon">🪷</span><h2>वधू</h2></div>
-      <div class="field">
-        <label>नाव</label>
-        <input type="text" id="brideName" placeholder="वधूचे नाव..." autocomplete="off">
-      </div>
-      <div class="field">
-        <label>नक्षत्र</label>
-        <select id="vadhuNak"></select>
-      </div>
-      <div class="field">
-        <label>राशी</label>
-        <select id="vadhuRashi"></select>
-      </div>
-    </div>
-
-    <!-- वर -->
+    <!-- वर — FIRST -->
     <div class="card">
       <div class="card-title"><span class="icon">🪔</span><h2>वर</h2></div>
       <div class="field">
@@ -200,10 +195,28 @@
       </div>
     </div>
 
+    <!-- वधू — SECOND -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🪷</span><h2>वधू</h2></div>
+      <div class="field">
+        <label>नाव</label>
+        <input type="text" id="brideName" placeholder="वधूचे नाव..." autocomplete="off">
+      </div>
+      <div class="field">
+        <label>नक्षत्र</label>
+        <select id="vadhuNak"></select>
+      </div>
+      <div class="field">
+        <label>राशी</label>
+        <select id="vadhuRashi"></select>
+      </div>
+    </div>
+
   </div>
 
   <div class="calc-wrap">
     <button id="calculateBtn">✨ गुण मोजा</button>
+    <button id="downloadBtn" class="">📄 रिपोर्ट डाउनलोड करा</button>
   </div>
 
   <!-- RESULT -->
@@ -233,10 +246,12 @@
   <div class="footer"><div class="divider"></div>श्री. संकेत रामदासी गुरुजी | OmKarmyog</div>
 </div>
 
+<canvas id="reportCanvas"></canvas>
+
 <script src="script.js" defer></script>
 <script>
 /* ============================================================
-   UI — 2 dropdowns per person, auto-detect + manual override
+   UI — वर आधी, वधू नंतर | handwritten-style download report
    ============================================================ */
 const FULL_RASHI = ["मेष","वृषभ","मिथुन","कर्क","सिंह","कन्या","तुला","वृश्चिक","धनु","मकर","कुंभ","मीन"];
 const PHONETIC_MAP = {
@@ -246,8 +261,11 @@ const PHONETIC_MAP = {
 };
 
 let DB = null;
-// true = user changed nak manually, stop auto-overriding
 const manualNak = { vadhu: false, vara: false };
+
+// Store last result globally for download
+let lastResult = null;
+let lastBride = '', lastGroom = '';
 
 function getFirstChar(name) {
   let n = name.trim();
@@ -266,7 +284,6 @@ function detectNak(name) {
   return null;
 }
 
-/* Build nakshatra <select> — option text: "अश्विनी  (चू, चे, चो, ला)" */
 function buildNakSel(selId) {
   const sel = document.getElementById(selId);
   sel.innerHTML = '<option value="">— नक्षत्र निवडा —</option>';
@@ -279,7 +296,6 @@ function buildNakSel(selId) {
   });
 }
 
-/* Build rashi <select> */
 function buildRashiSel(selId) {
   const sel = document.getElementById(selId);
   sel.innerHTML = '<option value="">— राशी निवडा —</option>';
@@ -290,7 +306,6 @@ function buildRashiSel(selId) {
   });
 }
 
-/* When user manually picks a nakshatra → update rashi to that nak's first pada rashi */
 function onNakChange(nakSelId, rashiSelId, person) {
   manualNak[person] = true;
   const nakId = parseInt(document.getElementById(nakSelId).value);
@@ -299,7 +314,6 @@ function onNakChange(nakSelId, rashiSelId, person) {
   if (nak) document.getElementById(rashiSelId).value = nak.padas[0].rashi;
 }
 
-/* Auto-set from name typing — skipped if user already picked manually */
 function autoDetect(name, nakSelId, rashiSelId, person) {
   if (manualNak[person]) return;
   const res = detectNak(name);
@@ -312,7 +326,6 @@ function autoDetect(name, nakSelId, rashiSelId, person) {
   }
 }
 
-/* Reset manual flag when user clears name and retypes */
 function onNameInput(name, nakSelId, rashiSelId, person) {
   if (name.trim().length === 0) manualNak[person] = false;
   autoDetect(name, nakSelId, rashiSelId, person);
@@ -325,22 +338,325 @@ function verdictInfo(score) {
   return ['विवाह अशुभ 🔴','v-poor'];
 }
 
+function toArabicNumeral(n) {
+  // keep as-is, canvas handles Devanagari fine
+  return n;
+}
+
+/* ============================================================
+   DOWNLOAD — handwritten paper style canvas image
+   ============================================================ */
+function downloadReport() {
+  if (!lastResult) return;
+
+  const res = lastResult;
+  const bride = lastBride;
+  const groom = lastGroom;
+
+  // Canvas size for mobile-friendly vertical A4-ish proportions
+  const W = 900;
+  const canvas = document.getElementById('reportCanvas');
+
+  // Estimate height dynamically
+  const remarkLines = res.remarks || [];
+  const rows = Object.keys(res.scoreDetails || {}).length;
+  const H = 1200 + remarkLines.length * 48 + (rows > 8 ? (rows - 8) * 36 : 0);
+
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // ── BACKGROUND: aged paper white ──
+  const paperGrad = ctx.createLinearGradient(0, 0, W, H);
+  paperGrad.addColorStop(0,   '#fdf8f0');
+  paperGrad.addColorStop(0.3, '#faf4e8');
+  paperGrad.addColorStop(0.7, '#f8f1e2');
+  paperGrad.addColorStop(1,   '#f5edda');
+  ctx.fillStyle = paperGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  // subtle horizontal ruled lines (like paper)
+  ctx.strokeStyle = 'rgba(180,160,120,0.18)';
+  ctx.lineWidth = 1;
+  for (let y = 80; y < H; y += 44) {
+    ctx.beginPath(); ctx.moveTo(40, y); ctx.lineTo(W-40, y); ctx.stroke();
+  }
+
+  // left margin red line
+  ctx.strokeStyle = 'rgba(200,80,80,0.25)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(110, 0); ctx.lineTo(110, H); ctx.stroke();
+
+  // paper texture dots
+  ctx.fillStyle = 'rgba(160,130,80,0.04)';
+  for (let i = 0; i < 400; i++) {
+    const rx = Math.random() * W;
+    const ry = Math.random() * H;
+    ctx.beginPath();
+    ctx.arc(rx, ry, Math.random()*2+0.5, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  // slight edge vignette
+  const vig = ctx.createRadialGradient(W/2, H/2, H*0.3, W/2, H/2, H*0.85);
+  vig.addColorStop(0, 'rgba(0,0,0,0)');
+  vig.addColorStop(1, 'rgba(140,100,40,0.08)');
+  ctx.fillStyle = vig;
+  ctx.fillRect(0, 0, W, H);
+
+  // ── HELPER ──
+  function handLine(x1, y, x2) {
+    // slightly wobbly line
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(80,50,20,0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.moveTo(x1, y);
+    ctx.lineTo(x2, y + (Math.random()-0.5)*2);
+    ctx.stroke();
+  }
+
+  // ── HEADER ──
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#7a3a1a';
+  ctx.font = 'bold 52px "Tiro Devanagari Hindi", serif';
+  ctx.fillText('ॐ', W/2, 80);
+
+  ctx.fillStyle = '#5a2a0a';
+  ctx.font = 'bold 36px "Tiro Devanagari Hindi", serif';
+  ctx.fillText('गुण मिलन पत्रिका', W/2, 128);
+
+  handLine(130, 148, W-130);
+
+  // OmKarmyog watermark (subtle)
+  ctx.save();
+  ctx.globalAlpha = 0.06;
+  ctx.font = 'bold 110px "Cinzel Decorative", serif';
+  ctx.fillStyle = '#8b4513';
+  ctx.textAlign = 'center';
+  ctx.translate(W/2, H/2);
+  ctx.rotate(-0.3);
+  ctx.fillText('OmKarmyog', 0, 0);
+  ctx.restore();
+
+  let y = 178;
+  ctx.textAlign = 'left';
+
+  // ── NAME BOX (वर आधी, वधू नंतर) ──
+  function drawPersonBox(title, name, nakName, charan, rashi, gana, nadi, yoni, boxY) {
+    ctx.fillStyle = 'rgba(120, 60, 10, 0.06)';
+    roundRect(ctx, 130, boxY, W-160, 102, 10);
+    ctx.fill();
+
+    ctx.font = 'bold 22px "Tiro Devanagari Hindi", serif';
+    ctx.fillStyle = '#7a3010';
+    ctx.fillText(title, 150, boxY + 30);
+
+    ctx.font = 'bold 28px "Tiro Devanagari Hindi", serif';
+    ctx.fillStyle = '#2a1a0a';
+    ctx.fillText(name, 150, boxY + 62);
+
+    ctx.font = '18px "Tiro Devanagari Hindi", serif';
+    ctx.fillStyle = '#5a4020';
+    ctx.fillText(`${nakName} नक्षत्र • ${charan} चरण • ${rashi} राशी`, 150, boxY + 88);
+
+    ctx.font = '16px "Tiro Devanagari Hindi", serif';
+    ctx.fillStyle = '#7a6040';
+    ctx.fillText(`गण: ${gana} | नाडी: ${nadi} | योनी: ${yoni}`, 360, boxY + 30);
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+    ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+    ctx.lineTo(x+w,y+h-r);
+    ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    ctx.lineTo(x+r,y+h);
+    ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+    ctx.lineTo(x,y+r);
+    ctx.quadraticCurveTo(x,y,x+r,y);
+    ctx.closePath();
+  }
+
+  const bd = res.varaDetails;   // वर
+  const vd = res.vadhuDetails;  // वधू
+
+  drawPersonBox('🪔 वर', groom,
+    bd.nakName, bd.charan, bd.rashi, bd.gana, bd.nadi, bd.yoni, y);
+  y += 118;
+
+  drawPersonBox('🪷 वधू', bride,
+    vd.nakName, vd.charan, vd.rashi, vd.gana, vd.nadi, vd.yoni, y);
+  y += 130;
+
+  handLine(130, y, W-130);
+  y += 30;
+
+  // ── SCORE TITLE ──
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 26px "Tiro Devanagari Hindi", serif';
+  ctx.fillStyle = '#5a2a0a';
+  ctx.fillText('गुण तक्ता', W/2, y);
+  y += 30;
+
+  // ── SCORE TABLE ──
+  const labels = {
+    varna:"वर्ण", vashya:"वश्य", tara:"तारा", yoni:"योनी",
+    maitri:"ग्रहमैत्री", gana:"गण", bhakoot:"भकूट", nadi:"नाडी"
+  };
+  const maxP = {varna:1,vashya:2,tara:3,yoni:4,maitri:5,gana:6,bhakoot:7,nadi:8};
+
+  ctx.textAlign = 'left';
+  let rowIdx = 0;
+  for (let k in res.scoreDetails) {
+    const val = res.scoreDetails[k];
+    const isEven = rowIdx % 2 === 0;
+
+    if (isEven) {
+      ctx.fillStyle = 'rgba(120,70,20,0.05)';
+      ctx.fillRect(130, y - 22, W - 260, 36);
+    }
+
+    ctx.font = '21px "Tiro Devanagari Hindi", serif';
+    ctx.fillStyle = '#3a2010';
+    ctx.fillText(`${labels[k]}`, 160, y);
+
+    ctx.fillStyle = '#7a5020';
+    ctx.font = '16px "Tiro Devanagari Hindi", serif';
+    ctx.fillText(`/ ${maxP[k]}`, 360, y);
+
+    // dots ...........
+    ctx.fillStyle = 'rgba(120,80,30,0.3)';
+    ctx.font = '18px monospace';
+    ctx.fillText('· · · · · · · · · · · · · · · · · · · ·', 420, y);
+
+    ctx.font = 'bold 22px "Tiro Devanagari Hindi", serif';
+    ctx.fillStyle = '#6b2a0a';
+    ctx.textAlign = 'right';
+    ctx.fillText(String(val), W - 150, y);
+    ctx.textAlign = 'left';
+
+    y += 40;
+    rowIdx++;
+  }
+
+  // Total row
+  handLine(130, y - 4, W - 130);
+  y += 16;
+  ctx.font = 'bold 28px "Tiro Devanagari Hindi", serif';
+  ctx.fillStyle = '#3a1a0a';
+  ctx.textAlign = 'left';
+  ctx.fillText('एकूण गुण', 160, y);
+
+  ctx.font = 'bold 36px "Cinzel Decorative", serif';
+  ctx.fillStyle = '#8b3a0a';
+  ctx.textAlign = 'right';
+  ctx.fillText(`${res.finalScore} / ३६`, W - 140, y);
+  ctx.textAlign = 'left';
+  y += 50;
+
+  // verdict
+  const [verdictText] = verdictInfo(res.finalScore);
+  const cleanVerdict = verdictText.replace(/[✨🌸🔴]/g,'').trim();
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 26px "Tiro Devanagari Hindi", serif';
+  ctx.fillStyle = res.finalScore >= 28 ? '#2a7a2a' : res.finalScore >= 21 ? '#7a5a10' : res.finalScore >= 18 ? '#7a5a10' : '#9a2020';
+  ctx.fillText(`✦ ${cleanVerdict} ✦`, W/2, y);
+  y += 40;
+
+  handLine(130, y, W-130);
+  y += 30;
+
+  // ── REMARKS ──
+  if (remarkLines.length > 0) {
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 22px "Tiro Devanagari Hindi", serif';
+    ctx.fillStyle = '#5a2a0a';
+    ctx.fillText('विशेष नोंदी', W/2, y);
+    y += 32;
+
+    ctx.textAlign = 'left';
+    for (let r of remarkLines) {
+      const clean = r.replace(/[⚠️✅]/g,'').trim();
+      // wrap text
+      const words = clean.split(' ');
+      let line = '';
+      const maxW = W - 280;
+      ctx.font = '19px "Tiro Devanagari Hindi", serif';
+      ctx.fillStyle = '#3a2010';
+
+      // left bullet
+      ctx.fillStyle = '#8b3a0a';
+      ctx.fillText('•', 138, y);
+
+      ctx.fillStyle = '#3a2010';
+      for (let word of words) {
+        const test = line + word + ' ';
+        const tw = ctx.measureText(test).width;
+        if (tw > maxW && line !== '') {
+          ctx.fillText(line, 160, y);
+          line = word + ' ';
+          y += 30;
+        } else {
+          line = test;
+        }
+      }
+      if (line.trim()) { ctx.fillText(line, 160, y); y += 30; }
+      y += 10;
+    }
+    y += 10;
+    handLine(130, y, W-130);
+    y += 20;
+  }
+
+  // ── FOOTER ──
+  y = H - 70;
+  ctx.textAlign = 'center';
+  ctx.font = '18px "Tiro Devanagari Hindi", serif';
+  ctx.fillStyle = 'rgba(100,60,20,0.5)';
+  ctx.fillText('श्री. संकेत रामदासी गुरुजी | OmKarmyog', W/2, y);
+
+  // date
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2,'0');
+  const mm = String(today.getMonth()+1).padStart(2,'0');
+  const yyyy = today.getFullYear();
+  ctx.font = '15px "Tiro Devanagari Hindi", serif';
+  ctx.fillStyle = 'rgba(100,60,20,0.35)';
+  ctx.fillText(`दिनांक: ${dd}/${mm}/${yyyy}`, W/2, y+28);
+
+  // download
+  const link = document.createElement('a');
+  link.download = `GunMilan_${groom}_${bride}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+/* ============================================================
+   CALCULATE
+   ============================================================ */
 function calculate() {
   const bride = document.getElementById('brideName').value.trim();
   const groom = document.getElementById('groomName').value.trim();
-  if (!bride||!groom) { alert("कृपया वधू आणि वराचे नाव टाका!"); return; }
+  if (!bride||!groom) { alert("कृपया वर आणि वधूचे नाव टाका!"); return; }
   if (!engine)        { alert("सिस्टिम लोड होत आहे..."); return; }
 
-  const vNakId = parseInt(document.getElementById('vadhuNak').value);
-  const vRashi = document.getElementById('vadhuRashi').value;
-  const bNakId = parseInt(document.getElementById('varaaNak').value);
+  const bNakId = parseInt(document.getElementById('varaaNak').value);  // वर
   const bRashi = document.getElementById('varaRashi').value;
+  const vNakId = parseInt(document.getElementById('vadhuNak').value);  // वधू
+  const vRashi = document.getElementById('vadhuRashi').value;
 
-  if (!vNakId||!vRashi) { alert("वधूचे नक्षत्र व राशी निवडा!"); return; }
   if (!bNakId||!bRashi) { alert("वराचे नक्षत्र व राशी निवडा!"); return; }
+  if (!vNakId||!vRashi) { alert("वधूचे नक्षत्र व राशी निवडा!"); return; }
 
   const vNak = DB.nakshatras.find(n=>n.id===vNakId);
   const bNak = DB.nakshatras.find(n=>n.id===bNakId);
+
+  function getFirstChar(name) {
+    let n = name.trim();
+    for (let k of Object.keys(PHONETIC_MAP).sort((a,b)=>b.length-a.length))
+      if (n.startsWith(k)) return PHONETIC_MAP[k];
+    return n.substring(0,2);
+  }
 
   function makePerson(nak, rashi, name) {
     const char = getFirstChar(name);
@@ -351,8 +667,8 @@ function calculate() {
     return { ...pada, rashi, nakID:nak.id, yoni:nak.yoni, gana:nak.gana, nadi:nak.nadi, nakName:nak.name, charan:pada.char };
   }
 
-  const vObj = makePerson(vNak, vRashi, bride);
-  const bObj = makePerson(bNak, bRashi, groom);
+  const vObj = makePerson(vNak, vRashi, bride);  // वधू
+  const bObj = makePerson(bNak, bRashi, groom);  // वर
 
   const origGet = engine.getDetails.bind(engine);
   engine.getDetails = (name) => (name===bride ? vObj : bObj);
@@ -363,8 +679,14 @@ function calculate() {
   if (!res.varaDetails)  res.varaDetails  = bObj;
   if (res.error) { alert(res.error); return; }
 
+  // Save for download
+  lastResult = res;
+  lastBride  = bride;
+  lastGroom  = groom;
+
   // Show result
   document.getElementById('resultArea').style.display = 'block';
+  document.getElementById('downloadBtn').classList.add('visible');
   setTimeout(()=>document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'start'}),80);
 
   document.getElementById('finalScore').textContent = res.finalScore;
@@ -383,14 +705,14 @@ function calculate() {
   const vd=res.vadhuDetails, bd=res.varaDetails;
   document.getElementById('nakInfo').innerHTML = `
     <div class="nak-row">
-      <div class="who">🪷 वधू — ${bride}</div>
-      <div class="val">${vd.nakName} • ${vd.charan} चरण</div>
-      <div class="sub">राशी: ${vd.rashi} | गण: ${vd.gana} | नाडी: ${vd.nadi} | योनी: ${vd.yoni}</div>
-    </div>
-    <div class="nak-row">
       <div class="who">🪔 वर — ${groom}</div>
       <div class="val">${bd.nakName} • ${bd.charan} चरण</div>
       <div class="sub">राशी: ${bd.rashi} | गण: ${bd.gana} | नाडी: ${bd.nadi} | योनी: ${bd.yoni}</div>
+    </div>
+    <div class="nak-row">
+      <div class="who">🪷 वधू — ${bride}</div>
+      <div class="val">${vd.nakName} • ${vd.charan} चरण</div>
+      <div class="sub">राशी: ${vd.rashi} | गण: ${vd.gana} | नाडी: ${vd.nadi} | योनी: ${vd.yoni}</div>
     </div>`;
 
   const rc = document.getElementById('remarksCard');
@@ -414,6 +736,7 @@ function initUI() {
   document.getElementById('varaaNak').addEventListener('change', ()=>onNakChange('varaaNak','varaRashi','vara'));
 
   document.getElementById('calculateBtn').addEventListener('click', calculate);
+  document.getElementById('downloadBtn').addEventListener('click', downloadReport);
 }
 
 const wait = setInterval(()=>{

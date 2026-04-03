@@ -30,16 +30,9 @@
     padding-bottom: 60px;
   }
   .header { text-align:center; padding:32px 20px 20px; }
-  .header::after {
-    content:''; display:block; width:180px; height:1px;
-    background:linear-gradient(90deg,transparent,var(--gold),transparent);
-    margin:16px auto 0;
-  }
+  .header::after { content:''; display:block; width:180px; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:16px auto 0; }
   .om { font-size:2.2rem; color:var(--gold-lt); display:block; animation:glow 3s ease-in-out infinite; }
-  @keyframes glow {
-    0%,100%{text-shadow:0 0 18px rgba(232,184,75,0.4);}
-    50%{text-shadow:0 0 32px rgba(232,184,75,0.8);}
-  }
+  @keyframes glow { 0%,100%{text-shadow:0 0 18px rgba(232,184,75,0.4);} 50%{text-shadow:0 0 32px rgba(232,184,75,0.8);} }
   .header h1 { font-family:'Cinzel Decorative',serif; font-size:clamp(1rem,4vw,1.6rem); color:var(--gold-lt); letter-spacing:2px; margin-top:4px; }
   .header p { color:var(--text-dim); font-size:0.85rem; margin-top:5px; }
   .container { max-width:700px; margin:0 auto; padding:0 16px; }
@@ -60,12 +53,21 @@
   select { width:100%; background:rgba(20,5,5,0.6); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Tiro Devanagari Hindi',serif; font-size:0.92rem; padding:10px 32px 10px 12px; outline:none; appearance:none; -webkit-appearance:none; cursor:pointer; transition:border-color 0.2s,box-shadow 0.2s; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c9933a' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; background-color:rgba(20,5,5,0.6); }
   select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,147,58,0.15);}
   select option{background:#3a0a0a;color:var(--text);}
-  .calc-wrap{text-align:center;margin:4px 0 26px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-  #calculateBtn { background:linear-gradient(135deg,var(--gold) 0%,#a06820 100%); border:none; border-radius:50px; color:var(--maroon); font-family:'Tiro Devanagari Hindi',serif; font-size:1.05rem; font-weight:700; padding:13px 50px; cursor:pointer; letter-spacing:1px; box-shadow:0 4px 20px rgba(201,147,58,0.35); transition:transform 0.2s,box-shadow 0.2s; }
+
+  /* ── BUTTONS ── */
+  .calc-wrap{text-align:center;margin:4px 0 26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  #calculateBtn { background:linear-gradient(135deg,var(--gold) 0%,#a06820 100%); border:none; border-radius:50px; color:var(--maroon); font-family:'Tiro Devanagari Hindi',serif; font-size:1.05rem; font-weight:700; padding:13px 46px; cursor:pointer; letter-spacing:1px; box-shadow:0 4px 20px rgba(201,147,58,0.35); transition:transform 0.2s,box-shadow 0.2s; }
   #calculateBtn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,147,58,0.5);}
-  #downloadBtn { background:transparent; border:1px solid var(--gold); border-radius:50px; color:var(--gold-lt); font-family:'Tiro Devanagari Hindi',serif; font-size:0.95rem; font-weight:600; padding:13px 28px; cursor:pointer; transition:all 0.2s; display:none; align-items:center; gap:6px; }
-  #downloadBtn:hover{background:rgba(201,147,58,0.12);transform:translateY(-2px);}
-  #downloadBtn.visible{display:inline-flex;}
+
+  .icon-btn { background:transparent; border:1px solid var(--border); border-radius:50px; color:var(--gold-lt); font-family:'Tiro Devanagari Hindi',serif; font-size:0.9rem; font-weight:600; padding:11px 22px; cursor:pointer; transition:all 0.2s; display:none; align-items:center; gap:6px; }
+  .icon-btn:hover{background:rgba(201,147,58,0.12);transform:translateY(-2px);}
+  .icon-btn.visible{display:inline-flex;}
+
+  /* WhatsApp btn green accent */
+  #whatsappBtn { border-color:rgba(37,211,102,0.45); color:#25d366; }
+  #whatsappBtn:hover { background:rgba(37,211,102,0.1); border-color:rgba(37,211,102,0.7); }
+
+  /* ── RESULT ── */
   #resultArea{display:none;animation:fadeUp 0.45s ease;}
   .score-hero { text-align:center; padding:28px 20px 24px; background:var(--glass); border:1px solid var(--border); border-radius:14px; margin-bottom:14px; }
   .score-label{font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;}
@@ -93,53 +95,41 @@
 
   /* ── SUMMARY ── */
   .summary-section{ margin-bottom:16px; animation:fadeUp 0.5s ease 0.1s both; }
-  .summary-box{
-    border-radius:14px;
-    padding:0;
-    background:linear-gradient(135deg,rgba(70,15,5,0.75) 0%,rgba(50,8,25,0.65) 100%);
-    border:2px solid rgba(255,255,255,0.6);
-    box-shadow:0 0 28px rgba(201,147,58,0.22), inset 0 1px 0 rgba(255,255,255,0.12);
-    overflow:hidden;
-  }
-
-  /* Title bar — white border वर bold big centre text */
-  .summary-title-bar{
-    text-align:center;
-    padding:15px 20px 13px;
-    border-bottom:1px solid rgba(201,147,58,0.35);
-    background:rgba(0,0,0,0.22);
-  }
-  .summary-title-bar h3{
-    font-family:'Tiro Devanagari Hindi',serif;
-    font-size:1.3rem;
-    font-weight:700;
-    color:#ffffff;
-    letter-spacing:1px;
-    text-shadow:0 0 20px rgba(232,184,75,0.6), 0 2px 4px rgba(0,0,0,0.7);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-  }
-
+  .summary-box{ border-radius:14px; padding:0; background:linear-gradient(135deg,rgba(70,15,5,0.75) 0%,rgba(50,8,25,0.65) 100%); border:2px solid rgba(255,255,255,0.6); box-shadow:0 0 28px rgba(201,147,58,0.22), inset 0 1px 0 rgba(255,255,255,0.12); overflow:hidden; }
+  .summary-title-bar{ text-align:center; padding:15px 20px 13px; border-bottom:1px solid rgba(201,147,58,0.35); background:rgba(0,0,0,0.22); }
+  .summary-title-bar h3{ font-family:'Tiro Devanagari Hindi',serif; font-size:1.3rem; font-weight:700; color:#ffffff; letter-spacing:1px; text-shadow:0 0 20px rgba(232,184,75,0.6), 0 2px 4px rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; gap:8px; }
   .summary-body{ padding:16px 18px 18px; }
-
-  .summary-item{
-    display:flex; align-items:flex-start; gap:10px;
-    border-radius:10px; padding:11px 14px; margin-bottom:8px;
-    border-left:3px solid var(--gold-lt);
-    background:rgba(0,0,0,0.28);
-  }
+  .summary-item{ display:flex; align-items:flex-start; gap:10px; border-radius:10px; padding:11px 14px; margin-bottom:8px; border-left:3px solid var(--gold-lt); background:rgba(0,0,0,0.28); }
   .summary-item:last-child{margin-bottom:0;}
   .summary-item.warn{ border-left-color:#f08080; background:rgba(140,20,20,0.25); }
   .summary-item.good{ border-left-color:#7ef09a; background:rgba(20,90,20,0.22); }
   .summary-item.info{ border-left-color:var(--gold-lt); background:rgba(60,28,5,0.32); }
   .summary-icon{ font-size:1.05rem; flex-shrink:0; margin-top:2px; }
   .summary-text{ font-size:0.9rem; line-height:1.6; color:var(--text); }
-  .summary-empty{
-    text-align:center; color:#7ef09a; font-size:0.92rem; padding:6px 0;
-    display:flex; align-items:center; justify-content:center; gap:8px;
-  }
+  .summary-empty{ text-align:center; color:#7ef09a; font-size:0.92rem; padding:6px 0; display:flex; align-items:center; justify-content:center; gap:8px; }
+
+  /* ── HISTORY SECTION ── */
+  #historySection { display:none; margin-bottom:24px; animation:fadeUp 0.4s ease; }
+  .history-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .history-header h3 { font-size:0.82rem; color:var(--gold); text-transform:uppercase; letter-spacing:1.5px; }
+  .history-clear { background:transparent; border:none; color:rgba(240,128,128,0.6); font-size:0.75rem; cursor:pointer; font-family:'Tiro Devanagari Hindi',serif; padding:4px 8px; border-radius:6px; transition:color 0.2s,background 0.2s; }
+  .history-clear:hover { color:#f08080; background:rgba(240,128,128,0.1); }
+  #historyList { display:flex; flex-direction:column; gap:9px; }
+  .hist-item { background:rgba(60,10,10,0.55); border:1px solid var(--border); border-radius:11px; padding:13px 15px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; transition:border-color 0.2s; }
+  .hist-item:hover { border-color:rgba(201,147,58,0.6); }
+  .hist-names { flex:1; min-width:160px; }
+  .hist-groom { font-size:0.92rem; color:var(--text); }
+  .hist-sep { color:var(--text-dim); margin:0 4px; font-size:0.8rem; }
+  .hist-bride { font-size:0.92rem; color:var(--text); }
+  .hist-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .hist-score { font-family:'Cinzel Decorative',serif; font-size:1rem; font-weight:700; }
+  .hist-verdict { font-size:0.72rem; color:var(--text-dim); background:rgba(0,0,0,0.25); padding:2px 8px; border-radius:20px; }
+  .hist-date { font-size:0.68rem; color:rgba(196,168,130,0.45); }
+  .hist-actions { display:flex; gap:6px; }
+  .hist-btn { background:rgba(201,147,58,0.12); border:1px solid var(--border); border-radius:7px; color:var(--gold-lt); font-family:'Tiro Devanagari Hindi',serif; font-size:0.75rem; padding:5px 11px; cursor:pointer; transition:background 0.2s; }
+  .hist-btn:hover { background:rgba(201,147,58,0.25); }
+  .hist-del { background:rgba(200,50,50,0.1); border-color:rgba(200,80,80,0.3); color:#f08080; }
+  .hist-del:hover { background:rgba(200,50,50,0.25); }
 
   .footer{text-align:center;padding:28px 20px 10px;color:rgba(196,168,130,0.35);font-size:0.72rem;}
   .divider{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 auto 10px;}
@@ -155,6 +145,17 @@
 </div>
 
 <div class="container">
+
+  <!-- ── HISTORY (top, above form) ── -->
+  <div id="historySection">
+    <div class="history-header">
+      <h3>🕐 मागील गुण मिलन</h3>
+      <button class="history-clear" onclick="clearAllHistory()">सर्व मिटवा</button>
+    </div>
+    <div id="historyList"></div>
+  </div>
+
+  <!-- ── FORM ── -->
   <div class="persons-grid">
     <div class="card">
       <div class="card-title"><span class="icon">🪔</span><h2>वर</h2></div>
@@ -172,12 +173,12 @@
 
   <div class="calc-wrap">
     <button id="calculateBtn">✨ गुण मोजा</button>
-    <button id="downloadBtn">📄 रिपोर्ट डाउनलोड करा</button>
+    <button id="whatsappBtn"  class="icon-btn">📲 WhatsApp वर शेअर करा</button>
+    <button id="downloadBtn"  class="icon-btn">📄 रिपोर्ट डाउनलोड करा</button>
   </div>
 
+  <!-- ── RESULTS ── -->
   <div id="resultArea">
-
-    <!-- 1. SCORE HERO -->
     <div class="score-hero">
       <div class="score-label">अष्टकूट गुण मिलन</div>
       <div class="score-number" id="finalScore">—</div>
@@ -185,19 +186,13 @@
       <div class="score-verdict" id="scoreVerdict"></div>
     </div>
 
-    <!-- 2. SUMMARY — score-hero च्या लगेच खाली, two-col च्या वर -->
     <div class="summary-section" id="summarySection" style="display:none">
       <div class="summary-box">
-        <div class="summary-title-bar">
-          <h3>📋 सारांश निकाल</h3>
-        </div>
-        <div class="summary-body">
-          <div id="summaryItems"></div>
-        </div>
+        <div class="summary-title-bar"><h3>📋 सारांश निकाल</h3></div>
+        <div class="summary-body"><div id="summaryItems"></div></div>
       </div>
     </div>
 
-    <!-- 3. TWO-COL -->
     <div class="two-col">
       <div class="result-card">
         <h3>📊 अष्टकूट गुण</h3>
@@ -208,7 +203,6 @@
         <div id="nakInfo"></div>
       </div>
     </div>
-
   </div>
 
   <div class="footer"><div class="divider"></div>OmKarmyog Match Making</div>
@@ -218,6 +212,9 @@
 
 <script src="script.js" defer></script>
 <script>
+// ─────────────────────────────────────────
+// CONSTANTS / HELPERS
+// ─────────────────────────────────────────
 const FULL_RASHI = ["मेष","वृषभ","मिथुन","कर्क","सिंह","कन्या","तुला","वृश्चिक","धनु","मकर","कुंभ","मीन"];
 const PHONETIC_MAP = {
   "प्र":"पा","प्री":"पी","सं":"सा","स्मि":"सा","वै":"वे","श्र":"शे",
@@ -226,7 +223,7 @@ const PHONETIC_MAP = {
 };
 
 let DB = null;
-const manualNak = { vadhu: false, vara: false };
+const manualNak = { vadhu:false, vara:false };
 let lastResult = null, lastBride = '', lastGroom = '';
 
 function getFirstChar(name) {
@@ -235,17 +232,15 @@ function getFirstChar(name) {
     if (n.startsWith(k)) return PHONETIC_MAP[k];
   return n.substring(0,2);
 }
-
 function detectNak(name) {
-  if (!DB || !name.trim()) return null;
+  if (!DB||!name.trim()) return null;
   let char = getFirstChar(name);
   for (let nak of DB.nakshatras) {
     let pada = nak.padas.find(p=>p.char===char) || nak.padas.find(p=>p.char===char.charAt(0));
-    if (pada) return {nak, pada};
+    if (pada) return {nak,pada};
   }
   return null;
 }
-
 function buildNakSel(selId) {
   const sel = document.getElementById(selId);
   sel.innerHTML = '<option value="">— नक्षत्र निवडा —</option>';
@@ -257,7 +252,6 @@ function buildNakSel(selId) {
     sel.appendChild(opt);
   });
 }
-
 function buildRashiSel(selId) {
   const sel = document.getElementById(selId);
   sel.innerHTML = '<option value="">— राशी निवडा —</option>';
@@ -267,7 +261,6 @@ function buildRashiSel(selId) {
     sel.appendChild(opt);
   });
 }
-
 function onNakChange(nakSelId, rashiSelId, person) {
   manualNak[person] = true;
   const nakId = parseInt(document.getElementById(nakSelId).value);
@@ -275,7 +268,6 @@ function onNakChange(nakSelId, rashiSelId, person) {
   const nak = DB.nakshatras.find(n=>n.id===nakId);
   if (nak) document.getElementById(rashiSelId).value = nak.padas[0].rashi;
 }
-
 function autoDetect(name, nakSelId, rashiSelId, person) {
   if (manualNak[person]) return;
   const res = detectNak(name);
@@ -287,74 +279,65 @@ function autoDetect(name, nakSelId, rashiSelId, person) {
     document.getElementById(rashiSelId).value = '';
   }
 }
-
 function onNameInput(name, nakSelId, rashiSelId, person) {
-  if (name.trim().length === 0) manualNak[person] = false;
+  if (name.trim().length===0) manualNak[person] = false;
   autoDetect(name, nakSelId, rashiSelId, person);
 }
-
 function verdictInfo(score) {
-  if (score>=28) return ['अत्यंत उत्तम मिलन','v-excellent'];
-  if (score>=21) return ['उत्तम मिलन','v-good'];
-  if (score>=18) return ['सामान्य मिलन','v-average'];
-  return ['विवाह अशुभ','v-poor'];
+  if (score>=28) return ['अत्यंत उत्तम मिलन','v-excellent','#7ef09a'];
+  if (score>=21) return ['उत्तम मिलन','v-good','#e8c87a'];
+  if (score>=18) return ['सामान्य मिलन','v-average','#e8c87a'];
+  return ['विवाह अशुभ','v-poor','#f08080'];
 }
-
 function classifyRemark(r) {
-  if (r.includes('दोष') || r.includes('अशुभ') || r.includes('नेष्ट') || r.includes('षडाष्टक') || r.includes('मृत्यू')) return 'warn';
-  if (r.includes('शुभ') || r.includes('उत्तम') || r.includes('कल्याण')) return 'good';
+  if (r.includes('दोष')||r.includes('अशुभ')||r.includes('नेष्ट')||r.includes('षडाष्टक')||r.includes('मृत्यू')) return 'warn';
+  if (r.includes('शुभ')||r.includes('उत्तम')||r.includes('कल्याण')) return 'good';
   return 'info';
 }
-function iconFor(cls) {
-  return cls === 'warn' ? '⚠️' : cls === 'good' ? '✅' : 'ℹ️';
-}
+function iconFor(cls){ return cls==='warn'?'⚠️':cls==='good'?'✅':'ℹ️'; }
 
 function renderSummary(remarks) {
   const ss = document.getElementById('summarySection');
   const si = document.getElementById('summaryItems');
   ss.style.display = 'block';
-  if (remarks && remarks.length) {
+  if (remarks&&remarks.length) {
     si.innerHTML = remarks.map(r => {
       const clean = r.replace(/[⚠️✅ℹ️]/g,'').trim();
       const cls = classifyRemark(clean);
-      return `<div class="summary-item ${cls}">
-        <span class="summary-icon">${iconFor(cls)}</span>
-        <span class="summary-text">${clean}</span>
-      </div>`;
+      return `<div class="summary-item ${cls}"><span class="summary-icon">${iconFor(cls)}</span><span class="summary-text">${clean}</span></div>`;
     }).join('');
   } else {
     si.innerHTML = `<div class="summary-empty">✅ <span>कोणताही विशेष दोष आढळला नाही — मिलन सुरळीत आहे.</span></div>`;
   }
 }
 
-/* ── DOWNLOAD ── */
-function downloadReport() {
-  if (!lastResult) return;
-  const res = lastResult;
-  const bride = lastBride;
-  const groom = lastGroom;
+// ─────────────────────────────────────────
+// CANVAS REPORT GENERATOR
+// (shared by Download + WhatsApp)
+// ─────────────────────────────────────────
+function buildReportCanvas(res, bride, groom) {
   const bd = res.varaDetails;
   const vd = res.vadhuDetails;
-
-  const W = 900;
-  const remarkLines = (res.remarks || []).filter(r => r.trim());
-  const H = 1380 + remarkLines.length * 56;
+  const W  = 900;
+  const remarkLines = (res.remarks||[]).filter(r=>r.trim());
+  const H  = 1380 + remarkLines.length * 56;
 
   const canvas = document.getElementById('reportCanvas');
-  canvas.width = W; canvas.height = H;
+  canvas.width  = W;
+  canvas.height = H;
   const ctx = canvas.getContext('2d');
 
+  // Paper background
   const paperGrad = ctx.createLinearGradient(0,0,W,H);
   paperGrad.addColorStop(0,'#fdf9f1'); paperGrad.addColorStop(0.5,'#faf4e6'); paperGrad.addColorStop(1,'#f6eedd');
   ctx.fillStyle = paperGrad; ctx.fillRect(0,0,W,H);
 
+  // Lined paper
   ctx.strokeStyle='rgba(170,140,90,0.14)'; ctx.lineWidth=1;
   for(let y=100;y<H;y+=46){ctx.beginPath();ctx.moveTo(30,y);ctx.lineTo(W-30,y);ctx.stroke();}
-
   ctx.strokeStyle='rgba(200,70,70,0.22)'; ctx.lineWidth=1.5;
   ctx.beginPath();ctx.moveTo(108,0);ctx.lineTo(108,H);ctx.stroke();
   ctx.beginPath();ctx.moveTo(W-108,0);ctx.lineTo(W-108,H);ctx.stroke();
-
   ctx.fillStyle='rgba(130,100,50,0.025)';
   for(let i=0;i<250;i++){ctx.beginPath();ctx.arc(Math.random()*W,Math.random()*H,Math.random()*2+0.5,0,Math.PI*2);ctx.fill();}
 
@@ -370,7 +353,7 @@ function downloadReport() {
   const CL=118,CLW=218,CM=356,CMW=188,CR=564,CRW=218,ROW_H=56;
   const ASHTAKUT=[{key:'varna',label:'वर्ण गुण'},{key:'vashya',label:'वश्य गुण'},{key:'tara',label:'तारा गुण'},{key:'yoni',label:'योनी गुण'},{key:'maitri',label:'ग्रहमैत्री'},{key:'gana',label:'गण गुण'},{key:'bhakoot',label:'भकूट गुण'},{key:'nadi',label:'नाडी गुण'}];
   const INFO_ROWS=[{label:'नक्षत्र',v:d=>d.nakName},{label:'चरण',v:d=>d.charan+' चरण'},{label:'नाडी',v:d=>d.nadi},{label:'योनी',v:d=>d.yoni},{label:'गण',v:d=>d.gana},{label:'राशी',v:d=>d.rashi}];
-  const totalRows=ASHTAKUT.length;
+  const totalRows = ASHTAKUT.length;
 
   let Y=180;
   rRect(CL-6,Y,CLW+12,totalRows*ROW_H+100,8,'rgba(120,60,10,0.05)');
@@ -429,10 +412,63 @@ function downloadReport() {
   const today=new Date();const dd=String(today.getDate()).padStart(2,'0');const mm2=String(today.getMonth()+1).padStart(2,'0');const yyyy=today.getFullYear();
   ctx.font='14px "Tiro Devanagari Hindi",serif';ctx.fillStyle='rgba(100,60,20,0.38)';ctx.fillText(`दिनांक: ${dd}/${mm2}/${yyyy}`,W/2,FY+64);
 
-  const link=document.createElement('a');link.download=`GunMilan_${groom}_${bride}.png`;link.href=canvas.toDataURL('image/png');link.click();
+  return canvas;
 }
 
-/* ── CALCULATE ── */
+// ─────────────────────────────────────────
+// DOWNLOAD
+// ─────────────────────────────────────────
+function downloadReport() {
+  if (!lastResult) return;
+  const canvas = buildReportCanvas(lastResult, lastBride, lastGroom);
+  const link = document.createElement('a');
+  link.download = `GunMilan_${lastGroom}_${lastBride}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ─────────────────────────────────────────
+// WHATSAPP SHARE
+// ─────────────────────────────────────────
+async function shareOnWhatsApp() {
+  if (!lastResult) { alert("आधी गुण मोजा!"); return; }
+
+  // Build canvas fresh (or reuse cached)
+  const canvas = buildReportCanvas(lastResult, lastBride, lastGroom);
+  const [verdict] = verdictInfo(lastResult.finalScore);
+  const text = `🪔 ${lastGroom} × 🪷 ${lastBride}\n✨ अष्टकूट गुण: ${lastResult.finalScore}/३६\n🎯 ${verdict}\n\nOmKarmyog वर तुमचेही गुण मोजा!`;
+
+  // Mobile: native share with image file
+  if (navigator.canShare) {
+    canvas.toBlob(async blob => {
+      const file = new File([blob], `GunMilan_${lastGroom}_${lastBride}.png`, {type:'image/png'});
+      if (navigator.canShare({files:[file]})) {
+        try {
+          await navigator.share({files:[file], title:'गुण मिलन', text});
+          return;
+        } catch(e) { /* user cancelled or error — fallback */ }
+      }
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }, 'image/png');
+  } else {
+    // Desktop: download image first, then open WhatsApp web with text
+    canvas.toBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      const a   = document.createElement('a');
+      a.href    = url;
+      a.download = `GunMilan_${lastGroom}_${lastBride}.png`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }, 'image/png');
+    setTimeout(() => {
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }, 900);
+  }
+}
+
+// ─────────────────────────────────────────
+// CALCULATE
+// ─────────────────────────────────────────
 function calculate() {
   const bride = document.getElementById('brideName').value.trim();
   const groom = document.getElementById('groomName').value.trim();
@@ -440,9 +476,9 @@ function calculate() {
   if (!engine)        { alert("सिस्टिम लोड होत आहे..."); return; }
 
   const bNakId = parseInt(document.getElementById('varaaNak').value);
-  const bRashi = document.getElementById('varaRashi').value;
-  const vNakId = parseInt(document.getElementById('vadhuNak').value);
-  const vRashi = document.getElementById('vadhuRashi').value;
+  const bRashi  = document.getElementById('varaRashi').value;
+  const vNakId  = parseInt(document.getElementById('vadhuNak').value);
+  const vRashi  = document.getElementById('vadhuRashi').value;
   if (!bNakId||!bRashi) { alert("वराचे नक्षत्र व राशी निवडा!"); return; }
   if (!vNakId||!vRashi) { alert("वधूचे नक्षत्र व राशी निवडा!"); return; }
 
@@ -455,7 +491,7 @@ function calculate() {
               || nak.padas.find(p=>p.char===char.charAt(0))
               || nak.padas.find(p=>p.rashi===rashi)
               || nak.padas[0];
-    return { ...pada, rashi, nakID:nak.id, yoni:nak.yoni, gana:nak.gana, nadi:nak.nadi, nakName:nak.name, charan:pada.char };
+    return {...pada, rashi, nakID:nak.id, yoni:nak.yoni, gana:nak.gana, nadi:nak.nadi, nakName:nak.name, charan:pada.char};
   }
 
   const vObj = makePerson(vNak, vRashi, bride);
@@ -470,17 +506,17 @@ function calculate() {
 
   lastResult = res; lastBride = bride; lastGroom = groom;
 
-  // ── Special score overrides ──
-  const hasShubhBhakoot = res.remarks && res.remarks.some(r => r.includes('शुभ भकूट'));
-  const hasMrutyuDosh   = res.remarks && res.remarks.some(r =>
-    r.includes('षडाष्टक') || r.includes('मृत्यू') || r.includes('Neshta'));
-
+  // Special score overrides
+  const hasShubhBhakoot = res.remarks && res.remarks.some(r=>r.includes('शुभ भकूट'));
+  const hasMrutyuDosh   = res.remarks && res.remarks.some(r=>r.includes('षडाष्टक')||r.includes('मृत्यू')||r.includes('Neshta'));
   let displayScore = res.finalScore;
   if (hasShubhBhakoot) displayScore = 36;
   if (hasMrutyuDosh)   displayScore = 0;
 
+  // Show results
   document.getElementById('resultArea').style.display = 'block';
   document.getElementById('downloadBtn').classList.add('visible');
+  document.getElementById('whatsappBtn').classList.add('visible');
   setTimeout(()=>document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'start'}),80);
 
   document.getElementById('finalScore').textContent = displayScore;
@@ -488,7 +524,7 @@ function calculate() {
   const vEl = document.getElementById('scoreVerdict');
   vEl.textContent = vText; vEl.className = 'score-verdict '+vCls;
 
-  // Score table — override असताना simplified दाखवा
+  // Score table
   const labels={varna:"वर्ण",vashya:"वश्य",tara:"तारा",yoni:"योनी",maitri:"ग्रहमैत्री",gana:"गण",bhakoot:"भकूट",nadi:"नाडी"};
   let tbl = '';
   if (hasShubhBhakoot) {
@@ -518,22 +554,37 @@ function calculate() {
     </div>`;
 
   renderSummary(res.remarks);
+
+  // ── Save to history ──
+  const today = new Date();
+  const dateStr = `${String(today.getDate()).padStart(2,'0')}/${String(today.getMonth()+1).padStart(2,'0')}/${today.getFullYear()}`;
+  if (typeof saveToHistory === 'function') {
+    saveToHistory({groom, bride, score: displayScore, date: dateStr});
+  }
 }
 
+// ─────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────
 function initUI() {
   buildNakSel('vadhuNak'); buildNakSel('varaaNak');
   buildRashiSel('vadhuRashi'); buildRashiSel('varaRashi');
-  document.getElementById('brideName').addEventListener('input',e=>onNameInput(e.target.value,'vadhuNak','vadhuRashi','vadhu'));
-  document.getElementById('groomName').addEventListener('input',e=>onNameInput(e.target.value,'varaaNak','varaRashi','vara'));
-  document.getElementById('vadhuNak').addEventListener('change',()=>onNakChange('vadhuNak','vadhuRashi','vadhu'));
-  document.getElementById('varaaNak').addEventListener('change',()=>onNakChange('varaaNak','varaRashi','vara'));
-  document.getElementById('calculateBtn').addEventListener('click',calculate);
-  document.getElementById('downloadBtn').addEventListener('click',downloadReport);
+  document.getElementById('brideName').addEventListener('input', e=>onNameInput(e.target.value,'vadhuNak','vadhuRashi','vadhu'));
+  document.getElementById('groomName').addEventListener('input', e=>onNameInput(e.target.value,'varaaNak','varaRashi','vara'));
+  document.getElementById('vadhuNak').addEventListener('change', ()=>onNakChange('vadhuNak','vadhuRashi','vadhu'));
+  document.getElementById('varaaNak').addEventListener('change', ()=>onNakChange('varaaNak','varaRashi','vara'));
+  document.getElementById('calculateBtn').addEventListener('click', calculate);
+  document.getElementById('downloadBtn').addEventListener('click', downloadReport);
+  document.getElementById('whatsappBtn').addEventListener('click', shareOnWhatsApp);
 }
 
-const wait=setInterval(()=>{
-  if(typeof engine!=='undefined'&&engine&&engine.db){DB=engine.db;clearInterval(wait);initUI();}
-},100);
+const wait = setInterval(()=>{
+  if (typeof engine!=='undefined'&&engine&&engine.db) {
+    DB = engine.db;
+    clearInterval(wait);
+    initUI();
+  }
+}, 100);
 </script>
 </body>
 </html>

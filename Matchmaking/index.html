@@ -91,25 +91,39 @@
   .nak-row .val{font-size:0.92rem;color:var(--text);margin-top:3px;}
   .nak-row .sub{font-size:0.73rem;color:var(--text-dim);margin-top:2px;line-height:1.5;}
 
-  /* ── SUMMARY HIGHLIGHT ── */
+  /* ── SUMMARY ── */
   .summary-section{ margin-bottom:16px; animation:fadeUp 0.5s ease 0.1s both; }
   .summary-box{
-    border-radius:14px; padding:18px 20px;
+    border-radius:14px;
+    padding:0;
     background:linear-gradient(135deg,rgba(70,15,5,0.75) 0%,rgba(50,8,25,0.65) 100%);
-    border:1px solid var(--gold);
-    box-shadow:0 0 22px rgba(201,147,58,0.2), inset 0 1px 0 rgba(232,184,75,0.12);
-    position:relative; overflow:hidden;
+    border:2px solid rgba(255,255,255,0.6);
+    box-shadow:0 0 28px rgba(201,147,58,0.22), inset 0 1px 0 rgba(255,255,255,0.12);
+    overflow:hidden;
   }
-  .summary-box::before{
-    content:''; position:absolute; top:0; left:0; right:0; height:2px;
-    background:linear-gradient(90deg,transparent,var(--gold-lt),transparent);
+
+  /* Title bar — white border वर bold big centre text */
+  .summary-title-bar{
+    text-align:center;
+    padding:15px 20px 13px;
+    border-bottom:1px solid rgba(201,147,58,0.35);
+    background:rgba(0,0,0,0.22);
   }
-  .summary-box h3{
-    font-size:0.75rem; color:var(--gold-lt); text-transform:uppercase;
-    letter-spacing:1.5px; margin-bottom:14px; padding-bottom:10px;
-    border-bottom:1px solid rgba(201,147,58,0.3);
-    display:flex; align-items:center; gap:7px;
+  .summary-title-bar h3{
+    font-family:'Tiro Devanagari Hindi',serif;
+    font-size:1.3rem;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:1px;
+    text-shadow:0 0 20px rgba(232,184,75,0.6), 0 2px 4px rgba(0,0,0,0.7);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
   }
+
+  .summary-body{ padding:16px 18px 18px; }
+
   .summary-item{
     display:flex; align-items:flex-start; gap:10px;
     border-radius:10px; padding:11px 14px; margin-bottom:8px;
@@ -162,6 +176,8 @@
   </div>
 
   <div id="resultArea">
+
+    <!-- 1. SCORE HERO -->
     <div class="score-hero">
       <div class="score-label">अष्टकूट गुण मिलन</div>
       <div class="score-number" id="finalScore">—</div>
@@ -169,6 +185,19 @@
       <div class="score-verdict" id="scoreVerdict"></div>
     </div>
 
+    <!-- 2. SUMMARY — score-hero च्या लगेच खाली, two-col च्या वर -->
+    <div class="summary-section" id="summarySection" style="display:none">
+      <div class="summary-box">
+        <div class="summary-title-bar">
+          <h3>📋 सारांश निकाल</h3>
+        </div>
+        <div class="summary-body">
+          <div id="summaryItems"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TWO-COL -->
     <div class="two-col">
       <div class="result-card">
         <h3>📊 अष्टकूट गुण</h3>
@@ -180,13 +209,6 @@
       </div>
     </div>
 
-    <!-- SUMMARY — highlighted, always shows below the table -->
-    <div class="summary-section" id="summarySection" style="display:none">
-      <div class="summary-box">
-        <h3>📋 सारांश निकाल</h3>
-        <div id="summaryItems"></div>
-      </div>
-    </div>
   </div>
 
   <div class="footer"><div class="divider"></div>OmKarmyog Match Making</div>
@@ -278,7 +300,6 @@ function verdictInfo(score) {
   return ['विवाह अशुभ','v-poor'];
 }
 
-/* ── SUMMARY helpers ── */
 function classifyRemark(r) {
   if (r.includes('दोष') || r.includes('अशुभ') || r.includes('नेष्ट') || r.includes('षडाष्टक') || r.includes('मृत्यू')) return 'warn';
   if (r.includes('शुभ') || r.includes('उत्तम') || r.includes('कल्याण')) return 'good';
@@ -449,21 +470,39 @@ function calculate() {
 
   lastResult = res; lastBride = bride; lastGroom = groom;
 
+  // ── Special score overrides ──
+  const hasShubhBhakoot = res.remarks && res.remarks.some(r => r.includes('शुभ भकूट'));
+  const hasMrutyuDosh   = res.remarks && res.remarks.some(r =>
+    r.includes('षडाष्टक') || r.includes('मृत्यू') || r.includes('Neshta'));
+
+  let displayScore = res.finalScore;
+  if (hasShubhBhakoot) displayScore = 36;
+  if (hasMrutyuDosh)   displayScore = 0;
+
   document.getElementById('resultArea').style.display = 'block';
   document.getElementById('downloadBtn').classList.add('visible');
   setTimeout(()=>document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'start'}),80);
 
-  document.getElementById('finalScore').textContent = res.finalScore;
-  const [vText,vCls] = verdictInfo(res.finalScore);
+  document.getElementById('finalScore').textContent = displayScore;
+  const [vText,vCls] = verdictInfo(displayScore);
   const vEl = document.getElementById('scoreVerdict');
   vEl.textContent = vText; vEl.className = 'score-verdict '+vCls;
 
+  // Score table — override असताना simplified दाखवा
   const labels={varna:"वर्ण",vashya:"वश्य",tara:"तारा",yoni:"योनी",maitri:"ग्रहमैत्री",gana:"गण",bhakoot:"भकूट",nadi:"नाडी"};
-  let tbl='';
-  for(let k in res.scoreDetails)
-    tbl+=`<tr><td>${labels[k]}</td><td>${res.scoreDetails[k]}</td></tr>`;
-  tbl+=`<tr><td>एकूण</td><td>${res.finalScore}</td></tr>`;
-  document.getElementById('scoreTable').innerHTML=tbl;
+  let tbl = '';
+  if (hasShubhBhakoot) {
+    tbl = `<tr><td colspan="2" style="text-align:center;color:#7ef09a;padding:10px 4px;font-size:0.88rem;line-height:1.5;">✅ शुभ भकूट योग —<br>संपूर्ण ३६ गुण लागू</td></tr>
+           <tr><td>एकूण</td><td>36</td></tr>`;
+  } else if (hasMrutyuDosh) {
+    tbl = `<tr><td colspan="2" style="text-align:center;color:#f08080;padding:10px 4px;font-size:0.88rem;line-height:1.5;">⚠️ मृत्यू षडाष्टक दोष —<br>विवाह अशुभ</td></tr>
+           <tr><td>एकूण</td><td>0</td></tr>`;
+  } else {
+    for(let k in res.scoreDetails)
+      tbl += `<tr><td>${labels[k]}</td><td>${res.scoreDetails[k]}</td></tr>`;
+    tbl += `<tr><td>एकूण</td><td>${res.finalScore}</td></tr>`;
+  }
+  document.getElementById('scoreTable').innerHTML = tbl;
 
   const vd=res.vadhuDetails, bd=res.varaDetails;
   document.getElementById('nakInfo').innerHTML=`
@@ -478,7 +517,6 @@ function calculate() {
       <div class="sub">राशी: ${vd.rashi} | गण: ${vd.gana} | नाडी: ${vd.nadi} | योनी: ${vd.yoni}</div>
     </div>`;
 
-  // Summary — highlighted section below table
   renderSummary(res.remarks);
 }
 

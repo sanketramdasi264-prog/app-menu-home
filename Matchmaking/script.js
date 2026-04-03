@@ -82,8 +82,9 @@ class KundaliGrandMaster {
 
         const diff = Math.abs(vIdx - bIdx);
         // 1-7, 2-12, 3-11, 4-10 शुभ bhakoot positions
-        if ([0, 1, 2, 3, 6, 9, 10, 11].includes(diff)) {
-            return { pts: 7, bonus: 0, status: "Good" };
+       if ([0, 2, 3, 6, 9, 10].includes(diff)) {
+    return { pts: 7, bonus: 0, status: "Good" };
+}
         }
         return { pts: 0, bonus: 0, status: "Neutral" };
     }

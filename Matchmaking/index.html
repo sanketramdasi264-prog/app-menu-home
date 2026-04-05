@@ -9,7 +9,6 @@
 <style>
   :root {
     --maroon:     #3a0a0a;
-    --maroon-mid: #5c1414;
     --gold:       #c9933a;
     --gold-lt:    #e8b84b;
     --gold-pale:  #f5dfa0;
@@ -53,8 +52,6 @@
   select { width:100%; background:rgba(20,5,5,0.6); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Tiro Devanagari Hindi',serif; font-size:0.92rem; padding:10px 32px 10px 12px; outline:none; appearance:none; -webkit-appearance:none; cursor:pointer; transition:border-color 0.2s,box-shadow 0.2s; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c9933a' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; background-color:rgba(20,5,5,0.6); }
   select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,147,58,0.15);}
   select option{background:#3a0a0a;color:var(--text);}
-
-  /* ── BUTTONS ── */
   .calc-wrap{text-align:center;margin:4px 0 26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
   #calculateBtn { background:linear-gradient(135deg,var(--gold) 0%,#a06820 100%); border:none; border-radius:50px; color:var(--maroon); font-family:'Tiro Devanagari Hindi',serif; font-size:1.05rem; font-weight:700; padding:13px 46px; cursor:pointer; letter-spacing:1px; box-shadow:0 4px 20px rgba(201,147,58,0.35); transition:transform 0.2s,box-shadow 0.2s; }
   #calculateBtn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,147,58,0.5);}
@@ -63,8 +60,6 @@
   .icon-btn.visible{display:inline-flex;}
   #whatsappBtn { border-color:rgba(37,211,102,0.45); color:#25d366; }
   #whatsappBtn:hover { background:rgba(37,211,102,0.1); border-color:rgba(37,211,102,0.7); }
-
-  /* ── RESULT ── */
   #resultArea{display:none;animation:fadeUp 0.45s ease;}
   .score-hero { text-align:center; padding:28px 20px 24px; background:var(--glass); border:1px solid var(--border); border-radius:14px; margin-bottom:14px; }
   .score-label{font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;}
@@ -75,8 +70,6 @@
   .v-good{background:rgba(201,147,58,0.2);color:var(--gold-pale);border:1px solid var(--border);}
   .v-average{background:rgba(180,120,20,0.2);color:#e8c87a;border:1px solid rgba(180,120,20,0.3);}
   .v-poor{background:rgba(140,30,30,0.3);color:#f08080;border:1px solid rgba(200,60,60,0.3);}
-
-  /* ── SCORE + NAK INFO ROW ── */
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
   @media(max-width:500px){.two-col{grid-template-columns:1fr;}}
   .result-card{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:16px;}
@@ -86,93 +79,42 @@
   .score-table tr:last-child{border-bottom:none;font-weight:700;}
   .score-table td{padding:6px 2px;font-size:0.86rem;}
   .score-table td:last-child{text-align:right;color:var(--gold-lt);font-family:'Cinzel Decorative',serif;font-size:0.88rem;}
-
-  /* ── NAK DETAILS TWO-COLUMN ── */
-  .nak-details-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 14px;
-  }
-  @media(max-width:500px){ .nak-details-grid{grid-template-columns:1fr;} }
-  .nak-person-card {
-    background: var(--glass);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .nak-person-header {
-    background: rgba(0,0,0,0.3);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-  }
-  .nak-person-header .ph-icon { font-size: 1.05rem; }
-  .nak-person-header .ph-role { font-size: 0.68rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
-  .nak-person-header .ph-name { font-size: 1rem; color: var(--text); font-weight: 600; line-height: 1.2; }
-  .nak-rows { padding: 10px 14px 12px; }
-  .nak-detail-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 5px 0;
-    border-bottom: 1px solid rgba(201,147,58,0.08);
-    gap: 8px;
-  }
-  .nak-detail-row:last-child { border-bottom: none; }
-  .ndr-label {
-    font-size: 0.72rem;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .ndr-value {
-    font-size: 0.88rem;
-    color: var(--text);
-    text-align: right;
-    line-height: 1.3;
-  }
-  .ndr-value.highlight {
-    color: var(--gold-lt);
-    font-size: 0.94rem;
-    font-weight: 600;
-  }
-
-  /* ── SUMMARY ── */
-  .summary-section{ margin-bottom:16px; animation:fadeUp 0.5s ease 0.1s both; }
-  .summary-box{ border-radius:14px; padding:0; background:linear-gradient(135deg,rgba(70,15,5,0.75) 0%,rgba(50,8,25,0.65) 100%); border:2px solid rgba(255,255,255,0.6); box-shadow:0 0 28px rgba(201,147,58,0.22), inset 0 1px 0 rgba(255,255,255,0.12); overflow:hidden; }
-  .summary-title-bar{ text-align:center; padding:15px 20px 13px; border-bottom:1px solid rgba(201,147,58,0.35); background:rgba(0,0,0,0.22); }
-  .summary-title-bar h3{ font-family:'Tiro Devanagari Hindi',serif; font-size:1.3rem; font-weight:700; color:#ffffff; letter-spacing:1px; text-shadow:0 0 20px rgba(232,184,75,0.6), 0 2px 4px rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; gap:8px; }
-  .summary-body{ padding:16px 18px 18px; }
-  .summary-item{ display:flex; align-items:flex-start; gap:10px; border-radius:10px; padding:11px 14px; margin-bottom:8px; border-left:3px solid var(--gold-lt); background:rgba(0,0,0,0.28); }
+  .nak-details-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  @media(max-width:500px){.nak-details-grid{grid-template-columns:1fr;}}
+  .nak-person-card{background:var(--glass);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .nak-person-header{background:rgba(0,0,0,0.3);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:7px;}
+  .ph-icon{font-size:1.05rem;} .ph-role{font-size:0.68rem;color:var(--gold);text-transform:uppercase;letter-spacing:1px;} .ph-name{font-size:1rem;color:var(--text);font-weight:600;line-height:1.2;}
+  .nak-rows{padding:10px 14px 12px;}
+  .nak-detail-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid rgba(201,147,58,0.08);gap:8px;}
+  .nak-detail-row:last-child{border-bottom:none;}
+  .ndr-label{font-size:0.72rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.4px;white-space:nowrap;flex-shrink:0;}
+  .ndr-value{font-size:0.88rem;color:var(--text);text-align:right;line-height:1.3;}
+  .ndr-value.highlight{color:var(--gold-lt);font-size:0.94rem;font-weight:600;}
+  .summary-section{margin-bottom:16px;animation:fadeUp 0.5s ease 0.1s both;}
+  .summary-box{border-radius:14px;padding:0;background:linear-gradient(135deg,rgba(70,15,5,0.75) 0%,rgba(50,8,25,0.65) 100%);border:2px solid rgba(255,255,255,0.6);box-shadow:0 0 28px rgba(201,147,58,0.22),inset 0 1px 0 rgba(255,255,255,0.12);overflow:hidden;}
+  .summary-title-bar{text-align:center;padding:15px 20px 13px;border-bottom:1px solid rgba(201,147,58,0.35);background:rgba(0,0,0,0.22);}
+  .summary-title-bar h3{font-family:'Tiro Devanagari Hindi',serif;font-size:1.3rem;font-weight:700;color:#fff;letter-spacing:1px;text-shadow:0 0 20px rgba(232,184,75,0.6),0 2px 4px rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;gap:8px;}
+  .summary-body{padding:16px 18px 18px;}
+  .summary-item{display:flex;align-items:flex-start;gap:10px;border-radius:10px;padding:11px 14px;margin-bottom:8px;border-left:3px solid var(--gold-lt);background:rgba(0,0,0,0.28);}
   .summary-item:last-child{margin-bottom:0;}
-  .summary-item.warn{ border-left-color:#f08080; background:rgba(140,20,20,0.25); }
-  .summary-item.good{ border-left-color:#7ef09a; background:rgba(20,90,20,0.22); }
-  .summary-item.info{ border-left-color:var(--gold-lt); background:rgba(60,28,5,0.32); }
-  .summary-icon{ font-size:1.05rem; flex-shrink:0; margin-top:2px; }
-  .summary-text{ font-size:0.9rem; line-height:1.6; color:var(--text); }
-  .summary-empty{ text-align:center; color:#7ef09a; font-size:0.92rem; padding:6px 0; display:flex; align-items:center; justify-content:center; gap:8px; }
-
+  .summary-item.warn{border-left-color:#f08080;background:rgba(140,20,20,0.25);}
+  .summary-item.good{border-left-color:#7ef09a;background:rgba(20,90,20,0.22);}
+  .summary-item.info{border-left-color:var(--gold-lt);background:rgba(60,28,5,0.32);}
+  .summary-icon{font-size:1.05rem;flex-shrink:0;margin-top:2px;}
+  .summary-text{font-size:0.9rem;line-height:1.6;color:var(--text);}
+  .summary-empty{text-align:center;color:#7ef09a;font-size:0.92rem;padding:6px 0;display:flex;align-items:center;justify-content:center;gap:8px;}
   .footer{text-align:center;padding:28px 20px 10px;color:rgba(196,168,130,0.35);font-size:0.72rem;}
   .divider{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 auto 10px;}
   #reportCanvas{display:none;}
 </style>
 </head>
 <body>
-
 <div class="header">
   <span class="om">ॐ</span>
   <h1>विवाह गुण मिलन</h1>
   <p>नाव टाकल्यावर नक्षत्र व राशी आपोआप येईल — गरज असल्यास बदलता येईल</p>
 </div>
-
 <div class="container">
-
-  <!-- ── FORM ── -->
   <div class="persons-grid">
     <div class="card">
       <div class="card-title"><span class="icon">🪔</span><h2>वर</h2></div>
@@ -187,455 +129,356 @@
       <div class="field"><label>राशी</label><select id="vadhuRashi"></select></div>
     </div>
   </div>
-
   <div class="calc-wrap">
     <button id="calculateBtn">✨ गुण मोजा</button>
-    <button id="whatsappBtn"  class="icon-btn">📲 WhatsApp वर शेअर करा</button>
-    <button id="downloadBtn"  class="icon-btn">📄 रिपोर्ट डाउनलोड करा</button>
+    <button id="whatsappBtn" class="icon-btn">📲 WhatsApp वर शेअर करा</button>
+    <button id="downloadBtn" class="icon-btn">📄 रिपोर्ट डाउनलोड करा</button>
   </div>
-
-  <!-- ── RESULTS ── -->
   <div id="resultArea">
-
     <div class="score-hero">
       <div class="score-label">अष्टकूट गुण मिलन</div>
       <div class="score-number" id="finalScore">—</div>
       <div class="score-max">/ ३६</div>
       <div class="score-verdict" id="scoreVerdict"></div>
     </div>
-
     <div class="summary-section" id="summarySection" style="display:none">
       <div class="summary-box">
         <div class="summary-title-bar"><h3>📋 सारांश निकाल</h3></div>
         <div class="summary-body"><div id="summaryItems"></div></div>
       </div>
     </div>
-
-    <!-- Score table -->
     <div class="two-col">
       <div class="result-card">
         <h3>📊 अष्टकूट गुण</h3>
         <table class="score-table" id="scoreTable"></table>
       </div>
-      <!-- placeholder second col — keeps grid balanced on desktop -->
-      <div class="result-card" style="display:flex;align-items:center;justify-content:center;opacity:0.0;pointer-events:none;" id="scorePlaceholder"></div>
+      <div style="display:none"></div>
     </div>
-
-    <!-- ── NAK DETAILS — two separate person cards ── -->
     <div class="nak-details-grid" id="nakDetailsGrid"></div>
-
   </div>
-
   <div class="footer"><div class="divider"></div>OmKarmyog Match Making</div>
 </div>
-
 <canvas id="reportCanvas"></canvas>
-
 <script src="script.js" defer></script>
 <script>
-// ─────────────────────────────────────────
-// CONSTANTS / HELPERS
-// ─────────────────────────────────────────
-const FULL_RASHI = ["मेष","वृषभ","मिथुन","कर्क","सिंह","कन्या","तुला","वृश्चिक","धनु","मकर","कुंभ","मीन"];
-const PHONETIC_MAP = {
-  "प्र":"पा","प्री":"पी","सं":"सा","स्मि":"सा","वै":"वे","श्र":"शे",
-  "सत":"सा","वस":"वा","मो":"मो","भा":"भा","रा":"रा","पू":"पू",
-  "स्व":"स्व","ज्य":"ज","श्व":"श","क्ष":"क","ज्ञ":"ज","त्र":"त","द्व":"द","न्य":"न"
-};
+const FULL_RASHI=["मेष","वृषभ","मिथुन","कर्क","सिंह","कन्या","तुला","वृश्चिक","धनु","मकर","कुंभ","मीन"];
+const PHONETIC_MAP={"प्र":"पा","प्री":"पी","सं":"सा","स्मि":"सा","वै":"वे","श्र":"शे","सत":"सा","वस":"वा","मो":"मो","भा":"भा","रा":"रा","पू":"पू","स्व":"स्व","ज्य":"ज","श्व":"श","क्ष":"क","ज्ञ":"ज","त्र":"त","द्व":"द","न्य":"न"};
+let DB=null;
+const manualNak={vadhu:false,vara:false};
+let lastResult=null,lastBride='',lastGroom='';
 
-let DB = null;
-const manualNak = { vadhu:false, vara:false };
-let lastResult = null, lastBride = '', lastGroom = '';
+function getFirstChar(name){let n=name.trim();for(let k of Object.keys(PHONETIC_MAP).sort((a,b)=>b.length-a.length))if(n.startsWith(k))return PHONETIC_MAP[k];return n.substring(0,2);}
+function detectNak(name){if(!DB||!name.trim())return null;let char=getFirstChar(name);for(let nak of DB.nakshatras){let pada=nak.padas.find(p=>p.char===char)||nak.padas.find(p=>p.char===char.charAt(0));if(pada)return{nak,pada};}return null;}
+function buildNakSel(selId){const sel=document.getElementById(selId);sel.innerHTML='<option value="">— नक्षत्र निवडा —</option>';DB.nakshatras.forEach(nak=>{const chars=nak.padas.map(p=>p.char).join(', ');const opt=document.createElement('option');opt.value=nak.id;opt.textContent=`${nak.name}  (${chars})`;sel.appendChild(opt);});}
+function buildRashiSel(selId){const sel=document.getElementById(selId);sel.innerHTML='<option value="">— राशी निवडा —</option>';FULL_RASHI.forEach(r=>{const opt=document.createElement('option');opt.value=r;opt.textContent=r;sel.appendChild(opt);});}
+function onNakChange(nakSelId,rashiSelId,person){manualNak[person]=true;const nakId=parseInt(document.getElementById(nakSelId).value);if(!nakId)return;const nak=DB.nakshatras.find(n=>n.id===nakId);if(nak)document.getElementById(rashiSelId).value=nak.padas[0].rashi;}
+function autoDetect(name,nakSelId,rashiSelId,person){if(manualNak[person])return;const res=detectNak(name);if(res){document.getElementById(nakSelId).value=res.nak.id;document.getElementById(rashiSelId).value=res.pada.rashi;}else{document.getElementById(nakSelId).value='';document.getElementById(rashiSelId).value='';}}
+function onNameInput(name,nakSelId,rashiSelId,person){if(name.trim().length===0)manualNak[person]=false;autoDetect(name,nakSelId,rashiSelId,person);}
 
-function getFirstChar(name) {
-  let n = name.trim();
-  for (let k of Object.keys(PHONETIC_MAP).sort((a,b)=>b.length-a.length))
-    if (n.startsWith(k)) return PHONETIC_MAP[k];
-  return n.substring(0,2);
+function verdictInfo(score){if(score>=28)return['अत्यंत उत्तम मिलन','v-excellent','#7ef09a'];if(score>=21)return['उत्तम मिलन','v-good','#e8c87a'];if(score>=18)return['सामान्य मिलन','v-average','#e8c87a'];return['विवाह अशुभ','v-poor','#f08080'];}
+function classifyRemark(r){if(r.includes('दोष')||r.includes('अशुभ')||r.includes('नेष्ट')||r.includes('षडाष्टक')||r.includes('मृत्यू'))return'warn';if(r.includes('शुभ')||r.includes('उत्तम')||r.includes('कल्याण'))return'good';return'info';}
+function iconFor(cls){return cls==='warn'?'⚠️':cls==='good'?'✅':'ℹ️';}
+function getRashiswami(rashi){if(!DB)return'—';return DB.matrices.graha_maitri.lords[rashi]||'—';}
+
+function renderSummary(remarks){
+  const ss=document.getElementById('summarySection');const si=document.getElementById('summaryItems');ss.style.display='block';
+  if(remarks&&remarks.length){si.innerHTML=remarks.map(r=>{const clean=r.replace(/[⚠️✅ℹ️]/g,'').trim();const cls=classifyRemark(clean);return`<div class="summary-item ${cls}"><span class="summary-icon">${iconFor(cls)}</span><span class="summary-text">${clean}</span></div>`;}).join('');}
+  else{si.innerHTML=`<div class="summary-empty">✅ <span>कोणताही विशेष दोष आढळला नाही — मिलन सुरळीत आहे.</span></div>`;}
 }
-function detectNak(name) {
-  if (!DB||!name.trim()) return null;
-  let char = getFirstChar(name);
-  for (let nak of DB.nakshatras) {
-    let pada = nak.padas.find(p=>p.char===char) || nak.padas.find(p=>p.char===char.charAt(0));
-    if (pada) return {nak,pada};
+
+function renderNakDetails(bd,vd,groomName,brideName){
+  function charanNum(nak,char){if(!nak)return'—';const idx=nak.padas.findIndex(p=>p.char===char);return idx>=0?(idx+1):'—';}
+  function getCharan(details){const nak=DB.nakshatras.find(n=>n.id===details.nakID);const num=charanNum(nak,details.charan);return`${num} (${details.charan})`;}
+  function personCard(details,name,icon,role){
+    const charan=getCharan(details);const rashiswami=getRashiswami(details.rashi);
+    return`<div class="nak-person-card"><div class="nak-person-header"><span class="ph-icon">${icon}</span><div><div class="ph-role">${role}</div><div class="ph-name">${name}</div></div></div><div class="nak-rows"><div class="nak-detail-row"><span class="ndr-label">नक्षत्र</span><span class="ndr-value highlight">${details.nakName}</span></div><div class="nak-detail-row"><span class="ndr-label">चरण / अक्षर</span><span class="ndr-value">${charan}</span></div><div class="nak-detail-row"><span class="ndr-label">नाडी</span><span class="ndr-value">${details.nadi}</span></div><div class="nak-detail-row"><span class="ndr-label">योनी</span><span class="ndr-value">${details.yoni}</span></div><div class="nak-detail-row"><span class="ndr-label">गण</span><span class="ndr-value">${details.gana}</span></div><div class="nak-detail-row"><span class="ndr-label">राशी</span><span class="ndr-value highlight">${details.rashi}</span></div><div class="nak-detail-row"><span class="ndr-label">राशीस्वामी</span><span class="ndr-value">${rashiswami}</span></div><div class="nak-detail-row"><span class="ndr-label">वर्ण</span><span class="ndr-value">${details.varna}</span></div></div></div>`;
   }
-  return null;
+  document.getElementById('nakDetailsGrid').innerHTML=personCard(bd,groomName,'🪔','वर')+personCard(vd,brideName,'🪷','वधू');
 }
-function buildNakSel(selId) {
-  const sel = document.getElementById(selId);
-  sel.innerHTML = '<option value="">— नक्षत्र निवडा —</option>';
-  DB.nakshatras.forEach(nak => {
-    const chars = nak.padas.map(p=>p.char).join(', ');
-    const opt = document.createElement('option');
-    opt.value = nak.id;
-    opt.textContent = `${nak.name}  (${chars})`;
-    sel.appendChild(opt);
-  });
-}
-function buildRashiSel(selId) {
-  const sel = document.getElementById(selId);
-  sel.innerHTML = '<option value="">— राशी निवडा —</option>';
-  FULL_RASHI.forEach(r => {
-    const opt = document.createElement('option');
-    opt.value = r; opt.textContent = r;
-    sel.appendChild(opt);
-  });
-}
-function onNakChange(nakSelId, rashiSelId, person) {
-  manualNak[person] = true;
-  const nakId = parseInt(document.getElementById(nakSelId).value);
-  if (!nakId) return;
-  const nak = DB.nakshatras.find(n=>n.id===nakId);
-  if (nak) document.getElementById(rashiSelId).value = nak.padas[0].rashi;
-}
-function autoDetect(name, nakSelId, rashiSelId, person) {
-  if (manualNak[person]) return;
-  const res = detectNak(name);
-  if (res) {
-    document.getElementById(nakSelId).value   = res.nak.id;
-    document.getElementById(rashiSelId).value = res.pada.rashi;
-  } else {
-    document.getElementById(nakSelId).value   = '';
-    document.getElementById(rashiSelId).value = '';
+
+// ══════════════════════════════════════════════
+// CANVAS REPORT — White background, 3-column
+// ══════════════════════════════════════════════
+function buildReportCanvas(res,bride,groom){
+  const bd=res.varaDetails, vd=res.vadhuDetails;
+  const ASHTAKUT=[{key:'varna',label:'वर्ण'},{key:'vashya',label:'वश्य'},{key:'tara',label:'तारा'},{key:'yoni',label:'योनी'},{key:'maitri',label:'ग्रहमैत्री'},{key:'gana',label:'गण'},{key:'bhakoot',label:'भकूट'},{key:'nadi',label:'नाडी'}];
+  const DETAIL_LABELS=['नक्षत्र','चरण / अक्षर','नाडी','योनी','गण','राशी','राशीस्वामी','वर्ण'];
+  const hasMrutyuDosh=!!(res.remarks&&res.remarks.some(r=>r.includes('षडाष्टक')||r.includes('Neshta')));
+  const displaySc=hasMrutyuDosh?0:res.finalScore;
+  const [verdictText]=verdictInfo(displaySc);
+  const scoreDetails=res.scoreDetails||{};
+  const remarkLines=(res.remarks||[]).filter(r=>r.trim());
+
+  const W=1080, GAP=24, PANEL_W=300;
+  const HEADER_H=190, NAMES_H=90, PANEL_HEADER_H=40;
+  const ROW_H=44, AK_ROW_H=42;
+  const DETAIL_BODY_H=DETAIL_LABELS.length*ROW_H+8;
+  const AK_BODY_H=ASHTAKUT.length*AK_ROW_H+62;
+  const PANEL_H=Math.max(DETAIL_BODY_H,AK_BODY_H)+PANEL_HEADER_H+10;
+  const REMARKS_H=remarkLines.length>0?remarkLines.length*48+64:0;
+  const FOOTER_H=144;
+  const H=HEADER_H+NAMES_H+PANEL_H+REMARKS_H+FOOTER_H+20;
+
+  const canvas=document.getElementById('reportCanvas');
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+
+  function rRect(x,y,w,h,r,fill,stroke,slw){
+    ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+    if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=slw||1;ctx.stroke();}
   }
-}
-function onNameInput(name, nakSelId, rashiSelId, person) {
-  if (name.trim().length===0) manualNak[person] = false;
-  autoDetect(name, nakSelId, rashiSelId, person);
-}
+  function hLine(y,x1,x2,color,lw){ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.strokeStyle=color||'#d4a830';ctx.lineWidth=lw||1;ctx.stroke();}
 
-function verdictInfo(score) {
-  if (score>=28) return ['अत्यंत उत्तम मिलन','v-excellent','#7ef09a'];
-  if (score>=21) return ['उत्तम मिलन','v-good','#e8c87a'];
-  if (score>=18) return ['सामान्य मिलन','v-average','#e8c87a'];
-  return ['विवाह अशुभ','v-poor','#f08080'];
-}
-function classifyRemark(r) {
-  if (r.includes('दोष')||r.includes('अशुभ')||r.includes('नेष्ट')||r.includes('षडाष्टक')||r.includes('मृत्यू')) return 'warn';
-  if (r.includes('शुभ')||r.includes('उत्तम')||r.includes('कल्याण')) return 'good';
-  return 'info';
-}
-function iconFor(cls){ return cls==='warn'?'⚠️':cls==='good'?'✅':'ℹ️'; }
+  // WHITE background
+  ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,W,H);
 
-function getRashiswami(rashi) {
-  if (!DB) return '—';
-  return DB.matrices.graha_maitri.lords[rashi] || '—';
-}
+  // Outer gold border
+  ctx.strokeStyle='#b8822a'; ctx.lineWidth=4; ctx.strokeRect(7,7,W-14,H-14);
+  ctx.strokeStyle='#e8c870'; ctx.lineWidth=1.5; ctx.strokeRect(13,13,W-26,H-26);
 
-function renderSummary(remarks) {
-  const ss = document.getElementById('summarySection');
-  const si = document.getElementById('summaryItems');
-  ss.style.display = 'block';
-  if (remarks && remarks.length) {
-    si.innerHTML = remarks.map(r => {
-      const clean = r.replace(/[⚠️✅ℹ️]/g,'').trim();
-      const cls = classifyRemark(clean);
-      return `<div class="summary-item ${cls}"><span class="summary-icon">${iconFor(cls)}</span><span class="summary-text">${clean}</span></div>`;
-    }).join('');
-  } else {
-    si.innerHTML = `<div class="summary-empty">✅ <span>कोणताही विशेष दोष आढळला नाही — मिलन सुरळीत आहे.</span></div>`;
-  }
-}
-
-// ── Nak Details: two-column systematic layout ──
-function renderNakDetails(bd, vd, groomName, brideName) {
-  function charanNum(nak, char) {
-    if (!nak) return '—';
-    const idx = nak.padas.findIndex(p => p.char === char);
-    return idx >= 0 ? (idx + 1) : '—';
-  }
-  function getCharan(details) {
-    const nak = DB.nakshatras.find(n => n.id === details.nakID);
-    const num = charanNum(nak, details.charan);
-    return `${num} (${details.charan})`;
-  }
-
-  function personCard(details, name, icon, role) {
-    const charan = getCharan(details);
-    const rashiswami = getRashiswami(details.rashi);
-    return `
-      <div class="nak-person-card">
-        <div class="nak-person-header">
-          <span class="ph-icon">${icon}</span>
-          <div>
-            <div class="ph-role">${role}</div>
-            <div class="ph-name">${name}</div>
-          </div>
-        </div>
-        <div class="nak-rows">
-          <div class="nak-detail-row">
-            <span class="ndr-label">नक्षत्र</span>
-            <span class="ndr-value highlight">${details.nakName}</span>
-          </div>
-          <div class="nak-detail-row">
-            <span class="ndr-label">चरण / अक्षर</span>
-            <span class="ndr-value">${charan}</span>
-          </div>
-          <div class="nak-detail-row">
-            <span class="ndr-label">नाडी</span>
-            <span class="ndr-value">${details.nadi}</span>
-          </div>
-          <div class="nak-detail-row">
-            <span class="ndr-label">योनी</span>
-            <span class="ndr-value">${details.yoni}</span>
-          </div>
-          <div class="nak-detail-row">
-            <span class="ndr-label">गण</span>
-            <span class="ndr-value">${details.gana}</span>
-          </div>
-          <div class="nak-detail-row">
-            <span class="ndr-label">राशी</span>
-            <span class="ndr-value highlight">${details.rashi}</span>
-          </div>
-          <div class="nak-detail-row">
-            <span class="ndr-label">राशीस्वामी</span>
-            <span class="ndr-value">${rashiswami}</span>
-          </div>
-          <div class="nak-detail-row">
-            <span class="ndr-label">वर्ण</span>
-            <span class="ndr-value">${details.varna}</span>
-          </div>
-        </div>
-      </div>`;
-  }
-
-  document.getElementById('nakDetailsGrid').innerHTML =
-    personCard(bd, groomName, '🪔', 'वर') +
-    personCard(vd, brideName, '🪷', 'वधू');
-}
-
-// ─────────────────────────────────────────
-// CANVAS REPORT GENERATOR
-// ─────────────────────────────────────────
-function buildReportCanvas(res, bride, groom) {
-  const bd = res.varaDetails;
-  const vd = res.vadhuDetails;
-  const W  = 900;
-  const remarkLines = (res.remarks||[]).filter(r=>r.trim());
-  const H  = 1380 + remarkLines.length * 56;
-
-  const canvas = document.getElementById('reportCanvas');
-  canvas.width  = W;
-  canvas.height = H;
-  const ctx = canvas.getContext('2d');
-
-  const paperGrad = ctx.createLinearGradient(0,0,W,H);
-  paperGrad.addColorStop(0,'#fdf9f1'); paperGrad.addColorStop(0.5,'#faf4e6'); paperGrad.addColorStop(1,'#f6eedd');
-  ctx.fillStyle = paperGrad; ctx.fillRect(0,0,W,H);
-  ctx.strokeStyle='rgba(170,140,90,0.14)'; ctx.lineWidth=1;
-  for(let y=100;y<H;y+=46){ctx.beginPath();ctx.moveTo(30,y);ctx.lineTo(W-30,y);ctx.stroke();}
-  ctx.strokeStyle='rgba(200,70,70,0.22)'; ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(108,0);ctx.lineTo(108,H);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(W-108,0);ctx.lineTo(W-108,H);ctx.stroke();
-
-  function hLine(y,x1=50,x2=W-50,color='rgba(130,90,30,0.28)',lw=1.2){ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.stroke();}
-  function rRect(x,y,w,h,r,fs){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();ctx.fillStyle=fs;ctx.fill();}
+  // HEADER STRIP
+  const hGrad=ctx.createLinearGradient(0,0,W,0);
+  hGrad.addColorStop(0,'#5a0e0e');hGrad.addColorStop(0.5,'#8b1a1a');hGrad.addColorStop(1,'#5a0e0e');
+  rRect(0,0,W,HEADER_H,0,hGrad);
+  hLine(19,28,W-28,'rgba(232,184,75,0.4)',1);
+  hLine(HEADER_H-15,28,W-28,'rgba(232,184,75,0.55)',1.2);
 
   ctx.textAlign='center';
-  ctx.font='bold 60px "Tiro Devanagari Hindi",serif'; ctx.fillStyle='#7a2a0a'; ctx.fillText('ॐ',W/2,72);
-  ctx.font='bold 28px "Tiro Devanagari Hindi",serif'; ctx.fillStyle='#3a1505'; ctx.fillText('OmKarmyog Match Making',W/2,112);
-  ctx.font='20px "Tiro Devanagari Hindi",serif'; ctx.fillStyle='#7a5525'; ctx.fillText('अष्टकूट गुण मिलन पत्रिका',W/2,144);
-  hLine(162,60,W-60,'rgba(160,90,30,0.45)',1.6);
+  ctx.font='bold 66px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#f5d060';
+  ctx.shadowColor='rgba(255,210,60,0.7)';ctx.shadowBlur=22;ctx.fillText('ॐ',W/2,80);ctx.shadowBlur=0;
+  ctx.font='bold 30px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#ffffff';ctx.fillText('विवाह गुण मिलन',W/2,126);
+  ctx.font='18px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#f0cf70';ctx.fillText('अष्टकूट पद्धती  •  OmKarmyog',W/2,158);
 
-  const CL=118,CLW=218,CM=356,CMW=188,CR=564,CRW=218,ROW_H=56;
-  const ASHTAKUT=[{key:'varna',label:'वर्ण गुण'},{key:'vashya',label:'वश्य गुण'},{key:'tara',label:'तारा गुण'},{key:'yoni',label:'योनी गुण'},{key:'maitri',label:'ग्रहमैत्री'},{key:'gana',label:'गण गुण'},{key:'bhakoot',label:'भकूट गुण'},{key:'nadi',label:'नाडी गुण'}];
-  const INFO_ROWS=[{label:'नक्षत्र',v:d=>d.nakName},{label:'चरण',v:d=>d.charan+' चरण'},{label:'नाडी',v:d=>d.nadi},{label:'योनी',v:d=>d.yoni},{label:'गण',v:d=>d.gana},{label:'राशी',v:d=>d.rashi}];
-  const totalRows = ASHTAKUT.length;
+  // NAMES ROW
+  let Y=HEADER_H+14;
+  const LEFT_X=GAP, RIGHT_X=W-GAP-PANEL_W;
+  const CX=LEFT_X+PANEL_W+GAP, CW=W-2*(PANEL_W+GAP)-2*GAP;
 
-  let Y=180;
-  rRect(CL-6,Y,CLW+12,totalRows*ROW_H+100,8,'rgba(120,60,10,0.05)');
-  rRect(CM-6,Y,CMW+12,totalRows*ROW_H+100,8,'rgba(100,50,0,0.07)');
-  rRect(CR-6,Y,CRW+12,totalRows*ROW_H+100,8,'rgba(80,40,100,0.04)');
+  rRect(LEFT_X,Y,PANEL_W,72,12,'#fff8f0','#c9933a',2);
+  ctx.textAlign='center';ctx.font='13px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#8b4000';ctx.fillText('🪔  वर',LEFT_X+PANEL_W/2,Y+18);
+  ctx.font='bold 26px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#2a0a00';ctx.fillText(groom,LEFT_X+PANEL_W/2,Y+52);
 
-  ctx.font='bold 20px "Tiro Devanagari Hindi",serif'; ctx.fillStyle='#7a2010'; ctx.textAlign='center'; ctx.fillText('🪔 वर',CL+CLW/2,Y+26);
-  ctx.font='bold 30px "Tiro Devanagari Hindi",serif'; ctx.fillStyle='#1a0800'; ctx.fillText(groom,CL+CLW/2,Y+58);
-  ctx.font='bold 20px "Tiro Devanagari Hindi",serif'; ctx.fillStyle='#4a2a00'; ctx.fillText('अष्टकूट',CM+CMW/2,Y+26);
-  ctx.font='15px "Tiro Devanagari Hindi",serif'; ctx.fillStyle='#7a5530'; ctx.fillText('गुण',CM+CMW/2,Y+46);
-  ctx.font='bold 20px "Tiro Devanagari Hindi",serif'; ctx.fillStyle='#5a1060'; ctx.fillText('🪷 वधू',CR+CRW/2,Y+26);
-  ctx.font='bold 30px "Tiro Devanagari Hindi",serif'; ctx.fillStyle='#1a0800'; ctx.fillText(bride,CR+CRW/2,Y+58);
+  rRect(RIGHT_X,Y,PANEL_W,72,12,'#fff0f8','#c9933a',2);
+  ctx.font='13px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#6a0060';ctx.fillText('🪷  वधू',RIGHT_X+PANEL_W/2,Y+18);
+  ctx.font='bold 26px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#2a0a00';ctx.fillText(bride,RIGHT_X+PANEL_W/2,Y+52);
 
-  Y+=72; hLine(Y,CL-6,CR+CRW+6,'rgba(150,100,30,0.4)',1.2); Y+=14;
+  ctx.font='bold 24px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#c9933a';ctx.fillText('✦',W/2,Y+42);
 
-  for(let i=0;i<totalRows;i++){
-    const ak=ASHTAKUT[i]; const info=INFO_ROWS[i]||null; const rowY=Y+i*ROW_H;
-    if(i%2===0){rRect(CL-6,rowY-2,CLW+12,ROW_H,4,'rgba(200,160,70,0.06)');rRect(CM-6,rowY-2,CMW+12,ROW_H,4,'rgba(180,120,30,0.08)');rRect(CR-6,rowY-2,CRW+12,ROW_H,4,'rgba(200,160,70,0.06)');}
-    if(info){ctx.textAlign='left';ctx.font='14px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#9a7540';ctx.fillText(info.label,CL,rowY+12);ctx.font='bold 21px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#1a0a00';ctx.fillText(info.v(bd),CL,rowY+36);}
-    if(info){ctx.textAlign='right';ctx.font='14px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#9a7540';ctx.fillText(info.label,CR+CRW,rowY+12);ctx.font='bold 21px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#1a0a00';ctx.fillText(info.v(vd),CR+CRW,rowY+36);}
-    ctx.textAlign='center';ctx.font='16px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#4a2800';ctx.fillText(ak.label,CM+CMW/2,rowY+14);
-    const score=res.scoreDetails?(res.scoreDetails[ak.key]??'—'):'—';
-    ctx.font='bold 28px "Cinzel Decorative",serif';ctx.fillStyle='#8b3500';ctx.fillText(String(score),CM+CMW/2,rowY+42);
-    hLine(rowY+ROW_H-4,CL-6,CR+CRW+6,'rgba(160,120,50,0.11)',0.8);
-  }
+  Y+=NAMES_H;
+  const COL_Y=Y;
 
-  Y+=totalRows*ROW_H+12;
-  hLine(Y,CL-6,CR+CRW+6,'rgba(130,70,20,0.55)',1.8); Y+=20;
-  ctx.textAlign='left';ctx.font='bold 24px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#2a1200';ctx.fillText('एकूण गुण',CL,Y+24);
-  ctx.textAlign='center';ctx.font='bold 40px "Cinzel Decorative",serif';ctx.fillStyle='#7a2500';ctx.fillText(`${res.finalScore} / ३६`,CM+CMW/2,Y+30);
-  Y+=58;
+  // Panel backgrounds
+  rRect(LEFT_X,COL_Y,PANEL_W,PANEL_H,12,'#fffcf5','#e0b84a',1.5);
+  rRect(RIGHT_X,COL_Y,PANEL_W,PANEL_H,12,'#fffcf5','#e0b84a',1.5);
+  rRect(CX,COL_Y,CW,PANEL_H,12,'#fdf8ed','#c9933a',2.5);
 
-  const[verdictText]=verdictInfo(res.finalScore);
-  const vc=res.finalScore>=28?'#1a6a1a':res.finalScore>=21?'#6a4500':res.finalScore>=18?'#6a4500':'#8a1010';
-  const vbg=res.finalScore>=28?'rgba(30,120,30,0.09)':res.finalScore>=18?'rgba(180,130,20,0.09)':'rgba(140,20,20,0.09)';
-  rRect(W/2-210,Y-8,420,54,27,vbg);ctx.textAlign='center';ctx.font='bold 28px "Tiro Devanagari Hindi",serif';ctx.fillStyle=vc;ctx.fillText(`✦ ${verdictText} ✦`,W/2,Y+28);
-  Y+=72;hLine(Y,60,W-60,'rgba(140,100,40,0.3)',1.2);Y+=24;
+  // Panel header strips (maroon/purple/dark)
+  rRect(LEFT_X,COL_Y,PANEL_W,PANEL_HEADER_H,12,'#6a1010');
+  ctx.fillStyle='#6a1010';ctx.fillRect(LEFT_X,COL_Y+PANEL_HEADER_H-14,PANEL_W,14);
+  rRect(RIGHT_X,COL_Y,PANEL_W,PANEL_HEADER_H,12,'#440860');
+  ctx.fillStyle='#440860';ctx.fillRect(RIGHT_X,COL_Y+PANEL_HEADER_H-14,PANEL_W,14);
+  rRect(CX,COL_Y,CW,PANEL_HEADER_H,12,'#4a2a00');
+  ctx.fillStyle='#4a2a00';ctx.fillRect(CX,COL_Y+PANEL_HEADER_H-14,CW,14);
 
-  if(remarkLines.length>0){
-    ctx.textAlign='center';ctx.font='bold 22px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#4a2500';ctx.fillText('सारांश निकाल',W/2,Y+6);Y+=34;
-    ctx.textAlign='left';
-    for(let remark of remarkLines){
-      const clean=remark.replace(/[⚠️✅🔴🌸✨ℹ️]/g,'').trim();
-      ctx.fillStyle='#8b3500';ctx.font='20px "Tiro Devanagari Hindi",serif';ctx.fillText('•',62,Y+6);
-      ctx.fillStyle='#2a1200';const maxW=W-200;const words=clean.split(' ');let line='';
-      for(let word of words){const test=line+word+' ';if(ctx.measureText(test).width>maxW&&line!==''){ctx.fillText(line.trim(),86,Y+6);line=word+' ';Y+=30;}else{line=test;}}
-      if(line.trim())ctx.fillText(line.trim(),86,Y+6);Y+=40;
+  ctx.font='bold 16px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#f5d070';ctx.textAlign='center';
+  ctx.fillText('🪔  वर माहिती',LEFT_X+PANEL_W/2,COL_Y+26);
+  ctx.fillText('🪷  वधू माहिती',RIGHT_X+PANEL_W/2,COL_Y+26);
+  ctx.fillText('अष्टकूट गुण',CX+CW/2,COL_Y+26);
+
+  // Detail value helper
+  function getDetailVal(details,label){
+    function charanStr(d){const nak=DB.nakshatras.find(n=>n.id===d.nakID);if(!nak)return d.charan||'—';const idx=nak.padas.findIndex(p=>p.char===d.charan);return idx>=0?`${idx+1} (${d.charan})`:(d.charan||'—');}
+    switch(label){
+      case 'नक्षत्र':return details.nakName||'—';
+      case 'चरण / अक्षर':return charanStr(details);
+      case 'नाडी':return details.nadi||'—';
+      case 'योनी':return details.yoni||'—';
+      case 'गण':return details.gana||'—';
+      case 'राशी':return details.rashi||'—';
+      case 'राशीस्वामी':return(DB&&DB.matrices.graha_maitri.lords[details.rashi])||'—';
+      case 'वर्ण':return details.varna||'—';
+      default:return'—';
     }
-    Y+=8;hLine(Y,60,W-60,'rgba(140,100,40,0.2)',1);Y+=20;
   }
 
-  const FY=H-100;
-  rRect(40,FY-18,W-80,80,14,'rgba(120,60,10,0.07)');hLine(FY-18,40,W-40,'rgba(150,100,40,0.3)',1);
-  ctx.textAlign='center';ctx.font='bold 22px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#5a2a00';ctx.fillText('OmKarmyog Match Making',W/2,FY+14);
-  ctx.font='19px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#8a5520';ctx.fillText('Playstore वरून OmKarmyog App Download करा.',W/2,FY+44);
-  const today=new Date();const dd=String(today.getDate()).padStart(2,'0');const mm2=String(today.getMonth()+1).padStart(2,'0');const yyyy=today.getFullYear();
-  ctx.font='14px "Tiro Devanagari Hindi",serif';ctx.fillStyle='rgba(100,60,20,0.38)';ctx.fillText(`दिनांक: ${dd}/${mm2}/${yyyy}`,W/2,FY+64);
+  const PAD=20;
+  let DY=COL_Y+PANEL_HEADER_H+4;
+  for(let i=0;i<DETAIL_LABELS.length;i++){
+    const label=DETAIL_LABELS[i]; const ry=DY+i*ROW_H; const isAlt=i%2===0;
+    const isKey=label==='नक्षत्र'||label==='राशी';
+    if(isAlt){ctx.fillStyle='rgba(201,147,58,0.07)';ctx.fillRect(LEFT_X+2,ry,PANEL_W-4,ROW_H);ctx.fillRect(RIGHT_X+2,ry,PANEL_W-4,ROW_H);}
+    ctx.font='11px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#9a6010';
+    ctx.textAlign='left';ctx.fillText(label,LEFT_X+PAD,ry+14);
+    ctx.textAlign='right';ctx.fillText(label,RIGHT_X+PANEL_W-PAD,ry+14);
+    ctx.font=isKey?'bold 16px "Tiro Devanagari Hindi",serif':'14px "Tiro Devanagari Hindi",serif';
+    ctx.fillStyle=isKey?'#7a1a00':'#1a0800';
+    ctx.textAlign='left';ctx.fillText(getDetailVal(bd,label),LEFT_X+PAD,ry+34);
+    ctx.textAlign='right';ctx.fillText(getDetailVal(vd,label),RIGHT_X+PANEL_W-PAD,ry+34);
+    hLine(ry+ROW_H-1,LEFT_X+8,LEFT_X+PANEL_W-8,'rgba(201,147,58,0.15)',0.8);
+    hLine(ry+ROW_H-1,RIGHT_X+8,RIGHT_X+PANEL_W-8,'rgba(201,147,58,0.15)',0.8);
+  }
+
+  // Ashtakut rows
+  const AK_X=CX+12, AK_W=CW-24;
+  let AY=COL_Y+PANEL_HEADER_H+4;
+  for(let i=0;i<ASHTAKUT.length;i++){
+    const ak=ASHTAKUT[i]; const ry=AY+i*AK_ROW_H;
+    if(i%2===0){ctx.fillStyle='rgba(201,147,58,0.09)';ctx.fillRect(AK_X,ry,AK_W,AK_ROW_H);}
+    ctx.textAlign='left';ctx.font='14px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#5a2800';ctx.fillText(ak.label,AK_X+10,ry+AK_ROW_H/2+5);
+    const sc=hasMrutyuDosh?'—':(scoreDetails[ak.key]!==undefined?String(scoreDetails[ak.key]):'—');
+    ctx.textAlign='right';ctx.font='bold 18px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#8b2000';ctx.fillText(sc,AK_X+AK_W-10,ry+AK_ROW_H/2+6);
+    hLine(ry+AK_ROW_H-1,AK_X,AK_X+AK_W,'rgba(201,147,58,0.18)',0.8);
+  }
+
+  // Total row
+  const totalRY=AY+ASHTAKUT.length*AK_ROW_H+6;
+  rRect(AK_X,totalRY,AK_W,42,8,'#6a1010');
+  ctx.textAlign='left';ctx.font='bold 15px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#f5d070';ctx.fillText('एकूण गुण',AK_X+12,totalRY+27);
+  ctx.textAlign='right';ctx.font='bold 20px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#ffe870';ctx.fillText(`${displaySc} / ३६`,AK_X+AK_W-12,totalRY+28);
+
+  // Verdict badge
+  const vColor=displaySc>=28?'#1a6a1a':displaySc>=21?'#6a4a00':displaySc>=18?'#6a3a00':'#8a0a0a';
+  const vBg=displaySc>=28?'rgba(40,160,40,0.13)':displaySc>=18?'rgba(180,130,20,0.13)':'rgba(160,20,20,0.13)';
+  const vBord=displaySc>=28?'#4aaa4a':displaySc>=18?'#d4a030':'#cc3333';
+  const badgeRY=totalRY+50;
+  rRect(AK_X,badgeRY,AK_W,36,18,vBg,vBord,1.5);
+  ctx.textAlign='center';ctx.font='bold 15px "Tiro Devanagari Hindi",serif';ctx.fillStyle=vColor;ctx.fillText(`✦  ${verdictText}  ✦`,CX+CW/2,badgeRY+23);
+
+  Y=COL_Y+PANEL_H+16;
+
+  // REMARKS
+  if(remarkLines.length){
+    rRect(GAP,Y,W-2*GAP,REMARKS_H-10,12,'#fff9f2','#d4a040',1.5);
+    ctx.textAlign='center';ctx.font='bold 17px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#5a2800';ctx.fillText('📋  सारांश निकाल',W/2,Y+24);
+    hLine(Y+32,GAP+16,W-GAP-16,'#e8c070',1);
+    let RY=Y+46;
+    for(const remark of remarkLines){
+      const clean=remark.replace(/[⚠️✅🔴🌸✨ℹ️]/g,'').trim();
+      const isWarn=clean.includes('दोष')||clean.includes('अशुभ');
+      ctx.fillStyle=isWarn?'#bb1111':'#3a1800';ctx.textAlign='left';ctx.font='13px "Tiro Devanagari Hindi",serif';
+      ctx.fillText(isWarn?'⚠':'•',GAP+18,RY+2);
+      const maxW=W-2*GAP-50;const words=clean.split(' ');let line='';
+      for(const word of words){const test=line+word+' ';if(ctx.measureText(test).width>maxW&&line!==''){ctx.fillText(line.trim(),GAP+38,RY+2);line=word+' ';RY+=20;}else line=test;}
+      if(line.trim())ctx.fillText(line.trim(),GAP+38,RY+2);RY+=36;
+    }
+    Y+=REMARKS_H;
+  }
+
+  // FOOTER STRIP
+  const FY=H-FOOTER_H;
+  const fGrad=ctx.createLinearGradient(0,FY,W,H);
+  fGrad.addColorStop(0,'#5a0e0e');fGrad.addColorStop(0.5,'#8b1a1a');fGrad.addColorStop(1,'#5a0e0e');
+  rRect(0,FY,W,FOOTER_H,0,fGrad);
+  hLine(FY+2,28,W-28,'#c9933a',2);
+
+  // Footer divider line
+  hLine(FY+76,GAP+40,W-GAP-40,'rgba(232,184,75,0.35)',1);
+
+  ctx.textAlign='center';
+  ctx.font='17px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#f0cf70';
+  ctx.fillText(`वराचे नाव: ${groom}    •    वधूचे नाव: ${bride}`,W/2,FY+30);
+
+  ctx.font='bold 22px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#ffe060';
+  ctx.shadowColor='rgba(255,210,60,0.5)';ctx.shadowBlur=10;
+  ctx.fillText(`✨ अष्टकूट गुण: ${displaySc}/३६   |   🎯 ${verdictText}`,W/2,FY+62);
+  ctx.shadowBlur=0;
+
+  ctx.font='16px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#f5c060';
+  ctx.fillText('OmKarmyog App आत्ताच Download करा 👇',W/2,FY+94);
+  ctx.font='bold 15px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#ffe566';
+  ctx.fillText('play.google.com/store/apps/details?id=in.omkarmyog',W/2,FY+118);
+
   return canvas;
 }
 
-// ─────────────────────────────────────────
-// DOWNLOAD
-// ─────────────────────────────────────────
-function downloadReport() {
-  if (!lastResult) return;
-  const canvas = buildReportCanvas(lastResult, lastBride, lastGroom);
-  const link = document.createElement('a');
-  link.download = `GunMilan_${lastGroom}_${lastBride}.png`;
-  link.href = canvas.toDataURL('image/png');
-  link.click();
+function downloadReport(){
+  if(!lastResult)return;
+  const canvas=buildReportCanvas(lastResult,lastBride,lastGroom);
+  const link=document.createElement('a');
+  link.download=`GunMilan_${lastGroom}_${lastBride}.png`;
+  link.href=canvas.toDataURL('image/png');link.click();
 }
 
-// ─────────────────────────────────────────
-// WHATSAPP SHARE
-// ─────────────────────────────────────────
-async function shareOnWhatsApp() {
-  if (!lastResult) { alert("आधी गुण मोजा!"); return; }
-  const canvas = buildReportCanvas(lastResult, lastBride, lastGroom);
-  const [verdict] = verdictInfo(lastResult.finalScore);
-  const text = `🪔 ${lastGroom} × 🪷 ${lastBride}\n✨ अष्टकूट गुण: ${lastResult.finalScore}/३६\n🎯 ${verdict}\n\nOmKarmyog वर तुमचेही गुण मोजा!`;
-  if (navigator.canShare) {
-    canvas.toBlob(async blob => {
-      const file = new File([blob], `GunMilan_${lastGroom}_${lastBride}.png`, {type:'image/png'});
-      if (navigator.canShare({files:[file]})) {
-        try { await navigator.share({files:[file], title:'गुण मिलन', text}); return; } catch(e) {}
-      }
-      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-    }, 'image/png');
+async function shareOnWhatsApp(){
+  if(!lastResult){alert("आधी गुण मोजा!");return;}
+  const canvas=buildReportCanvas(lastResult,lastBride,lastGroom);
+  const hasMrutyuDosh=!!(lastResult.remarks&&lastResult.remarks.some(r=>r.includes('षडाष्टक')||r.includes('Neshta')));
+  const displaySc=hasMrutyuDosh?0:lastResult.finalScore;
+  const [verdict]=verdictInfo(displaySc);
+  const text=`वराचे नाव: ${lastGroom}\nवधूचे नाव: ${lastBride}\n✨ अष्टकूट गुण: ${displaySc}/३६\n🎯 ${verdict}\n\nOmKarmyog App आत्ताच Download करा 👇\nhttps://play.google.com/store/apps/details?id=in.omkarmyog`;
+  if(navigator.canShare){
+    canvas.toBlob(async blob=>{
+      const file=new File([blob],`GunMilan_${lastGroom}_${lastBride}.png`,{type:'image/png'});
+      if(navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'विवाह गुण मिलन',text});return;}catch(e){}}
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank');
+    },'image/png');
   } else {
-    canvas.toBlob(blob => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href=url; a.download=`GunMilan_${lastGroom}_${lastBride}.png`; a.click(); URL.revokeObjectURL(url);
-    }, 'image/png');
-    setTimeout(() => window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'), 900);
+    canvas.toBlob(blob=>{const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`GunMilan_${lastGroom}_${lastBride}.png`;a.click();URL.revokeObjectURL(url);},'image/png');
+    setTimeout(()=>window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank'),900);
   }
 }
 
-// ─────────────────────────────────────────
-// CALCULATE
-// ─────────────────────────────────────────
-function calculate() {
-  const bride = document.getElementById('brideName').value.trim();
-  const groom = document.getElementById('groomName').value.trim();
-  if (!bride||!groom) { alert("कृपया वर आणि वधूचे नाव टाका!"); return; }
-  if (!engine)        { alert("सिस्टिम लोड होत आहे..."); return; }
-
-  const bNakId = parseInt(document.getElementById('varaaNak').value);
-  const bRashi  = document.getElementById('varaRashi').value;
-  const vNakId  = parseInt(document.getElementById('vadhuNak').value);
-  const vRashi  = document.getElementById('vadhuRashi').value;
-  if (!bNakId||!bRashi) { alert("वराचे नक्षत्र व राशी निवडा!"); return; }
-  if (!vNakId||!vRashi) { alert("वधूचे नक्षत्र व राशी निवडा!"); return; }
-
-  const vNak = DB.nakshatras.find(n=>n.id===vNakId);
-  const bNak = DB.nakshatras.find(n=>n.id===bNakId);
-
-  function makePerson(nak, rashi, name) {
-    const char = getFirstChar(name);
-    const pada = nak.padas.find(p=>p.char===char)
-              || nak.padas.find(p=>p.char===char.charAt(0))
-              || nak.padas.find(p=>p.rashi===rashi)
-              || nak.padas[0];
-    return {...pada, rashi, nakID:nak.id, yoni:nak.yoni, gana:nak.gana, nadi:nak.nadi, nakName:nak.name, charan:pada.char};
+function calculate(){
+  const bride=document.getElementById('brideName').value.trim();
+  const groom=document.getElementById('groomName').value.trim();
+  if(!bride||!groom){alert("कृपया वर आणि वधूचे नाव टाका!");return;}
+  if(!engine){alert("सिस्टिम लोड होत आहे...");return;}
+  const bNakId=parseInt(document.getElementById('varaaNak').value);
+  const bRashi=document.getElementById('varaRashi').value;
+  const vNakId=parseInt(document.getElementById('vadhuNak').value);
+  const vRashi=document.getElementById('vadhuRashi').value;
+  if(!bNakId||!bRashi){alert("वराचे नक्षत्र व राशी निवडा!");return;}
+  if(!vNakId||!vRashi){alert("वधूचे नक्षत्र व राशी निवडा!");return;}
+  const vNak=DB.nakshatras.find(n=>n.id===vNakId);
+  const bNak=DB.nakshatras.find(n=>n.id===bNakId);
+  function makePerson(nak,rashi,name){
+    const char=getFirstChar(name);
+    const pada=nak.padas.find(p=>p.char===char)||nak.padas.find(p=>p.char===char.charAt(0))||nak.padas.find(p=>p.rashi===rashi)||nak.padas[0];
+    return{...pada,rashi,nakID:nak.id,yoni:nak.yoni,gana:nak.gana,nadi:nak.nadi,nakName:nak.name,charan:pada.char};
   }
-
-  const vObj = makePerson(vNak, vRashi, bride);
-  const bObj = makePerson(bNak, bRashi, groom);
-  const origGet = engine.getDetails.bind(engine);
-  engine.getDetails = (name) => (name===bride ? vObj : bObj);
-  const res = engine.match(bride, groom);
-  engine.getDetails = origGet;
-  if (!res.vadhuDetails) res.vadhuDetails = vObj;
-  if (!res.varaDetails)  res.varaDetails  = bObj;
-  if (res.error) { alert(res.error); return; }
-
-  lastResult = res; lastBride = bride; lastGroom = groom;
-
-  const hasMrutyuDosh = res.remarks && res.remarks.some(r=>r.includes('षडाष्टक')||r.includes('मृत्यू')||r.includes('Neshta'));
-  let displayScore = hasMrutyuDosh ? 0 : res.finalScore;
-
-  document.getElementById('resultArea').style.display = 'block';
+  const vObj=makePerson(vNak,vRashi,bride);
+  const bObj=makePerson(bNak,bRashi,groom);
+  const origGet=engine.getDetails.bind(engine);
+  engine.getDetails=(name)=>(name===bride?vObj:bObj);
+  const res=engine.match(bride,groom);
+  engine.getDetails=origGet;
+  if(!res.vadhuDetails)res.vadhuDetails=vObj;
+  if(!res.varaDetails)res.varaDetails=bObj;
+  if(res.error){alert(res.error);return;}
+  lastResult=res;lastBride=bride;lastGroom=groom;
+  const hasMrutyuDosh=res.remarks&&res.remarks.some(r=>r.includes('षडाष्टक')||r.includes('मृत्यू')||r.includes('Neshta'));
+  let displayScore=hasMrutyuDosh?0:res.finalScore;
+  document.getElementById('resultArea').style.display='block';
   document.getElementById('downloadBtn').classList.add('visible');
   document.getElementById('whatsappBtn').classList.add('visible');
   setTimeout(()=>document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'start'}),80);
-
-  document.getElementById('finalScore').textContent = displayScore;
-  const [vText,vCls] = verdictInfo(displayScore);
-  const vEl = document.getElementById('scoreVerdict');
-  vEl.textContent = vText; vEl.className = 'score-verdict '+vCls;
-
-  // Score table
+  document.getElementById('finalScore').textContent=displayScore;
+  const [vText,vCls]=verdictInfo(displayScore);
+  const vEl=document.getElementById('scoreVerdict');vEl.textContent=vText;vEl.className='score-verdict '+vCls;
   const labels={varna:"वर्ण",vashya:"वश्य",tara:"तारा",yoni:"योनी",maitri:"ग्रहमैत्री",gana:"गण",bhakoot:"भकूट",nadi:"नाडी"};
-  let tbl = '';
-  if (hasMrutyuDosh) {
-    tbl = `<tr><td colspan="2" style="text-align:center;color:#f08080;padding:10px 4px;font-size:0.88rem;line-height:1.5;">⚠️ मृत्यू षडाष्टक दोष —<br>विवाह अशुभ</td></tr>
-           <tr><td>एकूण</td><td>0</td></tr>`;
-  } else {
-    for(let k in res.scoreDetails)
-      tbl += `<tr><td>${labels[k]}</td><td>${res.scoreDetails[k]}</td></tr>`;
-    tbl += `<tr><td>एकूण</td><td>${res.finalScore}</td></tr>`;
-  }
-  document.getElementById('scoreTable').innerHTML = tbl;
-
-  // Hide placeholder on desktop when both cards are visible
-  document.getElementById('scorePlaceholder').style.display = 'none';
-
-  // Nak Details
-  renderNakDetails(res.varaDetails, res.vadhuDetails, groom, bride);
-
+  let tbl='';
+  if(hasMrutyuDosh){tbl=`<tr><td colspan="2" style="text-align:center;color:#f08080;padding:10px 4px;font-size:0.88rem;line-height:1.5;">⚠️ मृत्यू षडाष्टक दोष —<br>विवाह अशुभ</td></tr><tr><td>एकूण</td><td>0</td></tr>`;}
+  else{for(let k in res.scoreDetails)tbl+=`<tr><td>${labels[k]}</td><td>${res.scoreDetails[k]}</td></tr>`;tbl+=`<tr><td>एकूण</td><td>${res.finalScore}</td></tr>`;}
+  document.getElementById('scoreTable').innerHTML=tbl;
+  renderNakDetails(res.varaDetails,res.vadhuDetails,groom,bride);
   renderSummary(res.remarks);
 }
 
-// ─────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────
-function initUI() {
-  buildNakSel('vadhuNak'); buildNakSel('varaaNak');
-  buildRashiSel('vadhuRashi'); buildRashiSel('varaRashi');
-  document.getElementById('brideName').addEventListener('input', e=>onNameInput(e.target.value,'vadhuNak','vadhuRashi','vadhu'));
-  document.getElementById('groomName').addEventListener('input', e=>onNameInput(e.target.value,'varaaNak','varaRashi','vara'));
-  document.getElementById('vadhuNak').addEventListener('change', ()=>onNakChange('vadhuNak','vadhuRashi','vadhu'));
-  document.getElementById('varaaNak').addEventListener('change', ()=>onNakChange('varaaNak','varaRashi','vara'));
-  document.getElementById('calculateBtn').addEventListener('click', calculate);
-  document.getElementById('downloadBtn').addEventListener('click', downloadReport);
-  document.getElementById('whatsappBtn').addEventListener('click', shareOnWhatsApp);
+function initUI(){
+  buildNakSel('vadhuNak');buildNakSel('varaaNak');
+  buildRashiSel('vadhuRashi');buildRashiSel('varaRashi');
+  document.getElementById('brideName').addEventListener('input',e=>onNameInput(e.target.value,'vadhuNak','vadhuRashi','vadhu'));
+  document.getElementById('groomName').addEventListener('input',e=>onNameInput(e.target.value,'varaaNak','varaRashi','vara'));
+  document.getElementById('vadhuNak').addEventListener('change',()=>onNakChange('vadhuNak','vadhuRashi','vadhu'));
+  document.getElementById('varaaNak').addEventListener('change',()=>onNakChange('varaaNak','varaRashi','vara'));
+  document.getElementById('calculateBtn').addEventListener('click',calculate);
+  document.getElementById('downloadBtn').addEventListener('click',downloadReport);
+  document.getElementById('whatsappBtn').addEventListener('click',shareOnWhatsApp);
 }
 
-const wait = setInterval(()=>{
-  if (typeof engine!=='undefined'&&engine&&engine.db) {
-    DB = engine.db;
-    clearInterval(wait);
-    initUI();
-  }
-}, 100);
+const wait=setInterval(()=>{
+  if(typeof engine!=='undefined'&&engine&&engine.db){DB=engine.db;clearInterval(wait);initUI();}
+},100);
 </script>
 </body>
 </html>

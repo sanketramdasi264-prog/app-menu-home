@@ -58,12 +58,9 @@
   .calc-wrap{text-align:center;margin:4px 0 26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
   #calculateBtn { background:linear-gradient(135deg,var(--gold) 0%,#a06820 100%); border:none; border-radius:50px; color:var(--maroon); font-family:'Tiro Devanagari Hindi',serif; font-size:1.05rem; font-weight:700; padding:13px 46px; cursor:pointer; letter-spacing:1px; box-shadow:0 4px 20px rgba(201,147,58,0.35); transition:transform 0.2s,box-shadow 0.2s; }
   #calculateBtn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,147,58,0.5);}
-
   .icon-btn { background:transparent; border:1px solid var(--border); border-radius:50px; color:var(--gold-lt); font-family:'Tiro Devanagari Hindi',serif; font-size:0.9rem; font-weight:600; padding:11px 22px; cursor:pointer; transition:all 0.2s; display:none; align-items:center; gap:6px; }
   .icon-btn:hover{background:rgba(201,147,58,0.12);transform:translateY(-2px);}
   .icon-btn.visible{display:inline-flex;}
-
-  /* WhatsApp btn green accent */
   #whatsappBtn { border-color:rgba(37,211,102,0.45); color:#25d366; }
   #whatsappBtn:hover { background:rgba(37,211,102,0.1); border-color:rgba(37,211,102,0.7); }
 
@@ -78,6 +75,8 @@
   .v-good{background:rgba(201,147,58,0.2);color:var(--gold-pale);border:1px solid var(--border);}
   .v-average{background:rgba(180,120,20,0.2);color:#e8c87a;border:1px solid rgba(180,120,20,0.3);}
   .v-poor{background:rgba(140,30,30,0.3);color:#f08080;border:1px solid rgba(200,60,60,0.3);}
+
+  /* ── SCORE + NAK INFO ROW ── */
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
   @media(max-width:500px){.two-col{grid-template-columns:1fr;}}
   .result-card{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:16px;}
@@ -87,11 +86,61 @@
   .score-table tr:last-child{border-bottom:none;font-weight:700;}
   .score-table td{padding:6px 2px;font-size:0.86rem;}
   .score-table td:last-child{text-align:right;color:var(--gold-lt);font-family:'Cinzel Decorative',serif;font-size:0.88rem;}
-  .nak-row{background:rgba(0,0,0,0.2);border-radius:8px;padding:10px 12px;margin-bottom:8px;}
-  .nak-row:last-child{margin-bottom:0;}
-  .nak-row .who{font-size:0.7rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.5px;}
-  .nak-row .val{font-size:0.92rem;color:var(--text);margin-top:3px;}
-  .nak-row .sub{font-size:0.73rem;color:var(--text-dim);margin-top:2px;line-height:1.5;}
+
+  /* ── NAK DETAILS TWO-COLUMN ── */
+  .nak-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  @media(max-width:500px){ .nak-details-grid{grid-template-columns:1fr;} }
+  .nak-person-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .nak-person-header {
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .nak-person-header .ph-icon { font-size: 1.05rem; }
+  .nak-person-header .ph-role { font-size: 0.68rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+  .nak-person-header .ph-name { font-size: 1rem; color: var(--text); font-weight: 600; line-height: 1.2; }
+  .nak-rows { padding: 10px 14px 12px; }
+  .nak-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(201,147,58,0.08);
+    gap: 8px;
+  }
+  .nak-detail-row:last-child { border-bottom: none; }
+  .ndr-label {
+    font-size: 0.72rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .ndr-value {
+    font-size: 0.88rem;
+    color: var(--text);
+    text-align: right;
+    line-height: 1.3;
+  }
+  .ndr-value.highlight {
+    color: var(--gold-lt);
+    font-size: 0.94rem;
+    font-weight: 600;
+  }
 
   /* ── SUMMARY ── */
   .summary-section{ margin-bottom:16px; animation:fadeUp 0.5s ease 0.1s both; }
@@ -108,29 +157,6 @@
   .summary-text{ font-size:0.9rem; line-height:1.6; color:var(--text); }
   .summary-empty{ text-align:center; color:#7ef09a; font-size:0.92rem; padding:6px 0; display:flex; align-items:center; justify-content:center; gap:8px; }
 
-  /* ── HISTORY SECTION ── */
-  #historySection { display:none; margin-bottom:24px; animation:fadeUp 0.4s ease; }
-  .history-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-  .history-header h3 { font-size:0.82rem; color:var(--gold); text-transform:uppercase; letter-spacing:1.5px; }
-  .history-clear { background:transparent; border:none; color:rgba(240,128,128,0.6); font-size:0.75rem; cursor:pointer; font-family:'Tiro Devanagari Hindi',serif; padding:4px 8px; border-radius:6px; transition:color 0.2s,background 0.2s; }
-  .history-clear:hover { color:#f08080; background:rgba(240,128,128,0.1); }
-  #historyList { display:flex; flex-direction:column; gap:9px; }
-  .hist-item { background:rgba(60,10,10,0.55); border:1px solid var(--border); border-radius:11px; padding:13px 15px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; transition:border-color 0.2s; }
-  .hist-item:hover { border-color:rgba(201,147,58,0.6); }
-  .hist-names { flex:1; min-width:160px; }
-  .hist-groom { font-size:0.92rem; color:var(--text); }
-  .hist-sep { color:var(--text-dim); margin:0 4px; font-size:0.8rem; }
-  .hist-bride { font-size:0.92rem; color:var(--text); }
-  .hist-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-  .hist-score { font-family:'Cinzel Decorative',serif; font-size:1rem; font-weight:700; }
-  .hist-verdict { font-size:0.72rem; color:var(--text-dim); background:rgba(0,0,0,0.25); padding:2px 8px; border-radius:20px; }
-  .hist-date { font-size:0.68rem; color:rgba(196,168,130,0.45); }
-  .hist-actions { display:flex; gap:6px; }
-  .hist-btn { background:rgba(201,147,58,0.12); border:1px solid var(--border); border-radius:7px; color:var(--gold-lt); font-family:'Tiro Devanagari Hindi',serif; font-size:0.75rem; padding:5px 11px; cursor:pointer; transition:background 0.2s; }
-  .hist-btn:hover { background:rgba(201,147,58,0.25); }
-  .hist-del { background:rgba(200,50,50,0.1); border-color:rgba(200,80,80,0.3); color:#f08080; }
-  .hist-del:hover { background:rgba(200,50,50,0.25); }
-
   .footer{text-align:center;padding:28px 20px 10px;color:rgba(196,168,130,0.35);font-size:0.72rem;}
   .divider{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 auto 10px;}
   #reportCanvas{display:none;}
@@ -145,15 +171,6 @@
 </div>
 
 <div class="container">
-
-  <!-- ── HISTORY (top, above form) ── -->
-  <div id="historySection">
-    <div class="history-header">
-      <h3>🕐 मागील गुण मिलन</h3>
-      <button class="history-clear" onclick="clearAllHistory()">सर्व मिटवा</button>
-    </div>
-    <div id="historyList"></div>
-  </div>
 
   <!-- ── FORM ── -->
   <div class="persons-grid">
@@ -179,6 +196,7 @@
 
   <!-- ── RESULTS ── -->
   <div id="resultArea">
+
     <div class="score-hero">
       <div class="score-label">अष्टकूट गुण मिलन</div>
       <div class="score-number" id="finalScore">—</div>
@@ -193,16 +211,19 @@
       </div>
     </div>
 
+    <!-- Score table -->
     <div class="two-col">
       <div class="result-card">
         <h3>📊 अष्टकूट गुण</h3>
         <table class="score-table" id="scoreTable"></table>
       </div>
-      <div class="result-card">
-        <h3>🌟 नक्षत्र माहिती</h3>
-        <div id="nakInfo"></div>
-      </div>
+      <!-- placeholder second col — keeps grid balanced on desktop -->
+      <div class="result-card" style="display:flex;align-items:center;justify-content:center;opacity:0.0;pointer-events:none;" id="scorePlaceholder"></div>
     </div>
+
+    <!-- ── NAK DETAILS — two separate person cards ── -->
+    <div class="nak-details-grid" id="nakDetailsGrid"></div>
+
   </div>
 
   <div class="footer"><div class="divider"></div>OmKarmyog Match Making</div>
@@ -283,6 +304,7 @@ function onNameInput(name, nakSelId, rashiSelId, person) {
   if (name.trim().length===0) manualNak[person] = false;
   autoDetect(name, nakSelId, rashiSelId, person);
 }
+
 function verdictInfo(score) {
   if (score>=28) return ['अत्यंत उत्तम मिलन','v-excellent','#7ef09a'];
   if (score>=21) return ['उत्तम मिलन','v-good','#e8c87a'];
@@ -296,11 +318,16 @@ function classifyRemark(r) {
 }
 function iconFor(cls){ return cls==='warn'?'⚠️':cls==='good'?'✅':'ℹ️'; }
 
+function getRashiswami(rashi) {
+  if (!DB) return '—';
+  return DB.matrices.graha_maitri.lords[rashi] || '—';
+}
+
 function renderSummary(remarks) {
   const ss = document.getElementById('summarySection');
   const si = document.getElementById('summaryItems');
   ss.style.display = 'block';
-  if (remarks&&remarks.length) {
+  if (remarks && remarks.length) {
     si.innerHTML = remarks.map(r => {
       const clean = r.replace(/[⚠️✅ℹ️]/g,'').trim();
       const cls = classifyRemark(clean);
@@ -311,9 +338,75 @@ function renderSummary(remarks) {
   }
 }
 
+// ── Nak Details: two-column systematic layout ──
+function renderNakDetails(bd, vd, groomName, brideName) {
+  function charanNum(nak, char) {
+    if (!nak) return '—';
+    const idx = nak.padas.findIndex(p => p.char === char);
+    return idx >= 0 ? (idx + 1) : '—';
+  }
+  function getCharan(details) {
+    const nak = DB.nakshatras.find(n => n.id === details.nakID);
+    const num = charanNum(nak, details.charan);
+    return `${num} (${details.charan})`;
+  }
+
+  function personCard(details, name, icon, role) {
+    const charan = getCharan(details);
+    const rashiswami = getRashiswami(details.rashi);
+    return `
+      <div class="nak-person-card">
+        <div class="nak-person-header">
+          <span class="ph-icon">${icon}</span>
+          <div>
+            <div class="ph-role">${role}</div>
+            <div class="ph-name">${name}</div>
+          </div>
+        </div>
+        <div class="nak-rows">
+          <div class="nak-detail-row">
+            <span class="ndr-label">नक्षत्र</span>
+            <span class="ndr-value highlight">${details.nakName}</span>
+          </div>
+          <div class="nak-detail-row">
+            <span class="ndr-label">चरण / अक्षर</span>
+            <span class="ndr-value">${charan}</span>
+          </div>
+          <div class="nak-detail-row">
+            <span class="ndr-label">नाडी</span>
+            <span class="ndr-value">${details.nadi}</span>
+          </div>
+          <div class="nak-detail-row">
+            <span class="ndr-label">योनी</span>
+            <span class="ndr-value">${details.yoni}</span>
+          </div>
+          <div class="nak-detail-row">
+            <span class="ndr-label">गण</span>
+            <span class="ndr-value">${details.gana}</span>
+          </div>
+          <div class="nak-detail-row">
+            <span class="ndr-label">राशी</span>
+            <span class="ndr-value highlight">${details.rashi}</span>
+          </div>
+          <div class="nak-detail-row">
+            <span class="ndr-label">राशीस्वामी</span>
+            <span class="ndr-value">${rashiswami}</span>
+          </div>
+          <div class="nak-detail-row">
+            <span class="ndr-label">वर्ण</span>
+            <span class="ndr-value">${details.varna}</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('nakDetailsGrid').innerHTML =
+    personCard(bd, groomName, '🪔', 'वर') +
+    personCard(vd, brideName, '🪷', 'वधू');
+}
+
 // ─────────────────────────────────────────
 // CANVAS REPORT GENERATOR
-// (shared by Download + WhatsApp)
 // ─────────────────────────────────────────
 function buildReportCanvas(res, bride, groom) {
   const bd = res.varaDetails;
@@ -327,19 +420,14 @@ function buildReportCanvas(res, bride, groom) {
   canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  // Paper background
   const paperGrad = ctx.createLinearGradient(0,0,W,H);
   paperGrad.addColorStop(0,'#fdf9f1'); paperGrad.addColorStop(0.5,'#faf4e6'); paperGrad.addColorStop(1,'#f6eedd');
   ctx.fillStyle = paperGrad; ctx.fillRect(0,0,W,H);
-
-  // Lined paper
   ctx.strokeStyle='rgba(170,140,90,0.14)'; ctx.lineWidth=1;
   for(let y=100;y<H;y+=46){ctx.beginPath();ctx.moveTo(30,y);ctx.lineTo(W-30,y);ctx.stroke();}
   ctx.strokeStyle='rgba(200,70,70,0.22)'; ctx.lineWidth=1.5;
   ctx.beginPath();ctx.moveTo(108,0);ctx.lineTo(108,H);ctx.stroke();
   ctx.beginPath();ctx.moveTo(W-108,0);ctx.lineTo(W-108,H);ctx.stroke();
-  ctx.fillStyle='rgba(130,100,50,0.025)';
-  for(let i=0;i<250;i++){ctx.beginPath();ctx.arc(Math.random()*W,Math.random()*H,Math.random()*2+0.5,0,Math.PI*2);ctx.fill();}
 
   function hLine(y,x1=50,x2=W-50,color='rgba(130,90,30,0.28)',lw=1.2){ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.stroke();}
   function rRect(x,y,w,h,r,fs){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();ctx.fillStyle=fs;ctx.fill();}
@@ -411,7 +499,6 @@ function buildReportCanvas(res, bride, groom) {
   ctx.font='19px "Tiro Devanagari Hindi",serif';ctx.fillStyle='#8a5520';ctx.fillText('Playstore वरून OmKarmyog App Download करा.',W/2,FY+44);
   const today=new Date();const dd=String(today.getDate()).padStart(2,'0');const mm2=String(today.getMonth()+1).padStart(2,'0');const yyyy=today.getFullYear();
   ctx.font='14px "Tiro Devanagari Hindi",serif';ctx.fillStyle='rgba(100,60,20,0.38)';ctx.fillText(`दिनांक: ${dd}/${mm2}/${yyyy}`,W/2,FY+64);
-
   return canvas;
 }
 
@@ -432,37 +519,23 @@ function downloadReport() {
 // ─────────────────────────────────────────
 async function shareOnWhatsApp() {
   if (!lastResult) { alert("आधी गुण मोजा!"); return; }
-
-  // Build canvas fresh (or reuse cached)
   const canvas = buildReportCanvas(lastResult, lastBride, lastGroom);
   const [verdict] = verdictInfo(lastResult.finalScore);
   const text = `🪔 ${lastGroom} × 🪷 ${lastBride}\n✨ अष्टकूट गुण: ${lastResult.finalScore}/३६\n🎯 ${verdict}\n\nOmKarmyog वर तुमचेही गुण मोजा!`;
-
-  // Mobile: native share with image file
   if (navigator.canShare) {
     canvas.toBlob(async blob => {
       const file = new File([blob], `GunMilan_${lastGroom}_${lastBride}.png`, {type:'image/png'});
       if (navigator.canShare({files:[file]})) {
-        try {
-          await navigator.share({files:[file], title:'गुण मिलन', text});
-          return;
-        } catch(e) { /* user cancelled or error — fallback */ }
+        try { await navigator.share({files:[file], title:'गुण मिलन', text}); return; } catch(e) {}
       }
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     }, 'image/png');
   } else {
-    // Desktop: download image first, then open WhatsApp web with text
     canvas.toBlob(blob => {
       const url = URL.createObjectURL(blob);
-      const a   = document.createElement('a');
-      a.href    = url;
-      a.download = `GunMilan_${lastGroom}_${lastBride}.png`;
-      a.click();
-      URL.revokeObjectURL(url);
+      const a = document.createElement('a'); a.href=url; a.download=`GunMilan_${lastGroom}_${lastBride}.png`; a.click(); URL.revokeObjectURL(url);
     }, 'image/png');
-    setTimeout(() => {
-      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-    }, 900);
+    setTimeout(() => window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'), 900);
   }
 }
 
@@ -506,13 +579,9 @@ function calculate() {
 
   lastResult = res; lastBride = bride; lastGroom = groom;
 
-  // Special score overrides
-  const hasShubhBhakoot = res.remarks && res.remarks.some(r=>r.includes('शुभ भकूट'));
-  const hasMrutyuDosh   = res.remarks && res.remarks.some(r=>r.includes('षडाष्टक')||r.includes('मृत्यू')||r.includes('Neshta'));
-  let displayScore = res.finalScore;
-  if (hasMrutyuDosh)   displayScore = 0;
+  const hasMrutyuDosh = res.remarks && res.remarks.some(r=>r.includes('षडाष्टक')||r.includes('मृत्यू')||r.includes('Neshta'));
+  let displayScore = hasMrutyuDosh ? 0 : res.finalScore;
 
-  // Show results
   document.getElementById('resultArea').style.display = 'block';
   document.getElementById('downloadBtn').classList.add('visible');
   document.getElementById('whatsappBtn').classList.add('visible');
@@ -526,7 +595,7 @@ function calculate() {
   // Score table
   const labels={varna:"वर्ण",vashya:"वश्य",tara:"तारा",yoni:"योनी",maitri:"ग्रहमैत्री",gana:"गण",bhakoot:"भकूट",nadi:"नाडी"};
   let tbl = '';
-    if (hasMrutyuDosh) {
+  if (hasMrutyuDosh) {
     tbl = `<tr><td colspan="2" style="text-align:center;color:#f08080;padding:10px 4px;font-size:0.88rem;line-height:1.5;">⚠️ मृत्यू षडाष्टक दोष —<br>विवाह अशुभ</td></tr>
            <tr><td>एकूण</td><td>0</td></tr>`;
   } else {
@@ -536,27 +605,13 @@ function calculate() {
   }
   document.getElementById('scoreTable').innerHTML = tbl;
 
-  const vd=res.vadhuDetails, bd=res.varaDetails;
-  document.getElementById('nakInfo').innerHTML=`
-    <div class="nak-row">
-      <div class="who">🪔 वर — ${groom}</div>
-      <div class="val">${bd.nakName} • ${bd.charan} चरण</div>
-      <div class="sub">राशी: ${bd.rashi} | गण: ${bd.gana} | नाडी: ${bd.nadi} | योनी: ${bd.yoni}</div>
-    </div>
-    <div class="nak-row">
-      <div class="who">🪷 वधू — ${bride}</div>
-      <div class="val">${vd.nakName} • ${vd.charan} चरण</div>
-      <div class="sub">राशी: ${vd.rashi} | गण: ${vd.gana} | नाडी: ${vd.nadi} | योनी: ${vd.yoni}</div>
-    </div>`;
+  // Hide placeholder on desktop when both cards are visible
+  document.getElementById('scorePlaceholder').style.display = 'none';
+
+  // Nak Details
+  renderNakDetails(res.varaDetails, res.vadhuDetails, groom, bride);
 
   renderSummary(res.remarks);
-
-  // ── Save to history ──
-  const today = new Date();
-  const dateStr = `${String(today.getDate()).padStart(2,'0')}/${String(today.getMonth()+1).padStart(2,'0')}/${today.getFullYear()}`;
-  if (typeof saveToHistory === 'function') {
-    saveToHistory({groom, bride, score: displayScore, date: dateStr});
-  }
 }
 
 // ─────────────────────────────────────────

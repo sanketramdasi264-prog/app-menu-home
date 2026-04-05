@@ -1,7 +1,6 @@
 /**
- * OmKarmyog - Grand Master Kundali Engine v2.2
- * + History Save (localStorage, last 10)
- * + WhatsApp Share as Image (canvas → blob → share)
+ * OmKarmyog - Grand Master Kundali Engine v2.3
+ * History removed. Clean engine + WhatsApp share.
  */
 
 class KundaliGrandMaster {
@@ -124,137 +123,6 @@ class KundaliGrandMaster {
 }
 
 // ─────────────────────────────────────────────
-// HISTORY  (localStorage, max 10 entries)
-// ─────────────────────────────────────────────
-const HISTORY_KEY = 'omk_history';
-const MAX_HISTORY = 10;
-
-function loadHistory() {
-    try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
-    catch { return []; }
-}
-
-function saveToHistory(entry) {
-    let hist = loadHistory();
-    // duplicate check (same two names)
-    hist = hist.filter(h => !(h.groom===entry.groom && h.bride===entry.bride));
-    hist.unshift(entry);
-    if (hist.length > MAX_HISTORY) hist = hist.slice(0, MAX_HISTORY);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(hist));
-    renderHistory();
-}
-
-function deleteHistory(index) {
-    let hist = loadHistory();
-    hist.splice(index, 1);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(hist));
-    renderHistory();
-}
-
-function clearAllHistory() {
-    if (!confirm('सर्व इतिहास मिटवायचा?')) return;
-    localStorage.removeItem(HISTORY_KEY);
-    renderHistory();
-}
-
-function verdictInfo(score) {
-    if (score>=28) return ['अत्यंत उत्तम मिलन','v-excellent','#7ef09a'];
-    if (score>=21) return ['उत्तम मिलन','v-good','#e8c87a'];
-    if (score>=18) return ['सामान्य मिलन','v-average','#e8c87a'];
-    return ['विवाह अशुभ','v-poor','#f08080'];
-}
-
-function renderHistory() {
-    const hist = loadHistory();
-    const container = document.getElementById('historyList');
-    const section   = document.getElementById('historySection');
-    if (!container) return;
-
-    if (!hist.length) {
-        section.style.display = 'none';
-        return;
-    }
-    section.style.display = 'block';
-
-    container.innerHTML = hist.map((h,i) => {
-        const [vText,,vColor] = verdictInfo(h.score);
-        return `
-        <div class="hist-item" id="hist-${i}">
-          <div class="hist-names">
-            <span class="hist-groom">🪔 ${h.groom}</span>
-            <span class="hist-sep">×</span>
-            <span class="hist-bride">🪷 ${h.bride}</span>
-          </div>
-          <div class="hist-meta">
-            <span class="hist-score" style="color:${vColor}">${h.score}/३६</span>
-            <span class="hist-verdict">${vText}</span>
-            <span class="hist-date">${h.date}</span>
-          </div>
-          <div class="hist-actions">
-            <button class="hist-btn" onclick="loadHistoryEntry(${i})">पुन्हा बघा</button>
-            <button class="hist-btn hist-del" onclick="deleteHistory(${i})">✕</button>
-          </div>
-        </div>`;
-    }).join('');
-}
-
-function loadHistoryEntry(index) {
-    const hist = loadHistory();
-    const h = hist[index];
-    if (!h) return;
-    // fill inputs
-    document.getElementById('groomName').value = h.groom;
-    document.getElementById('brideName').value = h.bride;
-    // trigger calculate after a tick
-    setTimeout(() => {
-        if (typeof calculate === 'function') calculate();
-    }, 80);
-    window.scrollTo({top:0, behavior:'smooth'});
-}
-
-// ─────────────────────────────────────────────
-// WHATSAPP SHARE  (canvas → image → share API / fallback URL)
-// ─────────────────────────────────────────────
-async function shareOnWhatsApp() {
-    if (!window._lastShareCanvas) { alert("आधी गुण मोजा!"); return; }
-
-    const canvas  = window._lastShareCanvas;
-    const groom   = window._lastShareGroom || '';
-    const bride   = window._lastShareBride || '';
-    const score   = window._lastShareScore || 0;
-    const [verdict] = verdictInfo(score);
-    const text    = `🪔 ${groom} × 🪷 ${bride}\n✨ अष्टकूट गुण: ${score}/३६\n🎯 ${verdict}\n\nOmKarmyog वर तुमचेही गुण मोजा!`;
-
-    // Try native share (mobile)
-    if (navigator.canShare) {
-        canvas.toBlob(async blob => {
-            const file = new File([blob], 'GunMilan.png', {type:'image/png'});
-            if (navigator.canShare({files:[file]})) {
-                try {
-                    await navigator.share({files:[file], title:'गुण मिलन', text});
-                    return;
-                } catch(e) { /* fallback */ }
-            }
-            // fallback: open WhatsApp with text only
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-        }, 'image/png');
-    } else {
-        // Desktop fallback: download image + open WhatsApp
-        canvas.toBlob(blob => {
-            const url = URL.createObjectURL(blob);
-            const a   = document.createElement('a');
-            a.href    = url;
-            a.download = `GunMilan_${groom}_${bride}.png`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }, 'image/png');
-        setTimeout(() => {
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-        }, 800);
-    }
-}
-
-// ─────────────────────────────────────────────
 // ENGINE INIT + FETCH
 // ─────────────────────────────────────────────
 let engine;
@@ -264,7 +132,6 @@ fetch('data.json')
     .then(data => {
         engine = new KundaliGrandMaster(data);
         console.log("✅ डेटा यशस्वीरित्या लोड झाला.");
-        renderHistory();
     })
     .catch(err => {
         console.error("❌ डेटा लोड चूक:", err);

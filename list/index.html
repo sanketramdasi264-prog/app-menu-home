@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium पूजा साहित्य यादी</title>
+<title>पूजा साहित्य यादी</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
     :root { --primary: #c62828; --secondary: #ef6c00; --bg: #f5f5f5; }
@@ -19,7 +19,6 @@
     .list-header { display: flex; font-weight: bold; background: #eee; padding: 10px; border-radius: 5px; margin-top: 10px; }
     .list-container { margin-bottom: 15px; }
 
-    /* --- Normal Item --- */
     .list-item { display: flex; align-items: center; padding: 8px; border-bottom: 1px solid #f1f1f1; cursor: grab; transition: background 0.15s; user-select: none; }
     .list-item:active { cursor: grabbing; }
     .list-item.dragging { opacity: 0.4; background: #fff3e0; }
@@ -29,21 +28,10 @@
     .qty-input { flex: 1; padding: 6px; border: 1px solid #ccc; border-radius: 4px; max-width: 80px; text-align: center; }
     .drag-handle { font-size: 18px; color: #bbb; margin-right: 6px; cursor: grab; flex-shrink: 0; }
 
-    /* --- Sub-heading Row --- */
-    .subheading-row { display: flex; align-items: center; padding: 7px 10px; background: linear-gradient(90deg, #ff6f00 0%, #ffb300 100%); border-radius: 7px; margin: 10px 0 2px 0; cursor: pointer; user-select: none; box-shadow: 0 2px 6px rgba(255,111,0,0.13); }
-    .subheading-row .sh-label { flex: 1; font-size: 15px; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
-    .subheading-row .sh-toggle { font-size: 18px; color: #fff; margin-right: 6px; transition: transform 0.2s; }
-    .subheading-row .sh-toggle.collapsed { transform: rotate(-90deg); }
-    .subheading-row input[type="checkbox"] { width: 20px; height: 20px; margin-right: 10px; accent-color: #fff; flex-shrink: 0; }
-
-    /* --- Collapsed section items --- */
-    .section-items.hidden { display: none; }
-
     .btn-add { background: #e8f5e9; color: #2e7d32; border: 2px dashed #2e7d32; padding: 10px; border-radius: 8px; font-size: 15px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 15px; }
     .btn-main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 18px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 10px; }
     .btn-secondary { background: #444; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 15px; width: 100%; cursor: pointer; }
 
-    /* Export Styles */
     #export-container { position: fixed; left: -9999px; top: 0; }
     .page-template { width: 2130px; height: 3231px; background: #fffaf0; padding: 120px 100px; position: relative; }
     .p-content { height: 100%; display: flex; flex-direction: column; }
@@ -59,17 +47,18 @@
     .p-table td { padding: 20px 25px; font-size: 46px; border: 1.5px solid #ccc; border-left: 2px solid #444; border-right: 2px solid #444; color: #000; line-height: 1.2; }
     .p-table td:last-child { text-align: center; }
     .p-table tr:last-child td { border-bottom: 2px solid #444; }
-    .p-table-subhead td { background: #fff3e0; font-weight: bold; font-size: 44px; color: #bf360c; border-left: 2px solid #444; border-right: 2px solid #444; }
     .p-footer { text-align: center; margin-top: auto; padding-top: 40px; padding-bottom: 20px; }
     .p-footer-text { font-size: 50px; font-weight: 600; color: #333; margin-bottom: 25px; }
     .p-page-num { background: #ffeb3b; padding: 15px 55px; border-radius: 60px; font-size: 42px; display: inline-block; font-weight: bold; border: 3px solid #fdd835; }
     .p-logo { position: absolute; top: 110px; right: 120px; width: 320px; height: 320px; object-fit: contain; }
 
-    /* History Overlay */
     #historyOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
     .history-card { border: 1px solid #ddd; padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
     .history-load-btn { color: var(--primary); font-weight: 600; cursor: pointer; padding: 6px 10px; border-radius: 6px; background: #fff3f3; border: 1px solid var(--primary); font-size: 13px; white-space: nowrap; }
     .history-del-btn { color: #fff; font-weight: 600; cursor: pointer; padding: 6px 10px; border-radius: 6px; background: #c62828; border: none; font-size: 13px; margin-left: 6px; white-space: nowrap; }
+
+    .progress-bar-wrap { width: 100%; background: #eee; border-radius: 8px; margin: 10px 0; height: 18px; display: none; }
+    .progress-bar { height: 18px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border-radius: 8px; transition: width 0.3s; }
 </style>
 </head>
 <body>
@@ -89,6 +78,8 @@
     <div class="list-container" id="mainList"></div>
     
     <button class="btn-add" onclick="addNewItem()">➕ नवीन साहित्य जोडा</button>
+    <div class="progress-bar-wrap" id="progressWrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+    <div id="progressText" style="text-align:center; font-size:13px; color:#666; margin-bottom:6px;"></div>
     <button class="btn-main" id="btnDownload" onclick="processExport()">📥 डाउनलोड आणि शेअर</button>
     <button class="btn-secondary" onclick="toggleHistory(true)">📜 जुनी हिस्ट्री</button>
 </div>
@@ -108,79 +99,113 @@
 <script>
 const LOGO_URL = "1000894411 (1).png";
 
-// ===================== DEFAULT ITEMS WITH SUBHEADINGS =====================
-// type: 'item' = normal item, type: 'subheading' = section header
 const defaultStructure = [
-    // --- सामान्य साहित्य ---
     { type: 'item', name: 'श्रीफळ (नारळ)', qty: '' },
+    { type: 'item', name: 'सुपारी', qty: '' },
+    { type: 'item', name: 'खारीक', qty: '' },
+    { type: 'item', name: 'सुके खोबरे', qty: '' },
+    { type: 'item', name: 'बदाम', qty: '' },
+    { type: 'item', name: 'हळकुंड', qty: '' },
     { type: 'item', name: 'हळद', qty: '' },
     { type: 'item', name: 'कुंकू', qty: '' },
     { type: 'item', name: 'अबिर', qty: '' },
     { type: 'item', name: 'गुलाल', qty: '' },
+    { type: 'item', name: 'बुक्का', qty: '' },
     { type: 'item', name: 'शेंदूर', qty: '' },
     { type: 'item', name: 'अष्टगंध', qty: '' },
-    { type: 'item', name: 'अत्तर', qty: '' },
-    { type: 'item', name: 'मध', qty: '' },
-    { type: 'item', name: 'गोमूत्र', qty: '' },
-    { type: 'item', name: 'गंगाजल', qty: '' },
-    { type: 'item', name: 'गुलाबपाणी', qty: '' },
-    { type: 'item', name: 'नाडापुडी', qty: '' },
-    { type: 'item', name: 'सुपारी', qty: '' },
-    { type: 'item', name: 'खारीक', qty: '' },
-    { type: 'item', name: 'बदाम', qty: '' },
-    { type: 'item', name: 'हळकुंड', qty: '' },
-    { type: 'item', name: 'अक्रोड', qty: '' },
-    { type: 'item', name: 'रांगोळी', qty: '' },
+    { type: 'item', name: 'अगरबत्ती', qty: '' },
     { type: 'item', name: 'कापूर', qty: '' },
-    { type: 'item', name: 'धूप', qty: '' },
-    { type: 'item', name: 'तांदूळ', qty: '' },
-    { type: 'item', name: 'फुलवाती', qty: '' },
-    { type: 'item', name: 'उदबत्ती', qty: '' },
-    { type: 'item', name: 'तूप', qty: '' },
-    { type: 'item', name: 'तेल', qty: '' },
+    { type: 'item', name: 'अत्तर', qty: '' },
+    { type: 'item', name: 'गुलाब पाणी', qty: '' },
+    { type: 'item', name: 'मध', qty: '' },
+    { type: 'item', name: 'साखर', qty: '' },
     { type: 'item', name: 'खडीसाखर', qty: '' },
-    { type: 'item', name: 'विडा पाने', qty: '' },
+    { type: 'item', name: 'जानवे', qty: '' },
+    { type: 'item', name: 'कापसाची वस्त्रे', qty: '' },
+    { type: 'item', name: 'फुलवाती', qty: '' },
+    { type: 'item', name: 'भस्म / विभूती', qty: '' },
+    { type: 'item', name: 'चंदन पावडर', qty: '' },
+    { type: 'item', name: 'गहू', qty: '' },
+    { type: 'item', name: 'तांदूळ', qty: '' },
+    { type: 'item', name: 'काळे उडीद', qty: '' },
+    { type: 'item', name: 'पांढरे उडीद', qty: '' },
+    { type: 'item', name: 'मसूर डाळ', qty: '' },
+    { type: 'item', name: 'मुग डाळ', qty: '' },
+    { type: 'item', name: 'हरभरा डाळ', qty: '' },
+    { type: 'item', name: 'तीळ (काळे व पांढरे)', qty: '' },
+    { type: 'item', name: 'पिवळी मोहरी', qty: '' },
+    { type: 'item', name: 'पांढरी मोहरी', qty: '' },
+    { type: 'item', name: 'विड्याची पाने', qty: '' },
+    { type: 'item', name: 'आंब्याच्या डहाळ्या (पाने)', qty: '' },
+    { type: 'item', name: 'केळीचे खांब', qty: '' },
     { type: 'item', name: 'दुर्वा', qty: '' },
     { type: 'item', name: 'तुळस', qty: '' },
-    { type: 'item', name: 'बेल', qty: '' },
-    { type: 'item', name: 'फुले', qty: '' },
-    { type: 'item', name: 'फळे', qty: '' },
-    { type: 'item', name: 'पेढा', qty: '' },
-    { type: 'item', name: 'सूट रुपये', qty: '' },
-    { type: 'item', name: 'साखर', qty: '' },
-    { type: 'item', name: 'गूळ', qty: '' },
-    { type: 'item', name: 'गहू', qty: '' },
-    { type: 'item', name: 'खोबरा', qty: '' },
-    { type: 'item', name: 'खारीक', qty: '' },
-    { type: 'item', name: 'सुपारी', qty: '' },
-    { type: 'item', name: 'लोकर बंडल', qty: '' },
-    { type: 'item', name: 'पुष्पहार / फुले', qty: '' },
-    { type: 'item', name: 'विडयाचे पाने', qty: '' },
-    { type: 'item', name: 'हरळी (दुर्वा)', qty: '' },
-    { type: 'item', name: 'पांढरी मोहरी', qty: '' },
+    { type: 'item', name: 'तुळशीची मंजुळा', qty: '' },
+    { type: 'item', name: 'बेलाची पाने', qty: '' },
+    { type: 'item', name: 'बेलाचे फळ', qty: '' },
+    { type: 'item', name: 'पाच प्रकारची फळे', qty: '' },
+    { type: 'item', name: 'सुटे फुले', qty: '' },
+    { type: 'item', name: 'फुलांचे हार', qty: '' },
+    { type: 'item', name: 'वेण्या / गजरे', qty: '' },
+    { type: 'item', name: 'अक्रोड', qty: '' },
+    { type: 'item', name: 'काजू', qty: '' },
+    { type: 'item', name: 'पिस्ता', qty: '' },
     { type: 'item', name: 'रांगोळी', qty: '' },
-
-    // --- हवन साहित्य ---
-    { type: 'subheading', name: 'हवन साहित्य', collapsed: false },
+    { type: 'item', name: 'धूप', qty: '' },
+    { type: 'item', name: 'फुले', qty: '' },
+    { type: 'item', name: 'पेढा', qty: '' },
+    { type: 'item', name: 'पेढे (प्रसाद)', qty: '' },
+    { type: 'item', name: 'पायस खीर', qty: '' },
+    { type: 'item', name: 'गूळ', qty: '' },
+    { type: 'item', name: 'खोबरा', qty: '' },
+    { type: 'item', name: 'नाडापुडी', qty: '' },
+    { type: 'item', name: 'लिंबू', qty: '' },
+    { type: 'item', name: 'कोहळे', qty: '' },
+    { type: 'item', name: 'गंगेचे पाणी', qty: '' },
+    { type: 'item', name: 'गोमूत्र', qty: '' },
+    { type: 'item', name: 'पंचामृत', qty: '' },
+    { type: 'item', name: 'तूप', qty: '' },
+    { type: 'item', name: 'तेल', qty: '' },
+    // हवन साहित्य
     { type: 'item', name: 'तीळ', qty: '' },
     { type: 'item', name: 'जव', qty: '' },
     { type: 'item', name: 'चंदन चुरा', qty: '' },
     { type: 'item', name: 'गुगुळ', qty: '' },
-    { type: 'item', name: 'शुद्धतूप', qty: '' },
+    { type: 'item', name: 'शुद्ध तूप', qty: '' },
     { type: 'item', name: 'हवनपुडा', qty: '' },
-    { type: 'item', name: 'लाकडे', qty: '' },
-
-    // --- नवीन कपडे ---
-    { type: 'subheading', name: 'नवीन कपडे', collapsed: false },
+    { type: 'item', name: 'होमपुडा (हवन सामग्री)', qty: '' },
+    { type: 'item', name: 'रुई समिधा', qty: '' },
+    { type: 'item', name: 'पळस समिधा', qty: '' },
+    { type: 'item', name: 'खैर समिधा', qty: '' },
+    { type: 'item', name: 'पिंपळ समिधा', qty: '' },
+    { type: 'item', name: 'औदुंबर समिधा', qty: '' },
+    { type: 'item', name: 'आघाडा समिधा', qty: '' },
+    { type: 'item', name: 'शमी समिधा', qty: '' },
+    { type: 'item', name: 'दुर्वा समिधा', qty: '' },
+    { type: 'item', name: 'दर्भ पेंढी', qty: '' },
+    { type: 'item', name: 'गोवऱ्या (शेण्या)', qty: '' },
+    { type: 'item', name: 'लाकूड (बांबफोडी)', qty: '' },
+    { type: 'item', name: 'हवनासाठी तूप', qty: '' },
+    // कपडे
+    { type: 'item', name: 'ओटीचे सामान (साडी-खण)', qty: '' },
+    { type: 'item', name: 'धोतर', qty: '' },
+    { type: 'item', name: 'उपरणी', qty: '' },
+    { type: 'item', name: 'टोप्या', qty: '' },
+    { type: 'item', name: 'ब्लाउज पीस (लाल, हिरवा, पिवळा, काळा, पांढरा)', qty: '' },
+    { type: 'item', name: 'नऊवारी साडी', qty: '' },
+    { type: 'item', name: 'शर्टचे कापड', qty: '' },
+    { type: 'item', name: 'ऊलन बंडल', qty: '' },
+    { type: 'item', name: 'हिरव्या बांगड्या', qty: '' },
     { type: 'item', name: 'साडी', qty: '' },
     { type: 'item', name: 'रेडीमेड शर्ट पीस', qty: '' },
     { type: 'item', name: 'टोपी', qty: '' },
     { type: 'item', name: 'उपरणे', qty: '' },
     { type: 'item', name: 'ब्लाउज पीस', qty: '' },
     { type: 'item', name: 'कपडा (लाल, पिवळा, हिरवा, काळा, पांढरा, केसरी, जांभळा)', qty: '' },
-
-    // --- भांडी ---
-    { type: 'subheading', name: 'भांडी', collapsed: false },
+    { type: 'item', name: 'लोकर बंडल', qty: '' },
+    // भांडी
+    { type: 'item', name: 'तांब्याचा कलश', qty: '' },
+    { type: 'item', name: 'तांब्याचा तांब्या व ताट', qty: '' },
     { type: 'item', name: 'तांब्याची कलशी', qty: '' },
     { type: 'item', name: 'तांब्याचे ताबे', qty: '' },
     { type: 'item', name: 'तांहणा (संध्यापात्र)', qty: '' },
@@ -188,37 +213,39 @@ const defaultStructure = [
     { type: 'item', name: 'पितळी पातेले', qty: '' },
     { type: 'item', name: 'बकेट', qty: '' },
     { type: 'item', name: 'कापसाचे वस्त्र', qty: '' },
-
-    // --- सुवर्ण व रंगत ---
-    { type: 'subheading', name: 'विशेष', collapsed: false },
-    { type: 'item', name: 'प्रतिमा', qty: '' },
-    { type: 'item', name: 'पंचरत्न', qty: '' },
-    { type: 'item', name: 'शालाखा (सोन्याचा तार)', qty: '' },
-    { type: 'item', name: 'नाग / गाय', qty: '' },
-
-    // --- घरगुती तयारी ---
-    { type: 'subheading', name: 'घरगुती तयारी', collapsed: false },
+    { type: 'item', name: 'समई व निरंजन', qty: '' },
+    { type: 'item', name: 'पंचपात्र व आचमनी', qty: '' },
+    { type: 'item', name: 'स्टीलची ताटे', qty: '' },
+    { type: 'item', name: 'पत्रावळी व द्रोण', qty: '' },
+    { type: 'item', name: 'सूप', qty: '' },
+    // घरगुती तयारी
     { type: 'item', name: 'चौरंग', qty: '' },
     { type: 'item', name: 'पाट', qty: '' },
     { type: 'item', name: 'चटई / आसन', qty: '' },
     { type: 'item', name: 'समई', qty: '' },
     { type: 'item', name: 'निरंजनी', qty: '' },
-    { type: 'item', name: 'शुभा (गोवरी)', qty: '' },
     { type: 'item', name: 'विटा', qty: '' },
+    { type: 'item', name: 'माती / वाळू', qty: '' },
     { type: 'item', name: 'रेती (वाळू)', qty: '' },
+    { type: 'item', name: 'शुभा (गोवरी)', qty: '' },
     { type: 'item', name: 'शेवाळ / चोळके', qty: '' },
     { type: 'item', name: 'गायीचे शेण / गोमुत्र', qty: '' },
     { type: 'item', name: 'देवाचे फोटो', qty: '' },
-    { type: 'item', name: 'ऑब्याचे डहाळे', qty: '' },
-    { type: 'item', name: 'केळीचे खांब', qty: '' },
     { type: 'item', name: 'शिजवलेला भात', qty: '' },
     { type: 'item', name: 'कणकीचे दिवे', qty: '' },
-    { type: 'item', name: 'कोहळे', qty: '' },
+    { type: 'item', name: 'रद्दी पेपर', qty: '' },
+    // विशेष
+    { type: 'item', name: 'प्रतिमा', qty: '' },
+    { type: 'item', name: 'पंचरत्न', qty: '' },
+    { type: 'item', name: 'शालाखा (सोन्याचा तार)', qty: '' },
+    { type: 'item', name: 'नाग / गाय', qty: '' },
+    { type: 'item', name: 'सूट रुपये', qty: '' },
+    { type: 'item', name: 'पुष्पहार / फुले', qty: '' },
+    { type: 'item', name: 'हरळी (दुर्वा)', qty: '' },
 ];
 
 let itemCounter = 0;
 
-// ===================== RENDER =====================
 function init() {
     renderList(defaultStructure);
     updateHistoryList();
@@ -228,99 +255,34 @@ function renderList(structure) {
     const container = document.getElementById('mainList');
     container.innerHTML = "";
     itemCounter = 0;
-
-    let currentSectionEl = null;
-    let currentSectionId = null;
-
     structure.forEach((entry) => {
-        if (entry.type === 'subheading') {
-            const sectionId = 'sec-' + itemCounter++;
-            currentSectionId = sectionId;
-
-            // Sub-heading row
-            const shDiv = document.createElement('div');
-            shDiv.className = 'subheading-row';
-            shDiv.dataset.section = sectionId;
-            shDiv.dataset.collapsed = entry.collapsed ? '1' : '0';
-            shDiv.innerHTML = `
-                <input type="checkbox" class="sh-checkbox" title="सर्व निवडा/रद्द करा" onchange="toggleSectionCheck(this, '${sectionId}')">
-                <span class="sh-toggle${entry.collapsed ? ' collapsed' : ''}">▼</span>
-                <span class="sh-label">📂 ${entry.name}</span>`;
-            shDiv.querySelector('.sh-toggle').addEventListener('click', () => toggleSection(sectionId, shDiv));
-            shDiv.querySelector('.sh-label').addEventListener('click', () => toggleSection(sectionId, shDiv));
-            container.appendChild(shDiv);
-
-            // Container for section items
-            const secItemsEl = document.createElement('div');
-            secItemsEl.className = 'section-items' + (entry.collapsed ? ' hidden' : '');
-            secItemsEl.id = sectionId;
-            container.appendChild(secItemsEl);
-
-            currentSectionEl = secItemsEl;
-        } else {
+        if (entry.type === 'item') {
             const idx = itemCounter++;
-            const parent = currentSectionEl || container;
-            addItemToParent(parent, entry.name, idx, entry.checked || false, entry.qty || '', currentSectionId);
+            addItemToParent(container, entry.name, idx, entry.checked || false, entry.qty || '');
         }
     });
-
     initDragDrop();
 }
 
-function addItemToParent(parent, name, idx, checked, qty, sectionId) {
+function addItemToParent(parent, name, idx, checked, qty) {
     const div = document.createElement('div');
     div.className = 'list-item';
     div.dataset.idx = idx;
-    div.dataset.section = sectionId || '';
     div.setAttribute('draggable', true);
     div.innerHTML = `
         <span class="drag-handle" title="ड्रॅग करा">⠿</span>
-        <input type="checkbox" id="chk-${idx}" ${checked ? 'checked' : ''} onchange="updateSectionHeaderCheck('${sectionId}')">
+        <input type="checkbox" id="chk-${idx}" ${checked ? 'checked' : ''}>
         <input type="text" class="item-text" id="txt-${idx}" value="${name}" placeholder="साहित्याचे नाव">
         <input type="text" class="qty-input" id="qty-${idx}" value="${qty}" placeholder="प्रमाण">`;
     parent.appendChild(div);
 }
 
-// ===================== SECTION TOGGLE =====================
-function toggleSection(sectionId, shDiv) {
-    const sec = document.getElementById(sectionId);
-    const arrow = shDiv.querySelector('.sh-toggle');
-    if (sec.classList.contains('hidden')) {
-        sec.classList.remove('hidden');
-        arrow.classList.remove('collapsed');
-        shDiv.dataset.collapsed = '0';
-    } else {
-        sec.classList.add('hidden');
-        arrow.classList.add('collapsed');
-        shDiv.dataset.collapsed = '1';
-    }
-}
-
-function toggleSectionCheck(checkbox, sectionId) {
-    const sec = document.getElementById(sectionId);
-    if (!sec) return;
-    sec.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = checkbox.checked; });
-}
-
-function updateSectionHeaderCheck(sectionId) {
-    if (!sectionId) return;
-    const sec = document.getElementById(sectionId);
-    const shRow = document.querySelector(`.subheading-row[data-section="${sectionId}"]`);
-    if (!sec || !shRow) return;
-    const allCbs = sec.querySelectorAll('input[type="checkbox"]');
-    const allChecked = Array.from(allCbs).every(cb => cb.checked);
-    const shCb = shRow.querySelector('.sh-checkbox');
-    if (shCb) shCb.checked = allChecked;
-}
-
-// ===================== ADD NEW ITEM =====================
 function addNewItem() {
     const container = document.getElementById('mainList');
     const idx = itemCounter++;
     const div = document.createElement('div');
     div.className = 'list-item';
     div.dataset.idx = idx;
-    div.dataset.section = '';
     div.setAttribute('draggable', true);
     div.innerHTML = `
         <span class="drag-handle" title="ड्रॅग करा">⠿</span>
@@ -332,11 +294,9 @@ function addNewItem() {
     setTimeout(() => document.getElementById(`txt-${idx}`).focus(), 100);
 }
 
-// ===================== DRAG AND DROP =====================
 function initDragDrop() {
     const items = document.querySelectorAll('.list-item');
     let dragSrc = null;
-
     items.forEach(item => {
         item.addEventListener('dragstart', function(e) {
             dragSrc = this;
@@ -369,6 +329,125 @@ function initDragDrop() {
             document.querySelectorAll('.list-item').forEach(i => i.classList.remove('drag-over'));
         });
     });
+}
+
+function collectCurrentStructure() {
+    const structure = [];
+    document.querySelectorAll('.list-item').forEach(item => {
+        const idx = item.dataset.idx;
+        const chk = document.getElementById(`chk-${idx}`);
+        const txt = document.getElementById(`txt-${idx}`);
+        const qty = document.getElementById(`qty-${idx}`);
+        if (txt) structure.push({ type: 'item', name: txt.value, qty: qty ? qty.value : '', checked: chk ? chk.checked : false });
+    });
+    return structure;
+}
+
+function collectSelectedItems() {
+    const selected = [];
+    document.querySelectorAll('.list-item').forEach(item => {
+        const idx = item.dataset.idx;
+        const chk = document.getElementById(`chk-${idx}`);
+        const txt = document.getElementById(`txt-${idx}`);
+        const qty = document.getElementById(`qty-${idx}`);
+        if (chk && chk.checked && txt && txt.value.trim()) {
+            selected.push({ name: txt.value.trim(), qty: qty ? qty.value : '' });
+        }
+    });
+    return selected;
+}
+
+// ===================== EXPORT — सर्व pages डाउनलोड =====================
+async function processExport() {
+    const selected = collectSelectedItems();
+    if (!selected.length) return alert("साहित्य निवडा!");
+
+    saveToHistory({
+        poojaName: document.getElementById('poojaName').value,
+        guruName: document.getElementById('guruName').value,
+        contactNo: document.getElementById('contactNo').value,
+        structure: collectCurrentStructure()
+    });
+
+    const btn = document.getElementById('btnDownload');
+    btn.disabled = true;
+
+    const progressWrap = document.getElementById('progressWrap');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    progressWrap.style.display = 'block';
+
+    const container = document.getElementById('export-container');
+    container.innerHTML = "";
+
+    const itemsPerPage = 46;
+    const totalPages = Math.ceil(selected.length / itemsPerPage);
+
+    for (let p = 0; p < totalPages; p++) {
+        btn.innerHTML = `⏳ पान ${p + 1} / ${totalPages} तयार होत आहे...`;
+        progressBar.style.width = Math.round(((p) / totalPages) * 100) + '%';
+        progressText.textContent = `पान ${p + 1} / ${totalPages} डाउनलोड होत आहे...`;
+
+        const pageData = selected.slice(p * itemsPerPage, (p + 1) * itemsPerPage);
+        const pageDiv = document.createElement('div');
+        pageDiv.className = 'page-template';
+
+        let listHTML = "";
+        if (pageData.length <= 23) {
+            listHTML = `<div class="p-column full-width">${renderTable(pageData)}</div>`;
+        } else {
+            const mid = Math.ceil(pageData.length / 2);
+            listHTML = `<div class="p-column">${renderTable(pageData.slice(0, mid))}</div><div class="p-column">${renderTable(pageData.slice(mid))}</div>`;
+        }
+
+        pageDiv.innerHTML = `
+            <div class="p-content">
+                <img src="${LOGO_URL}" class="p-logo" crossorigin="anonymous">
+                <div class="p-ganesh">॥ श्री ॥</div>
+                <h1 class="p-title">${document.getElementById('poojaName').value || "साहित्य यादी"}</h1>
+                <div class="p-header-info">${document.getElementById('guruName').value || "_______"} | <b>संपर्क:</b> ${document.getElementById('contactNo').value || "_______"}</div>
+                <div class="p-list-area">${listHTML}</div>
+                <div class="p-footer">
+                    <div class="p-footer-text">🙏 कृपया वरील सर्व साहित्य पूजेपूर्वी उपलब्ध करून ठेवावे 🙏</div>
+                    <div class="p-page-num">पान क्र. ${p + 1} / ${totalPages}</div>
+                </div>
+            </div>`;
+
+        container.appendChild(pageDiv);
+
+        // canvas तयार होण्याची प्रतीक्षा
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const canvas = await html2canvas(pageDiv, { scale: 1, useCORS: true });
+        const imageData = canvas.toDataURL("image/png");
+
+        // Download trigger — प्रत्येक पानासाठी वेगळा
+        await new Promise(resolve => {
+            const link = document.createElement('a');
+            link.download = `Sahitya_Yadi_Paan_${p + 1}.png`;
+            link.href = imageData;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(resolve, 600); // browser ला थोडा वेळ द्या
+        });
+
+        container.innerHTML = ""; // मेमरी मुक्त करा
+    }
+
+    progressBar.style.width = '100%';
+    progressText.textContent = `✅ सर्व ${totalPages} पाने डाउनलोड झाली!`;
+    btn.innerHTML = "📥 डाउनलोड आणि शेअर";
+    btn.disabled = false;
+    setTimeout(() => {
+        progressWrap.style.display = 'none';
+        progressText.textContent = '';
+    }, 3000);
+}
+
+function renderTable(data) {
+    const rows = data.map(item => `<tr><td>${item.name}</td><td>${item.qty || '-'}</td></tr>`).join('');
+    return `<table class="p-table"><thead><tr><th>साहित्याचे नाव</th><th style="width:30%">प्रमाण</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 // ===================== HISTORY =====================
@@ -419,140 +498,18 @@ function loadHistoryItem(id) {
     document.getElementById('guruName').value = d.guruName || '';
     document.getElementById('contactNo').value = d.contactNo || '';
     if (d.structure) {
-        renderList(d.structure);
+        renderList(d.structure.filter(i => i.type === 'item'));
     } else if (d.items) {
-        // Backward compat: old flat list
         const container = document.getElementById('mainList');
         container.innerHTML = '';
         itemCounter = 0;
-        d.items.forEach((item, i) => {
+        d.items.forEach((item) => {
             const idx = itemCounter++;
-            addItemToParent(container, item.name, idx, item.checked, item.qty, '');
+            addItemToParent(container, item.name, idx, item.checked, item.qty);
         });
         initDragDrop();
     }
     toggleHistory(false);
-}
-
-// ===================== COLLECT ALL ITEMS =====================
-function collectCurrentStructure() {
-    const structure = [];
-    const container = document.getElementById('mainList');
-    const children = container.children;
-
-    for (let i = 0; i < children.length; i++) {
-        const el = children[i];
-        if (el.classList.contains('subheading-row')) {
-            const label = el.querySelector('.sh-label').textContent.replace('📂 ', '').trim();
-            const collapsed = el.dataset.collapsed === '1';
-            structure.push({ type: 'subheading', name: label, collapsed });
-        } else if (el.classList.contains('section-items')) {
-            // items inside section
-            el.querySelectorAll('.list-item').forEach(item => {
-                const idx = item.dataset.idx;
-                const chk = document.getElementById(`chk-${idx}`);
-                const txt = document.getElementById(`txt-${idx}`);
-                const qty = document.getElementById(`qty-${idx}`);
-                if (txt) structure.push({ type: 'item', name: txt.value, qty: qty ? qty.value : '', checked: chk ? chk.checked : false });
-            });
-        } else if (el.classList.contains('list-item')) {
-            const idx = el.dataset.idx;
-            const chk = document.getElementById(`chk-${idx}`);
-            const txt = document.getElementById(`txt-${idx}`);
-            const qty = document.getElementById(`qty-${idx}`);
-            if (txt) structure.push({ type: 'item', name: txt.value, qty: qty ? qty.value : '', checked: chk ? chk.checked : false });
-        }
-    }
-    return structure;
-}
-
-function collectSelectedItems() {
-    const selected = [];
-    document.querySelectorAll('.list-item').forEach(item => {
-        const idx = item.dataset.idx;
-        const chk = document.getElementById(`chk-${idx}`);
-        const txt = document.getElementById(`txt-${idx}`);
-        const qty = document.getElementById(`qty-${idx}`);
-        if (chk && chk.checked && txt && txt.value.trim()) {
-            selected.push({ name: txt.value.trim(), qty: qty ? qty.value : '' });
-        }
-    });
-    return selected;
-}
-
-// ===================== EXPORT =====================
-async function processExport() {
-    const selected = collectSelectedItems();
-    if (!selected.length) return alert("साहित्य निवडा!");
-
-    const structure = collectCurrentStructure();
-    saveToHistory({
-        poojaName: document.getElementById('poojaName').value,
-        guruName: document.getElementById('guruName').value,
-        contactNo: document.getElementById('contactNo').value,
-        structure: structure
-    });
-
-    const btn = document.getElementById('btnDownload');
-    btn.innerHTML = "गॅलरीमध्ये सेव्ह होत आहे..."; btn.disabled = true;
-
-    const container = document.getElementById('export-container');
-    container.innerHTML = "";
-
-    const itemsPerPage = 46;
-    const totalPages = Math.ceil(selected.length / itemsPerPage);
-
-    for (let p = 0; p < totalPages; p++) {
-        const pageData = selected.slice(p * itemsPerPage, (p + 1) * itemsPerPage);
-        const pageDiv = document.createElement('div');
-        pageDiv.className = 'page-template';
-
-        let listHTML = "";
-        if (pageData.length <= 23) {
-            listHTML = `<div class="p-column full-width">${renderTable(pageData)}</div>`;
-        } else {
-            const mid = Math.ceil(pageData.length / 2);
-            listHTML = `<div class="p-column">${renderTable(pageData.slice(0, mid))}</div><div class="p-column">${renderTable(pageData.slice(mid))}</div>`;
-        }
-
-        pageDiv.innerHTML = `
-            <div class="p-content">
-                <img src="${LOGO_URL}" class="p-logo" crossorigin="anonymous">
-                <div class="p-ganesh">॥ श्री ॥</div>
-                <h1 class="p-title">${document.getElementById('poojaName').value || "साहित्य यादी"}</h1>
-                <div class="p-header-info"> ${document.getElementById('guruName').value || "_______"} | <b>संपर्क:</b> ${document.getElementById('contactNo').value || "_______"}</div>
-                <div class="p-list-area">${listHTML}</div>
-                <div class="p-footer">
-                    <div class="p-footer-text">🙏 कृपया वरील सर्व साहित्य पूजेपूर्वी उपलब्ध करून ठेवावे 🙏</div>
-                    <div class="p-page-num">पान क्र. ${p + 1} / ${totalPages}</div>
-                </div>
-            </div>`;
-
-        container.appendChild(pageDiv);
-        const canvas = await html2canvas(pageDiv, { scale: 1, useCORS: true });
-        const imageData = canvas.toDataURL("image/png");
-        const link = document.createElement('a');
-        link.download = `Pooja_List_P${p+1}.png`;
-        link.href = imageData;
-        link.click();
-
-        try {
-            const blob = await (await fetch(imageData)).blob();
-            const file = new File([blob], `Pooja_List.png`, { type: 'image/png' });
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({ files: [file], title: 'पूजा साहित्य यादी', text: 'आमची पूजा साहित्य यादी' });
-            }
-        } catch (err) {
-            console.log("Sharing not supported or cancelled");
-        }
-    }
-
-    btn.innerHTML = "📥 डाउनलोड आणि शेअर"; btn.disabled = false;
-}
-
-function renderTable(data) {
-    const rows = data.map(item => `<tr><td>${item.name}</td><td>${item.qty}</td></tr>`).join('');
-    return `<table class="p-table"><thead><tr><th>साहित्याचे नाव</th><th style="width:30%">प्रमाण</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 init();

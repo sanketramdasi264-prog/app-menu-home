@@ -1,0 +1,322 @@
+<div class="agnivaas-container">
+  <h2>अग्नि पृथ्वीवर आहे किंवा नाही ते पाहण्याचे कोष्टक (अग्निवास)</h2>
+  
+  <!-- Interactive Calculator Form -->
+  <div class="calculator-box">
+    <h3>झटपट अग्निवास तपासा</h3>
+    <div class="form-group">
+      <label>पक्ष निवडा:</label>
+      <select id="pakshaSelect" onchange="updateTithiOptions()">
+        <option value="shukla">शुक्ल पक्ष</option>
+        <option value="krishna">कृष्ण पक्ष</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>तिथी निवडा:</label>
+      <select id="tithiSelect">
+        <!-- Options will be populated by JS -->
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>वार निवडा:</label>
+      <select id="vaarSelect">
+        <option value="0">रविवार</option>
+        <option value="1">सोमवार</option>
+        <option value="2">मंगळवार</option>
+        <option value="3">बुधवार</option>
+        <option value="4">गुरुवार</option>
+        <option value="5">शुक्रवार</option>
+        <option value="6">शनिवार</option>
+      </select>
+    </div>
+
+    <button type="button" class="check-btn" onclick="checkAgnivaas()">तपासा</button>
+
+    <div id="resultBox" class="result-box" style="display: none;"></div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Complete Reference Table -->
+  <h3>संपूर्ण संदर्भ कोष्टक</h3>
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>पक्ष</th>
+          <th>तिथी ↓</th>
+          <th>रवि<br>वार</th>
+          <th>सोम<br>वार</th>
+          <th>मंगळ<br>वार</th>
+          <th>बुध<br>वार</th>
+          <th>गुरु<br>वार</th>
+          <th>शुक्र<br>वार</th>
+          <th>शनि<br>वार</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Table rows populated by JS -->
+      </tbody>
+    </table>
+  </div>
+  
+  <p class="note-text"><strong>टीप:</strong> अग्नि पाहताना पंचांगशुद्धी पाहून, वाराचे खाली आणि कर्मकालीन तिथी समोर अग्नि आहे का नाही ते पहावे.</p>
+</div>
+
+<!-- Styling to match clean Blogger UI -->
+<style>
+  .agnivaas-container {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 15px;
+    background: #ffffff;
+    color: #333;
+    line-height: 1.6;
+  }
+  .agnivaas-container h2 {
+    text-align: center;
+    color: #b30000;
+    font-size: 22px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #b30000;
+    padding-bottom: 10px;
+  }
+  .calculator-box {
+    background: #fff9f0;
+    border: 1px solid #f5d6a5;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .calculator-box h3 {
+    margin-top: 0;
+    color: #8a5300;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  .form-group {
+    margin-bottom: 12px;
+  }
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  .form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px;
+    background-color: #fff;
+  }
+  .check-btn {
+    width: 100%;
+    background: #b30000;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+  }
+  .check-btn:hover {
+    background: #990000;
+  }
+  .result-box {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .bg-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .bg-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  .section-divider {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 30px 0;
+  }
+  .table-responsive {
+    overflow-x: auto;
+    margin-top: 15px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+  }
+  .paksha-cell {
+    font-weight: bold;
+    background: #fafafa;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    padding: 10px 5px;
+  }
+  .fire-yes {
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: bold;
+  }
+  .fire-no {
+    color: #999;
+  }
+  .note-text {
+    font-size: 13px;
+    color: #666;
+    margin-top: 15px;
+    font-style: italic;
+    background: #f9f9f9;
+    padding: 10px;
+    border-left: 3px solid #ccc;
+  }
+</style>
+
+<!-- JavaScript Logic -->
+<script>
+  (function() {
+    const agniData = {
+      shukla: {
+        "1":  ["अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि", "–"],
+        "2":  ["अग्नि", "–", "–", "अग्नि", "अग्नि", "–", "–"],
+        "3":  ["–", "–", "अग्नि", "अग्नि", "–", "–", "अग्नि"],
+        "4":  ["–", "अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि"],
+        "5":  ["अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि", "–"],
+        "6":  ["अग्नि", "–", "–", "अग्नि", "अग्नि", "–", "–"],
+        "7":  ["–", "–", "अग्नि", "अग्नि", "–", "–", "अग्नि"],
+        "8":  ["–", "अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि"],
+        "9":  ["अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि", "–"],
+        "10": ["अग्नि", "–", "–", "अग्नि", "अग्नि", "–", "–"],
+        "11": ["–", "–", "अग्नि", "अग्नि", "–", "–", "अग्नि"],
+        "12": ["–", "अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि"],
+        "13": ["अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि", "–"],
+        "14": ["अग्नि", "–", "–", "अग्नि", "अग्नि", "–", "–"],
+        "15": ["–", "–", "अग्नि", "अग्नि", "–", "–", "अग्नि"]
+      },
+      krishna: {
+        "1":  ["–", "अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि"],
+        "2":  ["अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि", "–"],
+        "3":  ["अग्नि", "–", "–", "अग्नि", "अग्नि", "–", "–"],
+        "4":  ["–", "–", "अग्नि", "अग्नि", "–", "–", "अग्नि"],
+        "5":  ["–", "अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि"],
+        "6":  ["अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि", "–"],
+        "7":  ["अग्नि", "–", "–", "अग्नि", "अग्नि", "–", "–"],
+        "8":  ["–", "–", "अग्नि", "अग्नि", "–", "–", "अग्नि"],
+        "9":  ["–", "अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि"],
+        "10": ["अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि", "–"],
+        "11": ["अग्नि", "–", "–", "अग्नि", "अग्नि", "–", "–"],
+        "12": ["–", "–", "अग्नि", "अग्नि", "–", "–", "अग्नि"],
+        "13": ["–", "अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि"],
+        "14": ["अग्नि", "अग्नि", "–", "–", "अग्नि", "अग्नि", "–"],
+        "30": ["अग्नि", "–", "–", "अग्नि", "अग्नि", "–", "–"]
+      }
+    };
+
+    const tithiNames = {
+      "1": "प्रतिपदा (१)", "2": "द्वितीया (२)", "3": "तृतीया (३)", "4": "चतुर्थी (४)", 
+      "5": "पंचमी (५)", "6": "षष्ठी (६)", "7": "सप्तमी (७)", "8": "अष्टमी (८)", 
+      "9": "नवमी (९)", "10": "दशमी (१०)", "11": "एकादशी (११)", "12": "द्वादशी (१२)", 
+      "13": "त्रयोदशी (१३)", "14": "चतुर्दशी (१४)", "15": "पूर्णिमा (१५)", "30": "अमावास्या (३०)"
+    };
+
+    window.updateTithiOptions = function() {
+      const paksha = document.getElementById("pakshaSelect").value;
+      const tithiSelect = document.getElementById("tithiSelect");
+      tithiSelect.innerHTML = "";
+      
+      const tithis = paksha === "shukla" ? Object.keys(agniData.shukla) : Object.keys(agniData.krishna);
+      
+      tithis.forEach(tithi => {
+        let option = document.createElement("option");
+        option.value = tithi;
+        option.textContent = tithiNames[tithi] || tithi;
+        tithiSelect.appendChild(option);
+      });
+    }
+
+    window.checkAgnivaas = function() {
+      const paksha = document.getElementById("pakshaSelect").value;
+      const tithi = document.getElementById("tithiSelect").value;
+      const vaarIndex = parseInt(document.getElementById("vaarSelect").value);
+      const resultBox = document.getElementById("resultBox");
+
+      const status = agniData[paksha][tithi][vaarIndex];
+
+      resultBox.style.display = "block";
+      if (status === "अग्नि") {
+        resultBox.className = "result-box bg-success";
+        resultBox.innerHTML = "🔥 अग्नि पृथ्वीवर आहे! <br><span style='font-size:13px; font-weight:normal;'>हवन/यज्ञ करण्यासाठी हा काळ शुभ आहे.</span>";
+      } else {
+        resultBox.className = "result-box bg-danger";
+        resultBox.innerHTML = "❌ अग्नि पृथ्वीवर नाही (पाताळात/स्वर्गात आहे). <br><span style='font-size:13px; font-weight:normal;'>हवन करण्यासाठी वर्ज्य किंवा मध्यम काळ.</span>";
+      }
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById("tableBody");
+      if(!tbody) return;
+      tbody.innerHTML = "";
+
+      // Shukla Paksha
+      let shuklaTithis = Object.keys(agniData.shukla);
+      shuklaTithis.forEach((tithi, index) => {
+        let row = document.createElement("tr");
+        if (index === 0) {
+          row.innerHTML = `<td class="paksha-cell" rowspan="${shuklaTithis.length}">शुक्ल पक्ष</td>`;
+        }
+        row.innerHTML += `<td>${tithi}</td>` + agniData.shukla[tithi].map(val => 
+          `<td class="${val === 'अग्नि' ? 'fire-yes' : 'fire-no'}">${val}</td>`
+        ).join('');
+        tbody.appendChild(row);
+      });
+
+      // Krishna Paksha
+      let krishnaTithis = Object.keys(agniData.krishna);
+      krishnaTithis.forEach((tithi, index) => {
+        let row = document.createElement("tr");
+        if (index === 0) {
+          row.innerHTML = `<td class="paksha-cell" rowspan="${krishnaTithis.length}">कृष्ण पक्ष</td>`;
+        }
+        row.innerHTML += `<td>${tithi === '30' ? '३०' : tithi}</td>` + agniData.krishna[tithi].map(val => 
+          `<td class="${val === 'अग्नि' ? 'fire-yes' : 'fire-no'}">${val}</td>`
+        ).join('');
+        tbody.appendChild(row);
+      });
+    }
+
+    // Initialize on load
+    setTimeout(() => {
+      updateTithiOptions();
+      renderTable();
+    }, 100);
+  })();
+</script>

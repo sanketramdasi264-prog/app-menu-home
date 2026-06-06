@@ -130,9 +130,10 @@
   .footer{text-align:center;padding:28px 20px 10px;color:rgba(196,168,130,0.35);font-size:0.72rem;}
   .divider{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 auto 10px;}
   #reportCanvas{display:none;}
-  .charan-select { width:100%; background:rgba(20,5,5,0.6); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Tiro Devanagari Hindi',serif; font-size:0.92rem; padding:10px 32px 10px 12px; outline:none; appearance:none; -webkit-appearance:none; cursor:pointer; transition:border-color 0.2s,box-shadow 0.2s; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c9933a' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; background-color:rgba(20,5,5,0.6); }
-  .charan-select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,147,58,0.15);}
-  .charan-select option{background:#3a0a0a;color:var(--text);}
+  /* charan select — same style as regular select */
+  #varaCharan, #vadhuCharan { width:100%; background:rgba(20,5,5,0.6); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:'Tiro Devanagari Hindi',serif; font-size:0.88rem; padding:10px 32px 10px 12px; outline:none; appearance:none; -webkit-appearance:none; cursor:pointer; transition:border-color 0.2s,box-shadow 0.2s; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c9933a' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; background-color:rgba(20,5,5,0.6); }
+  #varaCharan:focus, #vadhuCharan:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,147,58,0.15);}
+  #varaCharan option, #vadhuCharan option{background:#3a0a0a;color:var(--text);}
 </style>
 </head>
 <body>
@@ -417,6 +418,89 @@ function downloadReport() {
 }
 
 /* ── CALCULATE ── */
+/* ══════════════════════════════════════════
+   CHARAN DROPDOWN FUNCTIONS
+   ══════════════════════════════════════════ */
+
+// नक्षत्र select केल्यावर चरण dropdown भरतो
+function buildCharanSel(nakId, charanSelId, rashiSelId, autoSelectChar) {
+  const sel = document.getElementById(charanSelId);
+  sel.innerHTML = '<option value="">— चरण निवडा —</option>';
+  if (!nakId || !DB) return;
+  const nak = DB.nakshatras.find(n => n.id === nakId);
+  if (!nak) return;
+  let autoIdx = -1;
+  nak.padas.forEach((pada, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${i+1} वा चरण  (${pada.char})  —  ${pada.rashi}`;
+    sel.appendChild(opt);
+    if (autoSelectChar && pada.char === autoSelectChar) autoIdx = i;
+  });
+  // auto select
+  if (autoIdx >= 0) {
+    sel.value = autoIdx;
+  } else {
+    sel.value = 0; // default 1st charan
+  }
+  // update rashi
+  const selectedIdx = parseInt(sel.value);
+  if (!isNaN(selectedIdx) && nak.padas[selectedIdx]) {
+    document.getElementById(rashiSelId).value = nak.padas[selectedIdx].rashi;
+  }
+}
+
+// नक्षत्र manually बदलल्यावर
+function onNakChange(nakSelId, charanSelId, rashiSelId) {
+  const nakId = parseInt(document.getElementById(nakSelId).value);
+  if (!nakId) {
+    document.getElementById(charanSelId).innerHTML = '<option value="">— चरण निवडा —</option>';
+    document.getElementById(rashiSelId).value = '';
+    return;
+  }
+  buildCharanSel(nakId, charanSelId, rashiSelId, null);
+}
+
+// चरण manually बदलल्यावर → राशी update
+function onCharanChange(nakSelId, charanSelId, rashiSelId) {
+  const nakId = parseInt(document.getElementById(nakSelId).value);
+  const idx   = parseInt(document.getElementById(charanSelId).value);
+  if (!nakId || isNaN(idx)) return;
+  const nak = DB.nakshatras.find(n => n.id === nakId);
+  if (nak && nak.padas[idx]) {
+    document.getElementById(rashiSelId).value = nak.padas[idx].rashi;
+  }
+}
+
+// नाव टाकल्यावर auto detect
+function autoDetect(name, nakSelId, charanSelId, rashiSelId, person) {
+  if (manualNak[person]) return;
+  const res = detectNak(name);
+  if (res) {
+    document.getElementById(nakSelId).value = res.nak.id;
+    buildCharanSel(res.nak.id, charanSelId, rashiSelId, res.pada.char);
+    document.getElementById(rashiSelId).value = res.pada.rashi;
+  } else {
+    document.getElementById(nakSelId).value = '';
+    document.getElementById(charanSelId).innerHTML = '<option value="">— चरण निवडा —</option>';
+    document.getElementById(rashiSelId).value = '';
+  }
+}
+
+function onNameInput(name, nakSelId, charanSelId, rashiSelId, person) {
+  if (name.trim().length === 0) {
+    manualNak[person] = false;
+    document.getElementById(nakSelId).value = '';
+    document.getElementById(charanSelId).innerHTML = '<option value="">— चरण निवडा —</option>';
+    document.getElementById(rashiSelId).value = '';
+    return;
+  }
+  autoDetect(name, nakSelId, charanSelId, rashiSelId, person);
+}
+
+/* ══════════════════════════════════════════
+   CALCULATE
+   ══════════════════════════════════════════ */
 function calculate() {
   const bride = document.getElementById('brideName').value.trim();
   const groom = document.getElementById('groomName').value.trim();
@@ -433,17 +517,23 @@ function calculate() {
   const vNak = DB.nakshatras.find(n=>n.id===vNakId);
   const bNak = DB.nakshatras.find(n=>n.id===bNakId);
 
-  function makePerson(nak, rashi, name) {
-    const char = getFirstChar(name);
-    const pada = nak.padas.find(p=>p.char===char)
-              || nak.padas.find(p=>p.char===char.charAt(0))
-              || nak.padas.find(p=>p.rashi===rashi)
-              || nak.padas[0];
-    return { ...pada, rashi, nakID:nak.id, yoni:nak.yoni, gana:nak.gana, nadi:nak.nadi, nakName:nak.name, charan:pada.char };
+  // चरण index वापरून exact pada घेतो
+  function makePerson(nak, rashi, charanSelId) {
+    const charanIdx = parseInt(document.getElementById(charanSelId).value);
+    const pada = (!isNaN(charanIdx) && nak.padas[charanIdx])
+      ? nak.padas[charanIdx]
+      : nak.padas.find(p=>p.rashi===rashi) || nak.padas[0];
+    return {
+      ...pada,
+      rashi: pada.rashi || rashi,
+      nakID: nak.id, yoni: nak.yoni, gana: nak.gana,
+      nadi: nak.nadi, nakName: nak.name, charan: pada.char
+    };
   }
 
-  const vObj = makePerson(vNak, vRashi, bride);
-  const bObj = makePerson(bNak, bRashi, groom);
+  const vObj = makePerson(vNak, vRashi, 'vadhuCharan');
+  const bObj = makePerson(bNak, bRashi, 'varaCharan');
+
   const origGet = engine.getDetails.bind(engine);
   engine.getDetails = (name) => (name===bride ? vObj : bObj);
   const res = engine.match(bride, groom);
@@ -483,19 +573,40 @@ function calculate() {
       <div class="sub">राशी: ${vd.rashi} | गण: ${vd.gana} | नाडी: ${vd.nadi} | योनी: ${vd.yoni}</div>
     </div>`;
 
-  // Summary — highlighted section below table
   renderSummary(res.remarks);
 }
 
+/* ══════════════════════════════════════════
+   INIT UI
+   ══════════════════════════════════════════ */
 function initUI() {
   buildNakSel('vadhuNak'); buildNakSel('varaaNak');
   buildRashiSel('vadhuRashi'); buildRashiSel('varaRashi');
-  document.getElementById('brideName').addEventListener('input',e=>onNameInput(e.target.value,'vadhuNak','vadhuRashi','vadhu'));
-  document.getElementById('groomName').addEventListener('input',e=>onNameInput(e.target.value,'varaaNak','varaRashi','vara'));
-  document.getElementById('vadhuNak').addEventListener('change',()=>onNakChange('vadhuNak','vadhuRashi','vadhu'));
-  document.getElementById('varaaNak').addEventListener('change',()=>onNakChange('varaaNak','varaRashi','vara'));
-  document.getElementById('calculateBtn').addEventListener('click',calculate);
-  document.getElementById('downloadBtn').addEventListener('click',downloadReport);
+
+  // नाव input → auto detect नक्षत्र + चरण + राशी
+  document.getElementById('groomName').addEventListener('input', e =>
+    onNameInput(e.target.value, 'varaaNak', 'varaCharan', 'varaRashi', 'vara'));
+  document.getElementById('brideName').addEventListener('input', e =>
+    onNameInput(e.target.value, 'vadhuNak', 'vadhuCharan', 'vadhuRashi', 'vadhu'));
+
+  // नक्षत्र change → चरण dropdown update
+  document.getElementById('varaaNak').addEventListener('change', () => {
+    manualNak.vara = true;
+    onNakChange('varaaNak', 'varaCharan', 'varaRashi');
+  });
+  document.getElementById('vadhuNak').addEventListener('change', () => {
+    manualNak.vadhu = true;
+    onNakChange('vadhuNak', 'vadhuCharan', 'vadhuRashi');
+  });
+
+  // चरण change → राशी update
+  document.getElementById('varaCharan').addEventListener('change', () =>
+    onCharanChange('varaaNak', 'varaCharan', 'varaRashi'));
+  document.getElementById('vadhuCharan').addEventListener('change', () =>
+    onCharanChange('vadhuNak', 'vadhuCharan', 'vadhuRashi'));
+
+  document.getElementById('calculateBtn').addEventListener('click', calculate);
+  document.getElementById('downloadBtn').addEventListener('click', downloadReport);
 }
 
 const wait=setInterval(()=>{

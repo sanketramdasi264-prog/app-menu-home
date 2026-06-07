@@ -252,35 +252,76 @@ function buildRashiSel(selId) {
   });
 }
 
-function onNakChange(nakSelId, rashiSelId, person) {
-  manualNak[person] = true;
+function onNakChange(nakSelId, charanSelId, rashiSelId) {
   const nakId = parseInt(document.getElementById(nakSelId).value);
-  if (!nakId) return;
-  const nak = DB.nakshatras.find(n=>n.id===nakId);
-  if (nak) document.getElementById(rashiSelId).value = nak.padas[0].rashi;
+  if (!nakId) {
+    document.getElementById(charanSelId).innerHTML = '<option value="">— चरण निवडा —</option>';
+    document.getElementById(rashiSelId).value = '';
+    return;
+  }
+  buildCharanSel(nakId, charanSelId, rashiSelId, null);
 }
 
-function autoDetect(name, nakSelId, rashiSelId, person) {
+function buildCharanSel(nakId, charanSelId, rashiSelId, autoSelectChar) {
+  const sel = document.getElementById(charanSelId);
+  sel.innerHTML = '<option value="">— चरण निवडा —</option>';
+  if (!nakId || !DB) return;
+  const nak = DB.nakshatras.find(n => n.id === nakId);
+  if (!nak) return;
+  let autoIdx = -1;
+  nak.padas.forEach((pada, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${i+1} वा चरण  (${pada.char})  —  ${pada.rashi}`;
+    sel.appendChild(opt);
+    if (autoSelectChar && pada.char === autoSelectChar) autoIdx = i;
+  });
+  sel.value = autoIdx >= 0 ? autoIdx : 0;
+  const idx = parseInt(sel.value);
+  if (!isNaN(idx) && nak.padas[idx])
+    document.getElementById(rashiSelId).value = nak.padas[idx].rashi;
+}
+
+function onCharanChange(nakSelId, charanSelId, rashiSelId) {
+  const nakId = parseInt(document.getElementById(nakSelId).value);
+  const idx   = parseInt(document.getElementById(charanSelId).value);
+  if (!nakId || isNaN(idx)) return;
+  const nak = DB.nakshatras.find(n => n.id === nakId);
+  if (nak && nak.padas[idx])
+    document.getElementById(rashiSelId).value = nak.padas[idx].rashi;
+}
+
+function autoDetect(name, nakSelId, charanSelId, rashiSelId, person) {
   if (manualNak[person]) return;
   const res = detectNak(name);
   if (res) {
-    document.getElementById(nakSelId).value   = res.nak.id;
+    document.getElementById(nakSelId).value = res.nak.id;
+    buildCharanSel(res.nak.id, charanSelId, rashiSelId, res.pada.char);
     document.getElementById(rashiSelId).value = res.pada.rashi;
   } else {
-    document.getElementById(nakSelId).value   = '';
+    document.getElementById(nakSelId).value = '';
+    document.getElementById(charanSelId).innerHTML = '<option value="">— चरण निवडा —</option>';
     document.getElementById(rashiSelId).value = '';
   }
 }
 
-function onNameInput(name, nakSelId, rashiSelId, person) {
-  if (name.trim().length === 0) manualNak[person] = false;
-  autoDetect(name, nakSelId, rashiSelId, person);
+function onNameInput(name, nakSelId, charanSelId, rashiSelId, person) {
+  if (name.trim().length === 0) {
+    manualNak[person] = false;
+    document.getElementById(nakSelId).value = '';
+    document.getElementById(charanSelId).innerHTML = '<option value="">— चरण निवडा —</option>';
+    document.getElementById(rashiSelId).value = '';
+    return;
+  }
+  autoDetect(name, nakSelId, charanSelId, rashiSelId, person);
 }
 
 function verdictInfo(score) {
-  if (score>=28) return ['अत्यंत उत्तम मिलन','v-excellent'];
-  if (score>=21) return ['उत्तम मिलन','v-good'];
-  if (score>=18) return ['सामान्य मिलन','v-average'];
+  if (score === 36) return ['पूर्ण मिलन ✨','v-excellent'];
+  if (score === 0)  return ['विवाह अशुभ 🔴','v-poor'];
+  if (score >= 28)  return ['अत्यंत उत्तम मिलन','v-excellent'];
+  if (score >= 21)  return ['उत्तम मिलन','v-good'];
+  if (score >= 18)  return ['सामान्य मिलन','v-average'];
   return ['विवाह अशुभ','v-poor'];
 }
 
@@ -544,22 +585,42 @@ function calculate() {
 
   lastResult = res; lastBride = bride; lastGroom = groom;
 
+  // नियम ४: मृत्यूषडाष्टक असल्यास display 0
+  const displayScore = res.displayScore !== undefined ? res.displayScore : res.finalScore;
+  const hasMrutyuDosh = (res.doshaList || []).includes("mrutyuShadashtak");
+  const hasEkCharan   = (res.doshaList || []).includes("ekCharan");
+
   document.getElementById('resultArea').style.display = 'block';
   document.getElementById('downloadBtn').classList.add('visible');
   setTimeout(()=>document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'start'}),80);
 
-  document.getElementById('finalScore').textContent = res.finalScore;
-  const [vText,vCls] = verdictInfo(res.finalScore);
+  // Score display
+  document.getElementById('finalScore').textContent = displayScore;
+  const [vText,vCls] = verdictInfo(displayScore);
   const vEl = document.getElementById('scoreVerdict');
   vEl.textContent = vText; vEl.className = 'score-verdict '+vCls;
 
+  // गुण तक्ता
   const labels={varna:"वर्ण",vashya:"वश्य",tara:"तारा",yoni:"योनी",maitri:"ग्रहमैत्री",gana:"गण",bhakoot:"भकूट",nadi:"नाडी"};
-  let tbl='';
-  for(let k in res.scoreDetails)
-    tbl+=`<tr><td>${labels[k]}</td><td>${res.scoreDetails[k]}</td></tr>`;
-  tbl+=`<tr><td>एकूण</td><td>${res.finalScore}</td></tr>`;
-  document.getElementById('scoreTable').innerHTML=tbl;
+  let tbl = '';
+  if (hasEkCharan) {
+    // एक चरण दोष — 0 दाखवा
+    tbl = `<tr><td colspan="2" style="text-align:center;color:#f08080;padding:10px 4px;font-size:0.88rem;line-height:1.6;">⚠️ एक चरण दोष<br>दोघांचे नक्षत्र, चरण व राशी समान</td></tr>
+           <tr><td>एकूण</td><td>0</td></tr>`;
+  } else if (hasMrutyuDosh) {
+    // मृत्यूषडाष्टक — actual table दाखवा पण एकूण 0
+    for(let k in res.scoreDetails)
+      tbl+=`<tr><td>${labels[k]}</td><td>${res.scoreDetails[k]}</td></tr>`;
+    tbl+=`<tr><td colspan="2" style="text-align:center;color:#f08080;font-size:0.8rem;padding:6px 2px;">⚠️ मृत्यूषडाष्टक दोष</td></tr>`;
+    tbl+=`<tr><td>एकूण</td><td>0</td></tr>`;
+  } else {
+    for(let k in res.scoreDetails)
+      tbl+=`<tr><td>${labels[k]}</td><td>${res.scoreDetails[k]}</td></tr>`;
+    tbl+=`<tr><td>एकूण</td><td>${displayScore}</td></tr>`;
+  }
+  document.getElementById('scoreTable').innerHTML = tbl;
 
+  // नक्षत्र माहिती
   const vd=res.vadhuDetails, bd=res.varaDetails;
   document.getElementById('nakInfo').innerHTML=`
     <div class="nak-row">

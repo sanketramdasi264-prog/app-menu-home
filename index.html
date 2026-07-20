@@ -351,6 +351,23 @@
             color: var(--gold);
         }
 
+        /* Update Steps Styling */
+        .update-steps {
+            text-align: left;
+            color: var(--text-white);
+            margin: 20px 10px;
+            font-size: 15px;
+            line-height: 1.8;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .update-steps strong {
+            color: var(--gold);
+        }
+
         .update-btn-container {
             display: flex;
             flex-direction: column;
@@ -369,6 +386,7 @@
             text-decoration: none;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
             transition: all 0.2s ease;
+            font-family: inherit;
         }
 
         .btn-update-now:active {
@@ -407,7 +425,7 @@
 
 <!-- Smart Update Pop-up Structure (Shows Every Time) -->
 <div class="update-overlay" id="updatePopup">
-    <div class="update-box">
+    <div class="update-box" id="updateBoxContent">
         <div class="update-icon">🚀</div>
         <h3>मोठ्या सुधारणांसह नवीन अपडेट!</h3>
         <p>आम्ही ॲपमध्ये अनेक नवीन फीचर्स आणि सुधारणा आणल्या आहेत. चांगल्या अनुभवासाठी त्वरित अपडेट करा.</p>
@@ -417,8 +435,8 @@
         </div>
 
         <div class="update-btn-container">
-            <!-- Play Store Link Here -->
-            <a href="https://play.google.com/store/apps/details?id=in.omkarmyog.app" class="btn-update-now" id="updateTargetBtn">आता अपडेट करा</a>
+            <!-- Changed to Button calling the JS function to show steps -->
+            <button class="btn-update-now" onclick="showUpdateSteps()">आता अपडेट करा</button>
             <button class="btn-later" onclick="closeUpdatePopup()">नंतर करा</button>
         </div>
     </div>
@@ -633,7 +651,7 @@
 </div>
 
 <script>
-    // --- SMART UPDATE POPUP LOGIC (SHOWS EVERY TIME) ---
+    // --- SMART UPDATE POPUP LOGIC ---
     window.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             document.getElementById('updatePopup').classList.add('show');
@@ -644,13 +662,28 @@
         document.getElementById('updatePopup').classList.remove('show');
     }
 
-    document.getElementById('updateTargetBtn').addEventListener('click', () => {
-        document.getElementById('updatePopup').classList.remove('show');
-    });
+    // New Function: Show Manual Update Steps instead of navigating
+    function showUpdateSteps() {
+        const boxContent = document.getElementById('updateBoxContent');
+        
+        // HTML For Steps View
+        boxContent.innerHTML = `
+            <div class="update-icon">📱</div>
+            <h3>कसे अपडेट करावे?</h3>
+            <div class="update-steps">
+                १. तुमच्या फोनमधील <strong>Play Store</strong> उघडा.<br><br>
+                २. <strong>OmKarmyog</strong> सर्च करा.<br><br>
+                ३. <strong>Update</strong> बटणावर क्लिक करा.
+            </div>
+            <div class="update-btn-container" style="margin-top: 20px;">
+                <button class="btn-later" onclick="closeUpdatePopup()">ठीक आहे, समजले</button>
+            </div>
+        `;
+    }
     // ---------------------------------
 
 
-    // Share App Function with Play Store Link
+    // Share App Function
     function shareApp() {
         const playstoreLink = 'https://play.google.com/store/apps/details?id=in.omkarmyog.app';
         

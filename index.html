@@ -139,15 +139,6 @@
             opacity: 1;
         }
 
-        /* Hide URL preview on long press */
-        .card::after {
-            content: attr(href);
-            position: absolute;
-            left: -9999px;
-            opacity: 0;
-            pointer-events: none;
-        }
-
         .icon-box {
             min-width: clamp(48px, 13vw, 55px);
             width: clamp(48px, 13vw, 55px);
@@ -233,15 +224,8 @@
             position: relative;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .modal-close {
             position: absolute;
@@ -279,86 +263,136 @@
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
         }
 
-        .developer-info {
-            font-family: 'Anek Devanagari', system-ui, sans-serif;
+        .developer-info { font-family: 'Anek Devanagari', system-ui, sans-serif; }
+        .developer-info h2 { color: var(--gold); font-size: 22px; text-align: center; margin-bottom: 6px; font-weight: 700; }
+        .developer-info h3 { color: var(--text-muted); font-size: 15px; text-align: center; font-weight: 400; margin-bottom: 25px; line-height: 1.4; }
+        .info-text { color: var(--text-white); font-size: 15px; line-height: 1.7; text-align: center; margin-bottom: 25px; padding: 0 10px; font-weight: 400; }
+
+        img { pointer-events: none; -webkit-user-drag: none; }
+        html { scroll-behavior: smooth; }
+        .card, .header-icon-btn { will-change: transform; }
+
+        /* --- SMART UPDATE POPUP STYLES --- */
+        .update-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            padding: 20px;
         }
 
-        .developer-info h2 {
-            color: var(--gold);
-            font-size: 22px;
+        .update-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .update-box {
+            background: linear-gradient(135deg, #2a0000 0%, #1a0000 100%);
+            border: 2px solid var(--gold);
+            border-radius: 25px;
+            padding: 25px 20px;
             text-align: center;
-            margin-bottom: 6px;
+            max-width: 380px;
+            width: 100%;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .update-overlay.show .update-box {
+            transform: scale(1);
+        }
+
+        .update-icon {
+            font-size: 40px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .update-box h3 {
+            font-size: 22px;
+            color: var(--gold);
+            margin-bottom: 10px;
             font-weight: 700;
         }
 
-        .developer-info h3 {
-            color: var(--text-muted);
-            font-size: 15px;
-            text-align: center;
-            font-weight: 400;
-            margin-bottom: 25px;
-            line-height: 1.4;
-        }
-
-        .info-text {
+        .update-box p {
+            font-size: 14px;
             color: var(--text-white);
-            font-size: 15px;
-            line-height: 1.7;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+
+        /* Changed: Removed red background and border, centered the text to match layout */
+        .warning-box {
+            margin-bottom: 20px;
+            font-size: 13.5px;
+            color: var(--text-muted);
             text-align: center;
-            margin-bottom: 25px;
-            padding: 0 10px;
-            font-weight: 400;
+            line-height: 1.5;
+            padding: 0 5px;
+        }
+        
+        .warning-box strong {
+            color: var(--gold);
         }
 
-        /*.social-icons {
+        .update-btn-container {
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 25px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .social-icon {
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 3px solid var(--gold);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .btn-update-now {
+            background: linear-gradient(90deg, var(--gold), #d4af37);
+            color: var(--bg-dark);
+            padding: 14px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-decoration: none;
-            padding: 8px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: all 0.2s ease;
         }
 
-        .social-icon:active {
-            transform: scale(0.9);
-            background: rgba(255, 215, 0, 0.3);
+        .btn-update-now:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
         }
 
-        .social-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            pointer-events: none;
-        } */
-
-        /* Prevent text selection and callouts */
-        img {
-            pointer-events: none;
-            -webkit-user-drag: none;
+        .btn-later {
+            background: transparent;
+            color: var(--text-white);
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            font-size: 14px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 0.2s ease;
+            font-family: inherit;
         }
 
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Performance optimization */
-        .card, .header-icon-btn {
-            will-change: transform;
+        .btn-later:active {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(0.95);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -371,6 +405,24 @@
     </style>
 </head>
 <body>
+
+<!-- Smart Update Pop-up Structure (Shows Every Time) -->
+<div class="update-overlay" id="updatePopup">
+    <div class="update-box">
+        <div class="update-icon">🚀</div>
+        <h3>मोठ्या सुधारणांसह नवीन अपडेट!</h3>
+        <p>आम्ही ॲपमध्ये अनेक नवीन फीचर्स आणि सुधारणा आणल्या आहेत. चांगल्या अनुभवासाठी त्वरित अपडेट करा.</p>
+        
+        <div class="warning-box">
+            <strong>⚠️ सूचना:</strong> जुन्या 'कार्यक्रम नोंदी' आणि 'हिस्ट्री' डिलीट होईल. मात्र यापुढील नवीन नोंदी (Local Storage) कायम सुरक्षित राहतील.
+        </div>
+
+        <div class="update-btn-container">
+            <a href="https://play.google.com/store/apps/details?id=in.omkarmyog.app" class="btn-update-now" id="updateTargetBtn">आता अपडेट करा</a>
+            <button class="btn-later" onclick="closeUpdatePopup()">नंतर करा</button>
+        </div>
+    </div>
+</div>
 
 <div class="header-container">
     <button class="header-icon-btn" onclick="openInfoModal()" aria-label="माहिती">
@@ -576,37 +628,33 @@
 आणि त्यासाठी आजच्या जगात<br>
 "अध्यात्माला आधुनिकतेची साथ लागते...!!"
 </p>
-           <!-- <div class="social-icons">
-                <a href="https://www.youtube.com/@omkarmyog" class="social-icon" target="_blank" aria-label="YouTube">
-                    <img src="https://static.vecteezy.com/system/resources/thumbnails/020/964/378/small_2x/youtube-icon-for-web-design-free-png.png" alt="YouTube">
-                </a>
-                               
-            </div> -->
         </div>
     </div>
 </div>
 
 <script>
+    // --- SMART UPDATE POPUP LOGIC (SHOWS EVERY TIME) ---
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            document.getElementById('updatePopup').classList.add('show');
+        }, 1000); // ॲप लोड झाल्यानंतर १ सेकंदाने दिसेल
+    });
+
+    function closeUpdatePopup() {
+        document.getElementById('updatePopup').classList.remove('show');
+    }
+
+    document.getElementById('updateTargetBtn').addEventListener('click', () => {
+        document.getElementById('updatePopup').classList.remove('show');
+    });
+    // ---------------------------------
+
+
     // Share App Function with Play Store Link
     function shareApp() {
         const playstoreLink = 'https://play.google.com/store/apps/details?id=in.omkarmyog.app';
         
-        const shareText = `🕉️ कर्मयोग 🕉️
-
-धार्मिक साहित्य आणि पूजा विधी आता तुमच्या मोबाईलवर!
-
-✨ आरती संग्रह
-📿 स्तोत्र व अष्टके  
-🙏 भजनावली
-🔱 कर्मकांड विधी
-📅 पंचांग
-💍 गुण मिलन
-⏰ नित्यकर्म
-📚 पूजा साहित्य
-
-आजच डाउनलोड करा आणि तुमच्या धार्मिक जीवनाला समृद्ध करा!
-
-📲 Play Store: ${playstoreLink}`;
+        const shareText = `🕉️ कर्मयोग 🕉️\n\nधार्मिक साहित्य आणि पूजा विधी आता तुमच्या मोबाईलवर!\n\n✨ आरती संग्रह\n📿 स्तोत्र व अष्टके  \n🙏 भजनावली\n🔱 कर्मकांड विधी\n📅 पंचांग\n💍 गुण मिलन\n⏰ नित्यकर्म\n📚 पूजा साहित्य\n\nआजच डाउनलोड करा आणि तुमच्या धार्मिक जीवनाला समृद्ध करा!\n\n📲 Play Store: ${playstoreLink}`;
 
         if (navigator.share) {
             navigator.share({ 

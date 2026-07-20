@@ -304,6 +304,9 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.9);
             transform: scale(0.8);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Added to allow scrolling if screen is too small */
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .update-overlay.show .update-box {
@@ -355,7 +358,7 @@
         .update-steps {
             text-align: left;
             color: var(--text-white);
-            margin: 20px 10px;
+            margin: 15px 10px;
             font-size: 15px;
             line-height: 1.8;
             background: rgba(0, 0, 0, 0.4);
@@ -366,6 +369,19 @@
 
         .update-steps strong {
             color: var(--gold);
+        }
+
+        /* Image inside Update Steps */
+        .update-tutorial-img {
+            width: 100%;
+            max-width: 280px; /* limits size on large screens */
+            height: auto;
+            border-radius: 12px;
+            margin: 10px auto 15px auto;
+            display: block;
+            border: 2px solid var(--gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            pointer-events: none;
         }
 
         .update-btn-container {
@@ -435,7 +451,6 @@
         </div>
 
         <div class="update-btn-container">
-            <!-- Changed to Button calling the JS function to show steps -->
             <button class="btn-update-now" onclick="showUpdateSteps()">आता अपडेट करा</button>
             <button class="btn-later" onclick="closeUpdatePopup()">नंतर करा</button>
         </div>
@@ -644,7 +659,7 @@
 कारण<br>
 “परंपरा जपली तरच संस्कृती टिकते.”<br>
 आणि त्यासाठी आजच्या जगात<br>
-"अध्यात्माला आधुनिकतेची साथ लागते...!!"
+"अध्यात्माला আধুনিকतेची साथ लागते...!!"
 </p>
         </div>
     </div>
@@ -662,11 +677,11 @@
         document.getElementById('updatePopup').classList.remove('show');
     }
 
-    // New Function: Show Manual Update Steps instead of navigating
+    // New Function: Show Manual Update Steps and Image
     function showUpdateSteps() {
         const boxContent = document.getElementById('updateBoxContent');
         
-        // HTML For Steps View
+        // HTML For Steps View including the GitHub hosted image
         boxContent.innerHTML = `
             <div class="update-icon">📱</div>
             <h3>कसे अपडेट करावे?</h3>
@@ -675,7 +690,11 @@
                 २. <strong>OmKarmyog</strong> सर्च करा.<br><br>
                 ३. <strong>Update</strong> बटणावर क्लिक करा.
             </div>
-            <div class="update-btn-container" style="margin-top: 20px;">
+            
+            <!-- Screenshot Image -->
+            <img src="Screenshot_20260720-204118_Google%20Play%20Store.png" alt="Update Tutorial" class="update-tutorial-img">
+            
+            <div class="update-btn-container" style="margin-top: 15px;">
                 <button class="btn-later" onclick="closeUpdatePopup()">ठीक आहे, समजले</button>
             </div>
         `;
